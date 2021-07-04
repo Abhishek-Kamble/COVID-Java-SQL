@@ -22,7 +22,7 @@ public class CovidMain
 			//fetching data and storing to variable
 			ResultSet rs = stmt.executeQuery("select * from students");
 			
-			// information about the typesand properties of the columns in a ResultSet object.
+			// information about the types and properties of the columns in a ResultSet object.
 			ResultSetMetaData rsmd = rs.getMetaData();
     
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) //Returns the number of columns in this ResultSet object.
@@ -47,6 +47,10 @@ public class CovidMain
 		}
 
 		System.out.println("\n");
+		
+		
+		
+		
 	}
 
 }
