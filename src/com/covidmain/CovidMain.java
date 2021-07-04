@@ -3,7 +3,7 @@ import java.sql.*;
 
 public class CovidMain 
 {
-	void demoDisplay
+	void demoDisplay(patient p)
 	{
 		try 
 		{
