@@ -44,7 +44,7 @@ public class Nurse extends nurseID {
     long N_id;
     String N_name;
     int N_slot;
-    long N_phone;
+    String N_phone;
     String N_add;
     String N_mail;
 
@@ -52,15 +52,16 @@ public class Nurse extends nurseID {
     void Nurse()
     {
         this.N_id = nurseIDgenerator();
-        this.N_name = "NewNurse";
+        this.N_name = "";
         this.N_slot = 0;
-        this.N_phone = 0;
-        this.N_add = "NewNurse";
+        this.N_phone = "";
+        this.N_add = "";
+        this.N_mail = "";
     }
 
     Scanner sc = new Scanner(System.in);
 
-    //setter
+    //setters
     void setNurseID()
     {
         this.N_id = nurseIDgenerator();
@@ -68,7 +69,61 @@ public class Nurse extends nurseID {
 
     void setNurseName()
     {
+        sc.nextLine();
+        System.out.print("\nEnter Name        : ");
+        String nursename = sc.nextLine();
+        this.N_name = nursename;
+    }
 
+    void setNurseSlot()
+    {
+        System.out.print("\nEnter slot no.    : ");
+        int slot_no = sc.nextInt();
+        this.N_slot = slot_no;
+    }
+
+    void setNursePhone()
+    {
+        sc.nextLine();
+        System.out.print("\nEnter Mobile No    : ");
+        String nurseMob = sc.nextLine();
+        if(checkers.mobileChecker(nurseMob))
+        {
+            this.N_name = nurseMob;
+        }
+        else
+        {
+            System.out.println("Invalid Mobile No.!!!");
+            System.out.println("Please Re-");
+            setNursePhone();
+        }
+        
+    }
+
+    void setNurseAdd()
+    {
+        sc.nextLine();
+        System.out.print("\nEnter Address     : ");
+        String nurseadd = sc.nextLine();
+        this.N_add = nurseadd;
+    }
+
+    void setNurseMail()
+    {
+        sc.nextLine();
+        System.out.print("\nEnter Address     : ");
+        String nursemail = sc.nextLine();
+        if(checkers.emailChecker(nursemail))
+        {
+            this.N_mail = nursemail;
+        }
+        else
+        {
+            System.out.println("Invalid mail!!");
+            System.out.print("Please Re-");
+            setNurseMail();
+        }
+        
     }
 
     //getter
