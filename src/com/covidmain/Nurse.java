@@ -47,6 +47,7 @@ public class Nurse extends nurseID {
     String N_phone;
     String N_add;
     String N_mail;
+    char N_status;
 
     //default constructor
     void Nurse()
@@ -57,6 +58,7 @@ public class Nurse extends nurseID {
         this.N_phone = "";
         this.N_add = "";
         this.N_mail = "";
+        this.N_status = 'N';
     }
 
     Scanner sc = new Scanner(System.in);
@@ -126,7 +128,16 @@ public class Nurse extends nurseID {
         
     }
 
-    //getter
+    void setNurseStatus()
+    {
+        sc.nextLine();
+        System.out.print("\nEnter Nursstatus     : ");
+        char nursestatus = sc.next().charAt(0);
+        this.N_status = nursestatus;
+        //TODO Adding checker for entered status
+    }
+
+    //TODO -getters
 
     //function to add new nurse
     void addNurse()
@@ -138,6 +149,7 @@ public class Nurse extends nurseID {
         N1.setNursePhone();
         N1.setNurseAdd();
         N1.setNurseMail();
+        N1.setNurseStatus();
 
         if(NurseSQL.addNewNurse(N1))
         {
@@ -150,7 +162,10 @@ public class Nurse extends nurseID {
     }
 
     //function to remove nurse
-    void removeNurse(){}
+    void removeNurse(){
+        //here we don't have to remove nurse details from database;
+        //only change status to n
+    }
 
     void detailNurse(){}
 
