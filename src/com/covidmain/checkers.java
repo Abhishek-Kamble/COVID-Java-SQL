@@ -1,24 +1,24 @@
 package com.covidmain;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class checkers {
     boolean emailChecker(String inputMail)
     {
-        boolean isAtCon = false;
-        boolean dotCon = false;
-        boolean charNextToAtCon = false;
-        if(inputMail.contains("@"))
-            isAtCon = true;
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                            "[a-zA-Z0-9_+&*-]+)*@" +
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                            "A-Z]{2,7}$";
+                              
+        Pattern pat = Pattern.compile(emailRegex);
         
-        if(inputMail.charAt(0)!='.' && inputMail.charAt(inputMail.length()-1)!='.')
-            dotCon = true;
-
-        char charNextToAt = inputMail.charAt(inputMail.indexOf("@")+1);
-        if((charNextToAt >= 'A' && charNextToAt <= 'Z') || (charNextToAt >= 'a' && charNextToAt <= 'z'))
-            charNextToAtCon = true;
-   
-        if(isAtCon && dotCon && charNextToAtCon)
-            return true;
-        else
+        if (inputMail == null)
             return false;
+        return pat.matcher(inputMail).matches();
+    }
+
+    boolean mobileChecker(long inputMobile)
+    {
+        
     }
 }
