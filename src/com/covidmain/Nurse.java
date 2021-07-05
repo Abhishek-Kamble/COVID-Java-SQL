@@ -51,7 +51,7 @@ public class Nurse extends nurseID {
     //default constructor
     void Nurse()
     {
-        this.N_id = nurseIDgenerator();
+        this.N_id = 0;
         this.N_name = "";
         this.N_slot = 0;
         this.N_phone = "";
@@ -94,7 +94,7 @@ public class Nurse extends nurseID {
         else
         {
             System.out.println("Invalid Mobile No.!!!");
-            System.out.println("Please Re-");
+            System.out.print("Please Re-");
             setNursePhone();
         }
         
@@ -129,7 +129,25 @@ public class Nurse extends nurseID {
     //getter
 
     //function to add new nurse
-    void addNurse(){}
+    void addNurse()
+    {
+        Nurse N1 = new Nurse();
+        N1.setNurseID();
+        N1.setNurseName();
+        N1.setNurseSlot();
+        N1.setNursePhone();
+        N1.setNurseAdd();
+        N1.setNurseMail();
+
+        if(NurseSQL.addNewNurse(N1))
+        {
+            System.out.println("New nurse added successfully!!");
+        }
+        else
+        {
+            System.out.println("Caution! Some error occured!!");
+        }
+    }
 
     //function to remove nurse
     void removeNurse(){}
