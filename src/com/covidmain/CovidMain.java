@@ -49,7 +49,9 @@ public class CovidMain
 		System.out.println("\n");
 		
 		
-		
+		public static void main(String[] args) {
+			
+		}
 		
 	}
 
