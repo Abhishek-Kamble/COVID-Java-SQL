@@ -15,7 +15,7 @@ class nurseID{
     
 			//connection call to oracle server
 			//port:: C:\oraclexe\app\oracle\product\11.2.0\server\network\ADMIN
-			Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "oracle123"); 
+			Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "shital2901"); 
 			System.out.println("Database connected Successfully!\n");
 
 			//Creates a Statement object for sendingSQL statements to the database.
@@ -50,7 +50,7 @@ public class Nurse extends nurseID {
     char N_status;
 
     //default constructor
-    void Nurse()
+    Nurse()
     {
         this.N_id = 0;
         this.N_name = "";
@@ -96,7 +96,7 @@ public class Nurse extends nurseID {
         else
         {
             System.out.println("Invalid Mobile No.!!!");
-            System.out.print("Please Re-");
+            System.out.print("Please ReEnter mobile no -");
             setNursePhone();
         }
         
@@ -113,7 +113,7 @@ public class Nurse extends nurseID {
     void setNurseMail()
     {
         sc.nextLine();
-        System.out.print("\nEnter Address     : ");
+        System.out.print("\nEnter E-mail     : ");
         String nursemail = sc.nextLine();
         if(checkers.emailChecker(nursemail))
         {
@@ -122,7 +122,7 @@ public class Nurse extends nurseID {
         else
         {
             System.out.println("Invalid mail!!");
-            System.out.print("Please Re-");
+            System.out.print("Please ReEnter Mail-");
             setNurseMail();
         }
         
