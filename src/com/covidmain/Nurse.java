@@ -3,44 +3,39 @@ import java.sql.*;
 import java.util.*;
 
 
-class nurseID{
-    long nurse_id;
+class nurseID
+{
+    static long nurse_id;
     //function to generate nurse id
-    long nurseIDgenerator()
+    static long nurseIDgenerator()
     {
         try
         {
             Class.forName("oracle.jdbc.driver.OracleDriver"); //class loader function
-			System.out.print("Driver Loaded Successfully.. ");
-    
-			//connection call to oracle server
-			//port:: C:\oraclexe\app\oracle\product\11.2.0\server\network\ADMIN
-			Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "shital2901"); 
-			System.out.println("Database connected Successfully!\n");
-
-			//Creates a Statement object for sendingSQL statements to the database.
+            System.out.println("Driver Loaded!");
+			
+			Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "oracle123");
+			System.out.println("Connection established!");
 			Statement stmt = connect.createStatement();
-
-			//fetching data and storing to variable
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(N_ID) FROM nurse");
-
-            //new code
             while (rs.next()) 
             {
                 nurse_id = rs.getInt(1);
             }
             connect.close();
+
+            return nurse_id;
         } 
         catch (Exception e) 
         {
             System.out.println(e);
+            return -1;
         }
-
-        return nurse_id;
     }
 }
 
-public class Nurse extends nurseID {
+public class Nurse extends nurseID 
+{
     long N_id;
     String N_name;
     int N_slot;
@@ -96,7 +91,7 @@ public class Nurse extends nurseID {
         else
         {
             System.out.println("Invalid Mobile No.!!!");
-            System.out.print("Please ReEnter mobile no -");
+            System.out.print("Please Re-");
             setNursePhone();
         }
         
@@ -172,5 +167,8 @@ public class Nurse extends nurseID {
 
     // void attendenceNurse(){}
 
+    public static void main(String[] args) {
+        System.out.print("\nTemp. Count: " + nurseIDgenerator());
+    }
 
 }
