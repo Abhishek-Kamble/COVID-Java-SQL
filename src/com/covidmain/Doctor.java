@@ -4,24 +4,23 @@ import java.util.*;
 
 
 class DoctorID{
+	
 	long Doctor_id;
 	
 	long DoctorIDgenerator(){
 		
 		try
         {
-            Class.forName("oracle.jdbc.driver.OracleDriver"); //class loader function
+            Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			System.out.print("Driver Loaded Successfully.. ");
     
-			//connection call to oracle server
-			//port:: C:\oraclexe\app\oracle\product\11.2.0\server\network\ADMIN
+		
 			Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "shital2901"); 
 			System.out.println("Database connected Successfully!\n");
-
-			//Creates a Statement object for sendingSQL statements to the database.
+			
 			Statement stmt = connect.createStatement();
 
-			//fetching data and storing to variable
+			
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(D_ID) FROM Doctor");
 
             
@@ -49,7 +48,8 @@ public class Doctor extends DoctorID {
     String D_mail;
     char D_status;
     String D_dept;
-    
+    String D_Tperiod;
+    String D_tperiod;
 
     Doctor()
     {
@@ -61,7 +61,9 @@ public class Doctor extends DoctorID {
         this.D_mail = "";
         this.D_status = 'N';
         this.D_dept = "";
-    }
+        this.D_Tperiod = "";
+        this.D_tperiod = "";
+      }
 
     Scanner sc = new Scanner(System.in);
 
@@ -80,7 +82,7 @@ public class Doctor extends DoctorID {
 
     void setDoctorSlot()
     {
-        System.out.print("\nEnter slot no.    : ");
+        System.out.print("\nEnter slot no.    		: ");
         int Dslot_no = sc.nextInt();
         this.D_slot = Dslot_no;
     }
@@ -142,7 +144,24 @@ public class Doctor extends DoctorID {
         System.out.print("\nEnter Doctor status (trainee(T)/temp(t)/permanent(p)  : ") ;
         char Docstatus = sc.next().charAt(0);
         this.D_status = Docstatus;
-        
+        if(Docstatus == 'N'|| Docstatus != 'T' || Docstatus != 't' || Docstatus != 'p' )
+        {
+        	System.out.println("\nInvalid Status Entered     !!");
+        	System.out.println("\nPlease ReEnter -      !!");
+        	setDoctorStatus();
+        }
+        if(Docstatus == 'T')
+        {
+        	System.out.println("\nEnter training period       : ");
+            String D_Training = sc.nextLine();
+            this.D_Tperiod = D_Training;
+        }
+        else if(Docstatus == 't')
+        {
+        	System.out.println("\nEnter Working period        : ");
+        	String D_tWork = sc.nextLine();
+        	this.D_tperiod = D_tWork;
+        }
     }
 
     void addDoctor()

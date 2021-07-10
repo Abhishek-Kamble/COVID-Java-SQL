@@ -14,7 +14,7 @@ public class DoctorSQL {
         {
             Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "shital2901"); 
             Statement stmt = connect.createStatement();
-            ResultSet rs = stmt.executeQuery("INSERT INTO Doctor VALUES(" + d1.D_id + "," + d1.D_name + "," + d1.D_slot + "," + d1.D_phone + "," + d1.D_add + "," + d1.D_mail + "," + d1.D_dept + ")");
+            ResultSet rs = stmt.executeQuery("INSERT INTO Doctor VALUES(" + d1.D_id + "," + d1.D_name + "," + d1.D_slot + "," + d1.D_phone + "," + d1.D_add + "," + d1.D_mail + "," + d1.D_dept + "," + d1.D_status + ")");
             connect.close();
             return true;
         }

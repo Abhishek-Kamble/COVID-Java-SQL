@@ -14,21 +14,20 @@ class patientID {
 	{
 		try
         {
-            Class.forName("oracle.jdbc.driver.OracleDriver"); //class loader function
+            Class.forName("oracle.jdbc.driver.OracleDriver"); 
 			System.out.print("Driver Loaded Successfully.. ");
     
-			//connection call to oracle server
-			//port:: C:\oraclexe\app\oracle\product\11.2.0\server\network\ADMIN
+			
 			Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system", "shital2901"); 
 			System.out.println("Database connected Successfully!\n");
 
-			//Creates a Statement object for sendingSQL statements to the database.
+			
 			Statement stmt = connect.createStatement();
 
-			//fetching data and storing to variable
+			
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(P_ID) FROM patient_Entry_details");
 
-            //new code
+            
             while (rs.next()) 
             {
                 patient_id = rs.getInt(1);
