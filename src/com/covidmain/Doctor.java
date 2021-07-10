@@ -37,7 +37,6 @@ class DoctorID{
         }
 
         return Doctor_id;
-		
 	}
 }
 
@@ -66,7 +65,6 @@ public class Doctor extends DoctorID {
 
     Scanner sc = new Scanner(System.in);
 
-   
     void setDoctorID()
     {
         this.D_id = DoctorIDgenerator();
