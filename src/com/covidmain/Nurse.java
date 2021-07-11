@@ -8,8 +8,7 @@ class nurseID {
 
     static String nurseIDgenerator() {
         long nurseCount = NurseSQL.getNurseCount();
-        System.out.println("NurseCount: " + nurseCount);
-
+//        System.out.println("NurseCount: " + nurseCount);
         String nurseCountStr = "";
         if (nurseCount >= 0 && nurseCount < 10) {
             nurseCountStr = "0000" + String.valueOf(nurseCount);
@@ -42,6 +41,7 @@ public class Nurse extends nurseID {
     String N_phone;
     String N_add;
     String N_mail;
+    char isRemoved;
     char N_status;
 
     // default constructor
@@ -53,9 +53,10 @@ public class Nurse extends nurseID {
         this.N_add = "";
         this.N_mail = "";
         this.N_status = 'N';
+        this.isRemoved = 'N';
     }
 
-    Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
 
     // setters
     void setNurseID() {
@@ -115,10 +116,17 @@ public class Nurse extends nurseID {
 
     void setNurseStatus() {
         sc.nextLine();
-        System.out.print("\nEnter Nursstatus     : ");
+        System.out.print("\nEnter Nurse status (A/N)   : ");
         char nursestatus = sc.next().charAt(0);
-        this.N_status = nursestatus;
-        // TODO Adding checker for entered status
+        if(nursestatus == 'A' || nursestatus == 'N')
+        {
+            this.N_status = nursestatus;
+        }
+        else
+        {
+            System.out.print("\n!Re-");
+            setNurseStatus();
+        }
     }
 
     // TODO -getters
@@ -141,20 +149,27 @@ public class Nurse extends nurseID {
         }
     }
 
-    // function to remove nurse
-    void removeNurse() {
+    // function to remove nurse TODO testing
+    static void removeNurse() {
         // here we don't have to remove nurse details from database;
-        // only change status to n
-
+        // only change status to N
+        System.out.println("**** Remove Nurse ****");
+        System.out.print("\nEnter Nurse ID    : ");
+        sc.nextLine();
+        String nurseID = sc.nextLine();
+        NurseSQL.removeNurseRec(nurseID);
     }
 
     void detailNurse() {
+
     }
 
     // void attendenceNurse(){}
 
+    //main function for testing 
     public static void main(String[] args) {
-        System.out.print("\nTemp ID: " + nurseIDgenerator());
+        System.out.print("\nRunning ");
+        Nurse.removeNurse();
     }
 
 }
