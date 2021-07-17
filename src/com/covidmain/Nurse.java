@@ -180,10 +180,12 @@ public class Nurse extends nurseHelper {
         
         String statement = "UPDATE nurse SET isremoved = 'Y' WHERE N_ID = '" + tempNurseID +"'";
         
+        //TODO fixing exceptions
         db.startstatement();
         db.update(statement);
-//		db.endupdate();
-       
+		db.endupdate();
+		
+		System.out.println("-------------------------------------------------");
     }
 
     public static void displayNurseDetails() throws SQLException {
@@ -191,35 +193,56 @@ public class Nurse extends nurseHelper {
         System.out.print("\nEnter Nurse ID    : ");
         String tempNurseID = sc.nextLine();
 
-        String statement = "SELECT * FROM nurse WHERE N_ID = '" + tempNurseID +"'";
-        try 
-        {
-        	db.startstatement();
-        	rs = db.execstatement(statement);
-		}
-        catch(Exception e) { 
-            e.printStackTrace();
-            System.out.println("Error! or Records not exist");
-            System.out.println(e);
-        }      
-        while(rs.next()){
+        String statement = "SELECT n_id, n_name, n_slot, n_phone, n_add, n_mail, isremoved, N_status FROM nurse WHERE N_ID = '" + tempNurseID + "'";
+
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+    	while(rs.next()){
             System.out.println("Nurse ID		: " + rs.getString("N_ID"));
             System.out.println("Nurse Name		: " + rs.getString("N_name"));
             System.out.println("Nurse Slot 		: " + rs.getInt("N_slot"));
             System.out.println("Nurse Phone No. : " + rs.getString("N_phone"));
             System.out.println("Nurse Add. 		: " + rs.getString("N_add"));
             System.out.println("Nurse E-mail	: " + rs.getString("N_mail"));
-            System.out.println("Nurse Removed?	: " + rs.getString("N_removed"));
+            System.out.println("Nurse Removed?	: " + rs.getString("isremoved"));
             System.out.println("Nurse Status    : " + rs.getString("N_status"));
          }
-        db.endstatement();
-        
+        db.endstatement(); 
+		
+        System.out.println("-----------------------------------------------");
 	}
     
     static void detailNurseSlotWise()
     {
-        System.out.println("\nSlot wise nurse details");
+        System.out.println("\n***Slot wise nurse list***");
+        System.out.print("\nEnter Slot No.    : ");
+        int tempSlot = sc.nextInt();
+
+        String statement = "SELECT n_id, n_name FROM nurse WHERE N_slot = '" + tempSlot + "'";
         
+    	db.startstatement();
+    	db.printDataList(statement);
+        db.endstatement();
+        
+        System.out.println("-----------------------------------------------");
+    }
+    
+    static void changeNurseSlot()
+    {
+    	System.out.println("***Change Nurse Slot***");
+    	System.out.print("Enter Nurse ID: ");
+        String tempNurseID = sc.nextLine();
+        System.out.print("\nEnter new Slot No. for"+ tempNurseID + " : ");
+        int tempSlot = sc.nextInt();
+        
+        //TODO fixing exceptions
+        String statement = "UPDATE nurse SET n_slot = " + tempSlot + "WHERE N_ID = '" + tempNurseID +"'";
+        
+        db.startstatement();
+        db.update(statement);
+        db.endstatement();
+
+        System.out.println("Slot No. changed successfully for nurse ID: " + tempNurseID);
     }
 
     //main function for testing 
@@ -228,7 +251,9 @@ public class Nurse extends nurseHelper {
 //        System.out.println(nurseIDgenerator());
 //        Nurse.displayNurseDetails();
 //        Nurse.removeNurse();
-        	Nurse.addNurse();
+//        Nurse.addNurse();
+//        Nurse.detailNurseSlotWise();
+//        Nurse.changeNurseSlot();
         
     }
 
