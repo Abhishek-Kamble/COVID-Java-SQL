@@ -8,3 +8,12 @@
 /patientID.class
 /patientSQL.class
 /patient_at_entry.class
+/Dbhelper.class
+/Wardboy.class
+/WardboySQL.class
+/bed.class
+/nurseHelper.class
+/patient.class
+/patient_details_after_admit.class
+/ward.class
+/wardboyID.class
