@@ -20,7 +20,7 @@ public class Dbhelper {
 			Class.forName(JDBC_DRIVER);
 
 		    //STEP 3: Open a connection
-		    System.out.println("Connecting to database...");
+		    System.out.println("Connecting to database...\n");
 		    this.conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			}catch(SQLException se){
 		      //Handle errors for JDBC
@@ -60,8 +60,8 @@ public class Dbhelper {
 	public void endstatement()
 	{
 		try {
-			this.rs.close();
-			this.stmt.close();
+			Dbhelper.rs.close();
+			Dbhelper.stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,7 +84,7 @@ public class Dbhelper {
 	public void update(String statement)
 	{
 		try {
-			this.stmt.executeUpdate(statement);
+			Dbhelper.stmt.executeUpdate(statement);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,10 +95,35 @@ public class Dbhelper {
 	public void endupdate()
 	{
 		try {
-			this.stmt.close();
+			Dbhelper.stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public void printDataList(String statement)
+	{
+		try 
+		{
+			rs = execstatement(statement);
+			ResultSetMetaData rsmd = rs.getMetaData();
+        	for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                System.out.print(rsmd.getColumnName(i) + "\t\t");
+            }
+        	System.out.println("\n");
+        	while (rs.next()) {
+                for (int j = 1; j <= rsmd.getColumnCount(); j++) {
+                    System.out.print(rs.getString(j) + "\t");
+                }
+                System.out.println();
+            }
+		}
+		catch(SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
