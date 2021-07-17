@@ -1,5 +1,6 @@
 package com.covidmain;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.util.*;
 
 //function to generate wardboy id
 class wardboyHelper
@@ -57,7 +58,7 @@ class wardboyHelper
 	
 }
 
-public class wardboy extends wardboyHelper {
+public class Wardboy extends wardboyHelper {
     String W_id;
     String W_name;
     int W_slot;
@@ -67,7 +68,7 @@ public class wardboy extends wardboyHelper {
     char isRemoved;
     char W_status;
 
-    wardboy() {
+    Wardboy() {
         this.W_id = "";
         this.W_name = "";
         this.W_slot = 0;
@@ -124,8 +125,8 @@ public class wardboy extends wardboyHelper {
     void setWardboyMail() {
         System.out.print("\nEnter E-mail     : ");
         String wardboyemail = sc.nextLine();
-        if (checkers.emailChecker(wardboymail)) {
-            this.W_mail = wardboymail;
+        if (checkers.emailChecker(wardboyemail)) {
+            this.W_mail = wardboyemail;
         } else {
             System.out.println("Invalid mail!!");
             System.out.print("Please Re-");
@@ -148,7 +149,7 @@ public class wardboy extends wardboyHelper {
     }
 
     static void addWardboy() {
-        wardboy W = new wardboy();
+        Wardboy W = new Wardboy();
         W.setWardboyID();
         W.setWardboyName();
         W.setWardboySlot();
@@ -213,7 +214,7 @@ public class wardboy extends wardboyHelper {
 		    }
 		    public static void main(String[] args) throws SQLException {
 		        System.out.println("\nRunning ");
-		        	wardboy.addWardboy();
+		        	Wardboy.addWardboy();
 		        
 		    }
 		
