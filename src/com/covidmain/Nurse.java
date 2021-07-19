@@ -3,37 +3,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-//function to generate nurse id
 class nurseHelper
 {
 	static Dbhelper db = new Dbhelper();
 	static ResultSet rs = null;
 	
-	static long getNurseCount()
+	static long getNurseCount() throws SQLException
     {
     	long nurse_id = 0;
     	String statement = "SELECT COUNT(N_ID) as Count FROM nurse";
-        try 
-        {
-        	db.startstatement();
-        	rs = db.execstatement(statement);
-        	rs.next();
-		    nurse_id=rs.getInt("Count");
-		    return nurse_id;
-		}
-        catch(SQLException se){
-		      //Handle errors for JDBC
-		      se.printStackTrace();
-		      return -1;    		      
-        }
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		nurse_id=rs.getInt("Count");
+		return nurse_id;
     }
 	
 	//NURSE_ID
     static String nurseID = "";
 
-    static String nurseIDgenerator() {
-        long nurseCount = NurseSQL.getNurseCount() + 1;
-        System.out.println("NurseCount: " + nurseCount);
+    static String nurseIDgenerator() throws SQLException {
+        long nurseCount = getNurseCount() + 1;
+//        System.out.println("NurseCount: " + nurseCount);
         String nurseCountStr = "";
         if (nurseCount >= 0 && nurseCount < 10) {
             nurseCountStr = "00" + String.valueOf(nurseCount);
@@ -55,6 +47,7 @@ class nurseHelper
 
         return nurseID;
     }
+    
     
 }
 
@@ -83,7 +76,7 @@ public class Nurse extends nurseHelper {
     static Scanner sc = new Scanner(System.in);
 
     // setters
-    void setNurseID() {
+    void setNurseID() throws SQLException {
         String tempN_ID = nurseIDgenerator();
         if (tempN_ID == "") {
             System.out.println("Error!! Can't set Nurse ID");
@@ -109,10 +102,10 @@ public class Nurse extends nurseHelper {
         System.out.print("\nEnter Mobile No    : ");
         String nurseMob = sc.nextLine();
         if (checkers.mobileChecker(nurseMob)) {
-            this.N_name = nurseMob;
+            this.N_phone = nurseMob;
         } else {
             System.out.println("Invalid Mobile No.!!!");
-            System.out.print("Press Re-");
+            System.out.print("Press ENTER!!");
             setNursePhone();
         }
     }
@@ -149,10 +142,8 @@ public class Nurse extends nurseHelper {
         }
     }
 
-     // TODO -getters
-
     // function to add new nurse
-    static void addNurse() {
+    static void addNurse() throws SQLException {
         Nurse N = new Nurse();
         N.setNurseID();
         N.setNurseName();
@@ -251,7 +242,7 @@ public class Nurse extends nurseHelper {
 //        System.out.println(nurseIDgenerator());
 //        Nurse.displayNurseDetails();
 //        Nurse.removeNurse();
-//        Nurse.addNurse();
+        Nurse.addNurse();
 //        Nurse.detailNurseSlotWise();
 //        Nurse.changeNurseSlot();
         
