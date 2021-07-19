@@ -8,6 +8,7 @@
 /patientID.class
 /patientSQL.class
 /patient_at_entry.class
+<<<<<<< Updated upstream
 /Dbhelper.class
 /Wardboy.class
 /WardboySQL.class
@@ -16,4 +17,11 @@
 /patient.class
 /patient_details_after_admit.class
 /ward.class
+=======
+/Wardboy.class
+/WardboySQL.class
+/bed.class
+/patient.class
+/patient_details_after_admit.class
+>>>>>>> Stashed changes
 /wardboyID.class

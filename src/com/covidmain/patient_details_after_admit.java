@@ -45,7 +45,6 @@ public class patient_details_after_admit extends patient {
     String p_dis_date;
     String p_bg;
     double p_temp;
-    double p_weight;
     String p_O2level;
     String p_covlevel;
 
@@ -54,7 +53,6 @@ public class patient_details_after_admit extends patient {
         this.p_dis_date = "";
         this.p_bg = "";
         this.p_temp = 0.0;
-        this.p_weight = 0.0;
         this.p_O2level = "";
         this.p_covlevel = "";
     }
@@ -89,12 +87,6 @@ public class patient_details_after_admit extends patient {
         this.p_temp = patienttemp;
     }
 
-    void setpatient_weight() {
-        sc.nextLine();
-        System.out.print("\nEnter Weight of patient in KG   : ");
-        double patientweight = sc.nextDouble();
-        this.p_weight = patientweight;
-    }
 
     void setpatietO2level() {
         sc.nextLine();
