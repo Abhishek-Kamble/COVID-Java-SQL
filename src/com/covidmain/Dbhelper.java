@@ -60,7 +60,10 @@ public class Dbhelper {
 	public void endstatement()
 	{
 		try {
-			Dbhelper.rs.close();
+			if(rs != null)
+			{
+				Dbhelper.rs.close();
+			}
 			Dbhelper.stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -88,7 +91,8 @@ public class Dbhelper {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
+		}finally
+		{
 			endstatement();
 		}
 	}
