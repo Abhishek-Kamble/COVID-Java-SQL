@@ -79,7 +79,7 @@ public class Nurse extends nurseHelper {
     void setNurseID() throws SQLException {
         String tempN_ID = nurseIDgenerator();
         if (tempN_ID == "") {
-            System.out.println("Error!! Can't set Nurse ID");
+            System.out.println("Error!! Can't set Nurse ID.");
         } else {
             this.N_id = tempN_ID;
         }
@@ -176,7 +176,7 @@ public class Nurse extends nurseHelper {
         db.update(statement);
 		db.endupdate();
 		
-		System.out.println("-------------------------------------------------");
+		System.out.println("-------Nurse Removed \n -------------------------------------------------");
     }
 
     public static void displayNurseDetails() throws SQLException {
@@ -209,7 +209,7 @@ public class Nurse extends nurseHelper {
         System.out.print("\nEnter Slot No.    : ");
         int tempSlot = sc.nextInt();
 
-        String statement = "SELECT n_id, n_name FROM nurse WHERE N_slot = '" + tempSlot + "'";
+        String statement = "SELECT n_id, n_name FROM nurse WHERE isremoved = 'N', N_slot = '" + tempSlot + "'";
         
     	db.startstatement();
     	db.printDataList(statement);
@@ -223,7 +223,7 @@ public class Nurse extends nurseHelper {
     	System.out.println("***Change Nurse Slot***");
     	System.out.print("Enter Nurse ID: ");
         String tempNurseID = sc.nextLine();
-        System.out.print("\nEnter new Slot No. for"+ tempNurseID + " : ");
+        System.out.print("\nEnter new Slot No. for ID: "+ tempNurseID + " : ");
         int tempSlot = sc.nextInt();
         
         //TODO fixing exceptions
@@ -242,9 +242,9 @@ public class Nurse extends nurseHelper {
 //        System.out.println(nurseIDgenerator());
 //        Nurse.displayNurseDetails();
 //        Nurse.removeNurse();
-        Nurse.addNurse();
+//        Nurse.addNurse();
 //        Nurse.detailNurseSlotWise();
-//        Nurse.changeNurseSlot();
+        Nurse.changeNurseSlot();
         
     }
 
