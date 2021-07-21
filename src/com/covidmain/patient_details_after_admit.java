@@ -47,7 +47,7 @@ public class patient_details_after_admit extends patient {
     double p_temp;
     String p_O2level;
     String p_covlevel;
-
+    char p_status;
     patient_details_after_admit() {
         this.p_adm_date = "";
         this.p_dis_date = "";
@@ -55,6 +55,7 @@ public class patient_details_after_admit extends patient {
         this.p_temp = 0.0;
         this.p_O2level = "";
         this.p_covlevel = "";
+        this.p_status="";
     }
 
     Scanner sc = new Scanner(System.in);
@@ -102,5 +103,15 @@ public class patient_details_after_admit extends patient {
         String covlev = sc.nextLine();
         this.p_covlevel = covlev;
 
+    }
+    void setPatientStatus() {
+        System.out.print("\nEnter Patient status (C/U)   : ");
+        char Patientstatus = sc.next().charAt(0);
+        if (wardboystatus == 'A' || wardboystatus == 'N') {
+            this.W_status = wardboystatus;
+        } else {
+            System.out.print("\n ! Re-");
+            setWardboyStatus();
+        }
     }
 }
