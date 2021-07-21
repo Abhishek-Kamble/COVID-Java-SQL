@@ -46,6 +46,10 @@ class wardboyHelper {
 
 }
 
+
+
+
+
 public class Wardboy extends wardboyHelper {
     String W_id;
     String W_name;
@@ -103,6 +107,7 @@ public class Wardboy extends wardboyHelper {
         }
     }
 
+    
     void setWardboyAdd() {
         System.out.print("\nEnter Address     : ");
         String wardboyadd = sc.nextLine();
@@ -120,6 +125,8 @@ public class Wardboy extends wardboyHelper {
             setWardboyMail();
         }
     }
+    
+    
 
     void setWardboyStatus() {
         System.out.print("\nEnter Wardboy status (A/N)   : ");
@@ -152,7 +159,7 @@ public class Wardboy extends wardboyHelper {
 
     }
 
-    static void removeNurse() {
+    static void removeWardboy() {
         System.out.println("**** Remove Wardboy ****");
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
@@ -185,18 +192,48 @@ public class Wardboy extends wardboyHelper {
     }
 
     static void detailWardboySlotWise() {
-        System.out.println("\nSlot wise wardboy details");
+    	System.out.println("\n***Slot wise wardboy list***");
+        System.out.print("\nEnter Slot No.    : ");
+        int tempSlot = sc.nextInt();
 
+        String statement = "SELECT W_id, W_name FROM wardboy WHERE W_slot = '" + tempSlot + "'";
+        
+    	db.startstatement();
+    	db.printDataList(statement);
+        db.endstatement();
+        
+        System.out.println("-----------------------------------------------");
+
+    }
+    
+    static void changeWardboySlot()
+    {
+    	System.out.println("***Change Wardboy Slot***");
+    	System.out.print("Enter Wardboy ID: ");
+        String tempWardboyID = sc.nextLine();
+        System.out.print("\nEnter new Slot No. for"+ tempWardboyID + " : ");
+        int tempSlot = sc.nextInt();
+        
+        //TODO fixing exceptions
+        String statement = "UPDATE wardboy SET W_slot = " + tempSlot + "WHERE W_ID = '" + tempWardboyID +"'";
+        
+        db.startstatement();
+        db.update(statement);
+        db.endstatement();
+
+        System.out.println("Slot No. changed successfully for Wardboy ID: " + tempWardboyID);
     }
 
     public static void main(String[] args) throws SQLException {
         System.out.println("\nRunning ");
-//        System.out.println(Wardboy.wardboyIDgenerator());
-//        addWardboy();
-//        displayWardboyDetails();
-
+        System.out.println(wardboyIDgenerator());
+        wardboy.displayWardboyDetails();
+//        wardboy.removeWardboy();
+        wardboy.addWardboy();
+//        wardboy.detailWardboySlotWise();
+//        wardboy.changeWardboySlot();
+        
     }
-    
     
 
 }
