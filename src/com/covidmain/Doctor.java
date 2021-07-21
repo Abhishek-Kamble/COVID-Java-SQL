@@ -3,10 +3,9 @@ import java.sql.*;
 import java.util.*;
 
 class Doctorhelper{
-		static Dbhelper db = new Dbhelper();
-		static ResultSet rs = null;
-		
-		
+	static Dbhelper db = new Dbhelper();
+	static ResultSet rs = null;
+	
 	static long getDoctorCount()
     {
     	long doctor_id = 0;
@@ -30,7 +29,7 @@ class Doctorhelper{
     static String DoctorIDgenerator() 
     {
         long doctorCount = DoctorSQL.getDoctorCount() + 1;
-        System.out.println("doctorCount: " + doctorCount);
+//        System.out.println("doctorCount: " + doctorCount);
         
         String doctorCountStr = "";
         
@@ -116,7 +115,7 @@ public class Doctor extends Doctorhelper {
         String doctorMob = sc.nextLine();
         if (checkers.mobileChecker(doctorMob))
         {
-            this.D_name = doctorMob;
+            this.D_phone = doctorMob;
         } 
         else 
         {
@@ -251,10 +250,10 @@ public class Doctor extends Doctorhelper {
 	     public static void main(String[] args) throws SQLException
 	     {
 	         System.out.println("\nRunning ");
-	       System.out.println(DoctorIDgenerator());
-	        Doctor.displayDoctorDetails();
+//	       System.out.println(DoctorIDgenerator());
+//	        Doctor.displayDoctorDetails();
             //Doctor.removeDoctor();
-	    	//Doctor.addDoctor();
+	    	Doctor.addDoctor();
 	       // Doctor.detailDoctorSlotWise();
 	       // Doctor.changeDoctorSlot();
 	    }
