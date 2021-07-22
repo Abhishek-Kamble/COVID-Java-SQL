@@ -41,16 +41,12 @@ class patient {
 }
 
 public class patient_details_after_admit extends patient {
-    String p_adm_date;
-    String p_dis_date;
     String p_bg;
     double p_temp;
     String p_O2level;
     String p_covlevel;
     char p_status;
     patient_details_after_admit() {
-        this.p_adm_date = "";
-        this.p_dis_date = "";
         this.p_bg = "";
         this.p_temp = 0.0;
         this.p_O2level = "";
@@ -60,19 +56,6 @@ public class patient_details_after_admit extends patient {
 
     Scanner sc = new Scanner(System.in);
 
-    void setpatientadmitdate() {
-        sc.nextLine();
-        System.out.print("\nEnter admit date of patient..   : ");
-        String admdate = sc.nextLine();
-        this.p_adm_date = admdate;
-    }
-
-    void setpatientdischargedate() {
-        sc.nextLine();
-        System.out.print("\nEnter discharge date of patient..   : ");
-        String disdate = sc.nextLine();
-        this.p_dis_date = disdate;
-    }
 
     void setpatientbloodgroup() {
         sc.nextLine();
@@ -107,11 +90,22 @@ public class patient_details_after_admit extends patient {
     void setPatientStatus() {
         System.out.print("\nEnter Patient status (C/U)   : ");
         char Patientstatus = sc.next().charAt(0);
-        if (wardboystatus == 'A' || wardboystatus == 'N') {
-            this.W_status = wardboystatus;
+        if (Patientstatus == 'C' || Patientstatus == 'U') {
+            this.p_status = Patientstatus;
         } else {
             System.out.print("\n ! Re-");
-            setWardboyStatus();
+            setPatientStatus();
         }
+    }
+    void displayreport() {
+    	system.out.print("Patient blood group:",patientbg);
+    	system.out.print("Patient temperature:",patienttemp);
+    	system.out.print("Patient O2 level:",O2lev);
+    	system.out.print("Patient covid level:",covlev);
+    }
+    void displaycovlist()
+    {
+    	if (p_covlevel>20&&p_O2level<92)
+    		System.out.print
     }
 }
