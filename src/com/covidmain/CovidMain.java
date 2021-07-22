@@ -87,8 +87,8 @@ class helper{
 		int opt = 0;
         while (opt != 4) {
     		System.out.println("--------------\n Nurse Section --------------");   
-    		System.out.println("1. Add new ");
-    		System.out.println("2. Nurse Sec.");
+    		System.out.println("1. Add new Nurse");
+    		System.out.println("2. ");
     		System.out.println("3. WardBoy Sec.");
     		System.out.println("4. Back to Main Menu ");
             System.out.print("\nEnter opt: ");
