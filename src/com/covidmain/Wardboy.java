@@ -142,12 +142,11 @@ public class Wardboy extends wardboyHelper {
         W.setWardboySlot();
         W.setWardboyPhone();
         W.setWardboyAdd();
-        W.setWardboyMail();
+//        W.setWardboyMail();
         W.setWardboyStatus();
 
-        String statement = "INSERT INTO wardboy(W_id, W_name, W_slot, W_phone, W_add, W_mail, isremoved, W_status) VALUES('"
-                + W.W_id + "','" + W.W_name + "'," + W.W_slot + ",'" + W.W_phone + "','" + W.W_add + "','" + W.W_mail
-                + "','" + W.isRemoved + "','" + W.W_status + "')";
+        String statement = "INSERT INTO wardboy(W_id, W_name, W_slot, W_phone, W_add, isremoved, W_status) VALUES('"
+                + W.W_id + "','" + W.W_name + "'," + W.W_slot + ",'" + W.W_phone + "','" + W.W_add + "','" + W.isRemoved + "','" + W.W_status + "')";
         db.startstatement();
         db.update(statement);
 
@@ -170,7 +169,7 @@ public class Wardboy extends wardboyHelper {
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
 
-        String statement = "SELECT w_id, w_name, w_slot, w_phone, w_add, w_mail, isremoved, w_status FROM wardboy WHERE W_ID = '" + tempWardboyID + "'";
+        String statement = "SELECT w_id, w_name, w_slot, w_phone, w_add, isremoved, w_status FROM wardboy WHERE W_ID = '" + tempWardboyID + "'";
         db.startstatement();
     	rs = db.execstatement(statement);
         while (rs.next()) {
@@ -179,7 +178,7 @@ public class Wardboy extends wardboyHelper {
             System.out.println("Wardboy Slot 		: " + rs.getInt("W_slot"));
             System.out.println("Wardboy Phone No. 	: " + rs.getString("W_phone"));
             System.out.println("Wardboy Add. 		: " + rs.getString("W_add"));
-            System.out.println("Wardboy E-mail		: " + rs.getString("W_mail"));
+//            System.out.println("Wardboy E-mail		: " + rs.getString("W_mail"));
             System.out.println("Wardboy Removed?	: " + rs.getString("isremoved"));
             System.out.println("Wardboy Status    	: " + rs.getString("W_status"));
         }
@@ -207,11 +206,11 @@ public class Wardboy extends wardboyHelper {
     	System.out.println("***Change Wardboy Slot***");
     	System.out.print("Enter Wardboy ID: ");
         String tempWardboyID = sc.nextLine();
-        System.out.print("\nEnter new Slot No. for"+ tempWardboyID + " : ");
+        System.out.print("\nEnter new Slot No. for "+ tempWardboyID + " : ");
         int tempSlot = sc.nextInt();
         
         //TODO fixing exceptions
-        String statement = "UPDATE wardboy SET W_slot = " + tempSlot + "WHERE W_ID = '" + tempWardboyID +"'";
+        String statement = "UPDATE wardboy SET W_slot = " + tempSlot + " WHERE W_ID = '" + tempWardboyID +"'";
         
         db.startstatement();
         db.update(statement);
@@ -222,12 +221,12 @@ public class Wardboy extends wardboyHelper {
 
     public static void main(String[] args) throws SQLException {
         System.out.println("\nRunning ");
-        System.out.println(wardboyIDgenerator());
-        wardboy.displayWardboyDetails();
+//        System.out.println(wardboyWWIDgenerator());
+//        displayWardboyDetails();
 //        wardboy.removeWardboy();
-        wardboy.addWardboy();
-//        wardboy.detailWardboySlotWise();
-//        wardboy.changeWardboySlot();
+//        addWardboy();
+//        detailWardboySlotWise();
+//        changeWardboySlot();
         
     }
     
