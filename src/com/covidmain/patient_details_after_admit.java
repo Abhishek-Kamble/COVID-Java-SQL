@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 class patient {
 
+	static Dbhelper db = new Dbhelper();
+
     long patient_id;
 
     long patientIDgenerator() {
@@ -41,38 +43,21 @@ class patient {
 }
 
 public class patient_details_after_admit extends patient {
-    String p_adm_date;
-    String p_dis_date;
     String p_bg;
     double p_temp;
     String p_O2level;
     String p_covlevel;
     char p_status;
     patient_details_after_admit() {
-        this.p_adm_date = "";
-        this.p_dis_date = "";
         this.p_bg = "";
         this.p_temp = 0.0;
         this.p_O2level = "";
         this.p_covlevel = "";
-        this.p_status="";
+        this.p_status='U';
     }
 
     Scanner sc = new Scanner(System.in);
 
-    void setpatientadmitdate() {
-        sc.nextLine();
-        System.out.print("\nEnter admit date of patient..   : ");
-        String admdate = sc.nextLine();
-        this.p_adm_date = admdate;
-    }
-
-    void setpatientdischargedate() {
-        sc.nextLine();
-        System.out.print("\nEnter discharge date of patient..   : ");
-        String disdate = sc.nextLine();
-        this.p_dis_date = disdate;
-    }
 
     void setpatientbloodgroup() {
         sc.nextLine();
@@ -107,11 +92,36 @@ public class patient_details_after_admit extends patient {
     void setPatientStatus() {
         System.out.print("\nEnter Patient status (C/U)   : ");
         char Patientstatus = sc.next().charAt(0);
-        if (wardboystatus == 'A' || wardboystatus == 'N') {
-            this.W_status = wardboystatus;
+        if (Patientstatus == 'C' || Patientstatus == 'U') {
+            this.p_status = Patientstatus;
         } else {
             System.out.print("\n ! Re-");
-            setWardboyStatus();
+            setPatientStatus();
         }
     }
+//    void displayreport() {
+//    	system.out.print("Patient blood group:",patientbg);
+//    	system.out.print("Patient temperature:",patienttemp);
+//    	system.out.print("Patient O2 level:",O2lev);
+//    	system.out.print("Patient covid level:",covlev);
+//    }
+    
+    static void displaycovlist()
+    {
+        System.out.println("\n***Covid List***");
+//        System.out.print("\nEnter Slot No.    : ");
+//        int tempSlot = sc.nextInt();
+
+        String statement = "SELECT P_id, P_temp, P_O2level, P_covlevel FROM patient_phy WHERE p_covlevel > 50";
+        
+    	db.startstatement();
+    	db.printDataList(statement);
+        db.endstatement();
+        
+        System.out.println("-----------------------------------------------");
+    }
+    
+    public static void main(String[] args) {
+    	displaycovlist();
+	}
 }
