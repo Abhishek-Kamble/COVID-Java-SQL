@@ -46,10 +46,6 @@ class wardboyHelper {
 
 }
 
-
-
-
-
 public class Wardboy extends wardboyHelper {
     String W_id;
     String W_name;
