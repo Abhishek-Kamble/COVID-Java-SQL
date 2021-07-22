@@ -244,7 +244,7 @@ public class Nurse extends nurseHelper {
 //        Nurse.removeNurse();
 //        Nurse.addNurse();
 //        Nurse.detailNurseSlotWise();
-        Nurse.changeNurseSlot();
+//        Nurse.changeNurseSlot();
         
     }
 
