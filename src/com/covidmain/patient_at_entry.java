@@ -2,8 +2,6 @@ package com.covidmain;
 
 import java.sql.*;
 import java.util.*;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 class patientHelper {
     static Dbhelper db = new Dbhelper();
@@ -58,6 +56,8 @@ public class patient_at_entry extends patientHelper {
     String p_phone;
     String p_mail;
     String p_adhar;
+    char p_Status;
+
 
     patient_at_entry() {
         this.p_id = "";
@@ -66,6 +66,8 @@ public class patient_at_entry extends patientHelper {
         this.p_phone = "";
         this.p_add = "";
         this.p_adhar = "";
+        this.p_Status = 'N';
+
     }
 
     static Scanner sc = new Scanner(System.in);
@@ -89,6 +91,19 @@ public class patient_at_entry extends patientHelper {
         System.out.print("\nEnter Age of patient     : ");
         int PAge = sc.nextInt();
         this.p_age = PAge;
+    }
+    void setPatientStatus() {
+    	System.out.print("\nEnter Patient status (Y/N)   : ");
+        char patientstatus = sc.next().charAt(0);
+        if(patientstatus == 'Y' || patientstatus == 'N')
+        {
+            this.p_Status = patientstatus;
+        }
+        else
+        {
+            System.out.print("\n!Re-");
+            setPatientStatus();
+        }
     }
 
     void setPatientPhone() {
@@ -124,12 +139,10 @@ public class patient_at_entry extends patientHelper {
         P.setPatientPhone();
         P.setPatientAdd();
         P.setPatientAdhar();
-        // P.setPatientStatus();
+        P.setPatientStatus();
         // P.setAdmitDate();
         // P.setDischargeDate();
-        String statement = "INSERT INTO patient_at_entry(P_id, P_name, P_age, P_phone, P_add , P_adhar, isremoved) VALUES('"
-                + P.p_id + "','" + P.p_name + "'," + P.p_age + ",'" + P.p_phone + "','" + P.p_add + "','" + P.p_adhar
-                + "', 'N')";
+        String statement = "INSERT INTO patient_at_entry(p_id, p_name, p_age, p_phone, p_add, p_status,p_adhar) VALUES('" + P.p_id + "','" + P.p_name + "','" + P.p_age + "','" + P.p_phone + "','" + P.p_add + "','" + P.p_Status + "','"+ P.p_adhar  +"')";
         db.startstatement();
         db.update(statement);
 
@@ -142,7 +155,7 @@ public class patient_at_entry extends patientHelper {
         System.out.print("\nEnter Patient ID    : ");
         String tempPatientID = sc.nextLine();
 
-        String statement = "SELECT p_id, p_name, p_phone, p_add , p_adhar , isremoved FROM patient_at_entry WHERE P_ID = '"
+        String statement = "SELECT p_id, p_name, p_age ,p_phone, p_add , p_Status ,p_adhar FROM patient_at_entry WHERE P_ID = '"
                 + tempPatientID + "'";
 
         db.startstatement();
@@ -150,11 +163,11 @@ public class patient_at_entry extends patientHelper {
         while (rs.next()) {
             System.out.println("Patient ID		: " + rs.getString("p_ID"));
             System.out.println("Patient Name		: " + rs.getString("p_name"));
+            System.out.println("Patient Age.     : " + rs.getString("p_age"));
             System.out.println("Patient Phone No. : " + rs.getString("p_phone"));
             System.out.println("Patient Add. 		: " + rs.getString("p_add"));
-            System.out.println("Patient Adhar	: " + rs.getString("p_adhar"));
-            System.out.println("Patient Removed? : " + rs.getString("isremoved"));
-            // System.out.println("Patient Status : " + rs.getString("N_status"));
+             System.out.println("Patient Status : " + rs.getString("p_Status"));
+             System.out.println("Patient Adhar	: " + rs.getString("p_adhar"));
         }
         db.endstatement();
 
@@ -164,7 +177,7 @@ public class patient_at_entry extends patientHelper {
     public static void main(String[] args) throws SQLException {
         System.out.println("\nRunning ");
         // System.out.println(patientIDgenerator());
-//        patient_at_entry.addPatient();
+        //addPatient();
         displayPatientDetails();
 
     }
