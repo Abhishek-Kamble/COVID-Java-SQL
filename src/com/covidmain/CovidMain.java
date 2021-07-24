@@ -1,41 +1,80 @@
 package com.covidmain;
-import java.io.Console;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.*;
 
 class helper{
-	static void getCurrDate()
-	{
-		long millis=System.currentTimeMillis();  
-		java.sql.Date date=new java.sql.Date(millis);  
-		System.out.println(date);
-	}
-	
-	//TODO testing console password
-	static void passwordExample() {        
-        // Create the console object
-        Console cnsl = System.console();
-  
-        if (cnsl == null) {
-            System.out.println("No console available");
-            return;
-        }
-  
-        // Read line
-        String str = cnsl.readLine("Enter username : ");
-  
-        // Print username
-        System.out.println("Username : " + str);
-  
-        // Read password
-        // into character array
-        char[] ch = cnsl.readPassword("Enter password : ");
-  
-        // Print password
-        System.out.println("Password : " + ch);
+    static Scanner sc = new Scanner(System.in);
 
+    //TODO masking password system
+//    static boolean adminLogin() throws FileNotFoundException {
+//        Scanner scan = new Scanner (new File("admin.txt"));
+//        Scanner keyboard = new Scanner (System.in);
+//        String user = scan.nextLine();
+//        String pass = scan.nextLine(); // looks at selected file in scan
+//
+//        String inpUser = keyboard.nextLine();
+//        String inpPass = keyboard.nextLine(); // gets input from user
+//
+//        if (inpUser.equals(user) && inpPass.equals(pass)) {
+//        	System.out.println("\nLogin Successful!!");
+//			return true;        
+//		} 
+//        else {
+//			System.out.println("Invalid Credentials");
+//			return false;
+//		}
+//    }
+    
+//    static boolean adminLogin()
+//    {
+//    	String sysUser = "admin", sysPass = "adminPass";
+//    	
+//    	
+//    	System.out.print("Enter USERNAME: ");
+//		String user = sc.nextLine();
+//    	
+//    	System.out.print("Enter PASSWORD: ");
+//		String pass = sc.nextLine();
+//		
+//		//TODO string comparator
+//		if(sysUser == user && pass == sysPass)
+//		{
+//			System.out.println("\nLogin Successful!!");
+//			return true;
+//		}
+//		else
+//		{
+//			System.out.println("Invalid Credentials");
+//			return false;
+//		}
+//    }
+    
+    static boolean recLogin()
+    {
+    	String sysUser = "reception", sysPass = "reception";
+    	
+    	
+    	System.out.print("Enter USERNAME: ");
+		String user = sc.nextLine();
+    	
+    	System.out.print("Enter PASSWORD: ");
+		String pass = sc.nextLine();
+		
+		if(sysUser == user)
+		{
+			System.out.println("\nLogin Successful!!");
+			return true;
+		}
+		else
+		{
+			System.out.println("Invalid Credentials");
+			return false;
+		}
     }
-	
-	static int login()
+    
+	static int login() throws FileNotFoundException
     {
         Scanner sc = new Scanner(System.in);
         int opt=0;
@@ -47,20 +86,37 @@ class helper{
             System.out.println("3. Guest");
             System.out.println("4. Exit");
 
-            System.out.println("---------------------\nPlease Select option to LOG IN: ");
+            System.out.print("\nPlease Select option to LOG IN: ");
             opt = sc.nextInt();
+            sc.nextLine();
 
             switch(opt)
             {
             	case 1:
-            		System.out.print("Enter PASSWORD: ");
-            		String pass = sc.nextLine();
-            		return 0;
+//            	    if(adminLogin())
+            	    	return 1;
+//            	    	break;
+            	
+            	case 2:
+            		if(recLogin())
+	            		return 2;
+            		break;
+            		
+            	case 3:
+            		return 3;
+            		
+            	case 4:
+            		break;
             }
             
         }
         return 0;
     }
+	
+	static void enterToContinue()
+	{
+		//TODO
+	}
 	
 	static void addNewPatient()
 	{
@@ -74,40 +130,57 @@ class helper{
 	
 	static void patientSec()
 	{
-		
+		//TODO
+
 	}
 	
 	static void doctorSec()
 	{
-		
+		//TODO
+
 	}
 	
-	static void nurseSec()
+	static void nurseSec() throws SQLException
 	{
 		int opt = 0;
-        while (opt != 4) {
-    		System.out.println("--------------\n Nurse Section --------------");   
-    		System.out.println("1. Add new Nurse");
-    		System.out.println("2. ");
-    		System.out.println("3. WardBoy Sec.");
-    		System.out.println("4. Back to Main Menu ");
+        while (opt != 7) {
+    		System.out.println("\n-------------- Nurse Section --------------");   
+    		System.out.println("1. Add a new Nurse");
+    		System.out.println("2. Display Nurse List Slotwise");
+    		System.out.println("3. Display Active Nurse's List");
+    		System.out.println("4. Change Working slot of a Nurse");
+    		System.out.println("5. Find a Nurse details");
+    		System.out.println("6. Remove a Nurse");
+    		System.out.println("7. Back to Employee Section ");
             System.out.print("\nEnter opt: ");
-            Scanner sc = new Scanner(System.in);
             opt = sc.nextInt();
             switch (opt) {
             	case 1:
-            		doctorSec();
+            		Nurse.addNurse();
             		break;
             		
             	case 2:
-            		nurseSec();
+            		Nurse.detailNurseSlotWise();
             		break;
             		
             	case 3:
-            		wardBoySec();
+            		Nurse.displayAllActiveNurse();
             		break;
             		
             	case 4:
+            		Nurse.changeNurseSlot();
+            		break;
+            		
+            	case 5:
+            		Nurse.displayNurseDetails();
+            		break;
+            		
+            	case 6:
+            		Nurse.removeNurse();
+            		break;
+            		
+            	case 7:
+            		System.out.println("\nReturning to Employee Section...");
             		break;
             		
             	default:
@@ -123,11 +196,11 @@ class helper{
 		
 	}
 	
-	static void employeeSec()
+	static void employeeSec() throws SQLException
 	{
 		int opt = 0;
         while (opt != 4) {
-    		System.out.println("--------------\n Employee Section --------------");   
+    		System.out.println("\n-------------- Employee Section --------------");   
     		System.out.println("1. Doctors Sec.");
     		System.out.println("2. Nurse Sec.");
     		System.out.println("3. WardBoy Sec.");
@@ -153,7 +226,7 @@ class helper{
             		break;
             		
             	default:
-                    System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
+                    System.out.println("\nCaution: Invalid option! \nHandle with care!\n");
                     break;
                     
             }
@@ -166,23 +239,12 @@ class helper{
 		
 	}
 	
-	
-}
-
-public class CovidMain extends helper
-{
-	
-	public static void main(String[] args) {
-		System.out.println("----- Welcome to COVID Center management system -----\n");
-//		int user = login();
-		
-//		System.out.println("User: " + user);
-//		passwordExample();
-//		getCurrDate();
-		
+	static void adminMenu() throws SQLException
+	{
 		int opt = 0;
-        while (opt != 6) {
-            System.out.println("*********** Menu ***********\n");
+        while (opt != 6) 
+        {
+            System.out.println("\n------------ Welcome to Admin Panel ------------\n");
             System.out.println("1. Add new patient.");
             System.out.println("2. Discharge patient.");
             System.out.println("3. Go to Patient Section");
@@ -217,10 +279,73 @@ public class CovidMain extends helper
                 	break;
 
                 default:
-                    System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
+                    System.out.println("\nCaution: Invalid option! \nHandle with care!\n");
                     break;
             }
         }
+	}
+	
+	static void recMenu()
+	{
+		int opt = 0;
+        while (opt != 4) 
+        {
+            System.out.println("\n------------ Welcome to Receptionist Panel ------------\n");
+            System.out.println("1. Add new patient.");
+            System.out.println("2. Discharge patient.");
+            System.out.println("3. Go to Patient Section");            
+            System.out.println("4. Exit");
+            System.out.print("\nEnter opt: ");
+            Scanner sc = new Scanner(System.in);
+            opt = sc.nextInt();
+            switch (opt) {
+                case 1:
+                    addNewPatient();
+                    break;
+
+                case 2:
+                    dischargePatient();
+                    break;
+
+                case 3:
+                    patientSec();
+                    break;
+
+                case 4:
+                	System.out.println("\nThank You for using COVID management system.");
+                	break;
+
+                default:
+                    System.out.println("\nCaution: Invalid option! \nHandle with care!\n");
+                    break;
+            }
+        }
+	}
+	
+}
+
+public class CovidMain extends helper
+{
+	
+	public static void main(String[] args) throws SQLException, FileNotFoundException {
+		System.out.println("----- Welcome to COVID Center management system -----\n");
+		int user = login();
+		
+		if(user == 1)
+		{
+			adminMenu();
+		}
+		else if(user == 2)
+		{
+			recMenu();
+		}
+		else
+		{
+			//TODO
+			System.out.println("Work in progress for guests");
+//			guestMenu();
+		}
+	
 	}   
         
     
