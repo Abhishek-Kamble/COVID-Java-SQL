@@ -147,9 +147,9 @@ public class Doctor extends Doctorhelper {
 	    	}
 	    }
 	    void setDoctorStatus() {
-	        System.out.print("\nEnter Doctor status (A/N)   : ");
+	        System.out.print("\nEnter Doctor status (Y/N)   : ");
 	        char doctorstatus = sc.next().charAt(0);
-	        if(doctorstatus == 'A' || doctorstatus == 'N')
+	        if(doctorstatus == 'Y' || doctorstatus == 'N')
 	        {
 	            this.D_status = doctorstatus;
 	        }
