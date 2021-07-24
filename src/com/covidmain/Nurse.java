@@ -20,12 +20,10 @@ class nurseHelper
 		return nurse_id;
     }
 	
-	//NURSE_ID
     static String nurseID = "";
 
     static String nurseIDgenerator() throws SQLException {
         long nurseCount = getNurseCount() + 1;
-//        System.out.println("NurseCount: " + nurseCount);
         String nurseCountStr = "";
         if (nurseCount >= 0 && nurseCount < 10) {
             nurseCountStr = "00" + String.valueOf(nurseCount);
@@ -48,6 +46,21 @@ class nurseHelper
         return nurseID;
     }
     
+    static boolean isNurseExists(String tempNurseId) throws SQLException
+    {
+    	long cnt = 0;
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM nurse WHERE n_id = '" + tempNurseId + "')";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		cnt=rs.getInt("Count");
+		
+		if(cnt>0)
+			return true;
+		else
+			return false;
+    }
     
 }
 
@@ -142,7 +155,7 @@ public class Nurse extends nurseHelper {
         }
     }
 
-    // function to add new nurse
+    //FUNCTIONS
     static void addNurse() throws SQLException {
         Nurse N = new Nurse();
         N.setNurseID();
@@ -153,7 +166,7 @@ public class Nurse extends nurseHelper {
         N.setNurseMail();
         N.setNurseStatus();
         
-        String statement = "INSERT INTO nurse(n_id, n_name, n_slot, n_phone, n_add, n_mail, isremoved, n_status) VALUES('" + N.N_id + "','" + N.N_name + "'," + N.N_slot + ",'" + N.N_phone + "','" + N.N_add + "','" + N.N_mail + "','" + N.isRemoved + "','" + N.N_status + "')";
+        String statement = "INSERT INTO nurse(n_id, n_name, n_slot, n_phone, n_add, n_mail, isremoved, n_status, N_add_date) VALUES('" + N.N_id + "','" + N.N_name + "'," + N.N_slot + ",'" + N.N_phone + "','" + N.N_add + "','" + N.N_mail + "','" + N.isRemoved + "','" + N.N_status + "'," + " sysdate)";
         db.startstatement();
         db.update(statement);
         
@@ -161,30 +174,39 @@ public class Nurse extends nurseHelper {
         
     }
 
-    // function to remove nurse TODO testing
-    static void removeNurse() {
-        // here we don't have to remove nurse details from database;
-        // only change status to N
-        System.out.println("**** Remove Nurse ****");
+    static void removeNurse() throws SQLException  {
+        // here we don't have to remove nurse details from database only change status to N
+        System.out.println("\n--------------- Remove Nurse ---------------");
         System.out.print("\nEnter Nurse ID    : ");
         String tempNurseID = sc.nextLine();
         
-        String statement = "UPDATE nurse SET isremoved = 'Y' WHERE N_ID = '" + tempNurseID +"'";
+        if(!isNurseExists(tempNurseID))
+        {
+        	System.out.println("Invalid Nurse ID!!!");
+        	return;
+        }
         
-        //TODO fixing exceptions
+        String statement = "UPDATE nurse SET isremoved = 'Y' WHERE N_ID = '" + tempNurseID +"'";
         db.startstatement();
         db.update(statement);
 		db.endupdate();
 		
-		System.out.println("-------Nurse Removed \n -------------------------------------------------");
+		System.out.println("\n---------------------Nurse Removed--------------------");
+        
     }
 
-    public static void displayNurseDetails() throws SQLException {
-		System.out.println("** Display Nurse Details **");
+    static void displayNurseDetails() throws SQLException {
+		System.out.println("\n----------- Display Nurse Details -----------");
         System.out.print("\nEnter Nurse ID    : ");
         String tempNurseID = sc.nextLine();
 
-        String statement = "SELECT n_id, n_name, n_slot, n_phone, n_add, n_mail, isremoved, N_status FROM nurse WHERE N_ID = '" + tempNurseID + "'";
+        if(!isNurseExists(tempNurseID))
+        {
+        	System.out.println("Invalid Nurse ID!!!");
+        	return;
+        }
+        
+        String statement = "SELECT n_id, n_name, n_slot, n_phone, n_add, n_mail, isremoved, N_status, N_add_date FROM nurse WHERE N_ID = '" + tempNurseID + "'";
 
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -197,6 +219,7 @@ public class Nurse extends nurseHelper {
             System.out.println("Nurse E-mail	: " + rs.getString("N_mail"));
             System.out.println("Nurse Removed?	: " + rs.getString("isremoved"));
             System.out.println("Nurse Status    : " + rs.getString("N_status"));
+            System.out.println("Nurse Added Date    : " + rs.getString("N_add_date"));
          }
         db.endstatement(); 
 		
@@ -209,8 +232,13 @@ public class Nurse extends nurseHelper {
         System.out.print("\nEnter Slot No.    : ");
         int tempSlot = sc.nextInt();
 
-        String statement = "SELECT n_id, n_name FROM nurse WHERE isremoved = 'N', N_slot = '" + tempSlot + "'";
+        if(tempSlot>3 || tempSlot<0)
+        {
+        	System.out.println("\nInvalid slot no.\n");
+        	return;
+        }
         
+        String statement = "SELECT n_id, n_name FROM nurse WHERE isremoved = 'N' AND N_slot = '" + tempSlot + "'";  
     	db.startstatement();
     	db.printDataList(statement);
         db.endstatement();
@@ -218,17 +246,22 @@ public class Nurse extends nurseHelper {
         System.out.println("-----------------------------------------------");
     }
     
-    static void changeNurseSlot()
+    static void changeNurseSlot() throws SQLException
     {
-    	System.out.println("***Change Nurse Slot***");
+    	System.out.println("\n---------------------Change Nurse Slot---------------------");
     	System.out.print("Enter Nurse ID: ");
         String tempNurseID = sc.nextLine();
+        
+        if(!isNurseExists(tempNurseID))
+        {
+        	System.out.println("Invalid Nurse ID!!!");
+        	return;
+        }
+        
         System.out.print("\nEnter new Slot No. for ID: "+ tempNurseID + " : ");
         int tempSlot = sc.nextInt();
         
-        //TODO fixing exceptions
-        String statement = "UPDATE nurse SET n_slot = " + tempSlot + "WHERE N_ID = '" + tempNurseID +"'";
-        
+        String statement = "UPDATE nurse SET n_slot = " + tempSlot + "WHERE N_ID = '" + tempNurseID +"'";        
         db.startstatement();
         db.update(statement);
         db.endstatement();
@@ -236,16 +269,43 @@ public class Nurse extends nurseHelper {
         System.out.println("Slot No. changed successfully for nurse ID: " + tempNurseID);
     }
 
-    //main function for testing 
-    public static void main(String[] args) throws SQLException {
-        System.out.println("\nRunning ");
-//        System.out.println(nurseIDgenerator());
-//        Nurse.displayNurseDetails();
-//        Nurse.removeNurse();
-//        Nurse.addNurse();
-//        Nurse.detailNurseSlotWise();
-//        Nurse.changeNurseSlot();
+    static void displayAllActiveNurse()
+    {
+    	String statement = "SELECT n_id, n_slot, n_name FROM nurse WHERE isremoved = 'N' AND n_status = 'A' ";  
+    	db.startstatement();
+    	db.printDataList(statement);
+        db.endstatement();
         
-    }
+        System.out.println("-----------------------------------------------");
 
+    }
+    
+    static void changeNurseStat() throws SQLException
+    {
+    	System.out.println("\n---------------------Change Nurse Status---------------------");
+    	System.out.print("Enter Nurse ID: ");
+        String tempNurseID = sc.nextLine();
+        
+        if(!isNurseExists(tempNurseID))
+        {
+        	System.out.println("Invalid Nurse ID!!!");
+        	return;
+        }
+        
+        System.out.print("\nEnter new status for ID: "+ tempNurseID + " : ");
+        char tempStat = sc.nextLine().charAt(0);
+        
+        if(tempStat!='A' || tempStat!='N')
+        {
+        	System.out.println("\nInvalid status entered!!\n");
+        	return;
+        }
+        
+        String statement = "UPDATE nurse SET n_status = " + tempStat + "WHERE N_ID = '" + tempNurseID +"'";        
+        db.startstatement();
+        db.update(statement);
+        db.endstatement();
+
+        System.out.println("Slot No. changed successfully for nurse ID: " + tempNurseID);
+    }
 }
