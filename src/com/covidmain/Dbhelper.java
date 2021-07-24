@@ -20,7 +20,7 @@ public class Dbhelper {
 			Class.forName(JDBC_DRIVER);
 
 		    //STEP 3: Open a connection
-		    System.out.println("\nConnecting to database...\n");
+		    System.out.println("Connecting to database...\n");
 		    this.conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			}catch(SQLException se){
 		      //Handle errors for JDBC
@@ -113,7 +113,7 @@ public class Dbhelper {
 			rs = execstatement(statement);
 			ResultSetMetaData rsmd = rs.getMetaData();
         	for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t\t");
+                System.out.print(rsmd.getColumnName(i) + "\t");
             }
         	System.out.println("\n");
         	while (rs.next()) {
