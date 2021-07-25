@@ -1,77 +1,57 @@
 package com.covidmain;
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
 import java.util.*;
 
 class helper{
     static Scanner sc = new Scanner(System.in);
-
-    //TODO masking password system
-//    static boolean adminLogin() throws FileNotFoundException {
-//        Scanner scan = new Scanner (new File("admin.txt"));
-//        Scanner keyboard = new Scanner (System.in);
-//        String user = scan.nextLine();
-//        String pass = scan.nextLine(); // looks at selected file in scan
-//
-//        String inpUser = keyboard.nextLine();
-//        String inpPass = keyboard.nextLine(); // gets input from user
-//
-//        if (inpUser.equals(user) && inpPass.equals(pass)) {
-//        	System.out.println("\nLogin Successful!!");
-//			return true;        
-//		} 
-//        else {
-//			System.out.println("Invalid Credentials");
-//			return false;
-//		}
-//    }
     
-//    static boolean adminLogin()
-//    {
-//    	String sysUser = "admin", sysPass = "adminPass";
-//    	
-//    	
-//    	System.out.print("Enter USERNAME: ");
-//		String user = sc.nextLine();
-//    	
-//    	System.out.print("Enter PASSWORD: ");
-//		String pass = sc.nextLine();
-//		
-//		//TODO string comparator
-//		if(sysUser == user && pass == sysPass)
-//		{
-//			System.out.println("\nLogin Successful!!");
-//			return true;
-//		}
-//		else
-//		{
-//			System.out.println("Invalid Credentials");
-//			return false;
-//		}
-//    }
+    static boolean adminLogin()
+    {
+    	String sysUser = "admin", sysPass = "adminPass";
+    	
+    	
+    	System.out.print("Enter USERNAME: ");
+		String user = sc.nextLine();
+    	
+    	System.out.print("Enter PASSWORD: ");
+		String pass = sc.nextLine();
+		
+		//TODO string comparator
+		if(sysUser.equals(user) && pass.equals(sysPass))
+		{
+			System.out.println("\nLogin Successful!!\n");
+			return true;
+		}
+		else
+		{
+			System.out.println("\nInvalid Credentials!!\n");
+			return false;
+		}
+    }
     
-//    static boolean recLogin()
-//    {
-//    	String sysUser = "reception", sysPass = "reception";
-//    	
-//    	
-//    	System.out.print("Enter USERNAME: ");
-//		String user = sc.nextLine();
-//    	
-//    	System.out.print("Enter PASSWORD: ");
-//		String pass = sc.nextLine();
-//		
-//		if(sysUser == user)
-//		{
-//			System.out.println("\nLogin Successful!!");
-//			return true;
-//		}
-//		else
-//		{
-//			System.out.println("Invalid Credentials");
-//			return false;
-//		}
-//    }
+    static boolean recLogin()
+    {
+    	String sysUser = "reception", sysPass = "reception";
+    	
+    	
+    	System.out.print("Enter USERNAME: ");
+		String user = sc.nextLine();
+    	
+    	System.out.print("Enter PASSWORD: ");
+		String pass = sc.nextLine();
+		
+		if(sysUser.equals(user) && sysPass.equals(pass))
+		{
+			System.out.println("\nLogin Successful!!\n");
+			return true;
+		}
+		else
+		{
+			System.out.println("\nInvalid Credentials\n");
+			return false;
+		}
+    }
     
 	static int login() throws FileNotFoundException
     {
@@ -92,14 +72,14 @@ class helper{
             switch(opt)
             {
             	case 1:
-//            	    if(adminLogin())
+            	    if(adminLogin())
             	    	return 1;
-//            	    	break;
+            	    	break;
             	
             	case 2:
-//            		if(recLogin())
+            		if(recLogin())
 	            		return 2;
-//            		break;
+            		break;
             		
             	case 3:
             		return 3;
@@ -120,6 +100,8 @@ class helper{
 	static void addNewPatient()
 	{
 		//TODO
+		
+		
 	}
 	
 	static void dischargePatient()
@@ -127,16 +109,104 @@ class helper{
 		//TODO
 	}
 	
-	static void patientSec()
+	static void patientSec() throws SQLException
 	{
-		//TODO
-
+		int opt = 0;
+        while (opt != 7) {
+    		System.out.println("\n-------------- Patient Section --------------");   
+    		System.out.println("1. Add a Doctor ");
+    		System.out.println("2. Display Doctor List Slotwise");
+    		System.out.println("3. Display Active Doctor's List");
+    		System.out.println("4. Change Working slot of a Doctor");
+    		System.out.println("5. Find a Doctor details");
+    		System.out.println("6. Remove a Doctor");
+    		System.out.println("7. Back to Employee Section ");
+            System.out.print("\nEnter opt: ");
+            opt = sc.nextInt();
+            switch (opt) {
+            	case 1:
+            		Doctor.addDoctor();
+            		break;
+            		
+            	case 2:
+            		Doctor.detailDoctorSlotWise();
+            		break;
+            		
+            	case 3:
+            		Doctor.displayAllActivedoctors();
+            		break;
+            		
+            	case 4:
+            		Doctor.changeDoctorSlot();
+            		break;
+            		
+            	case 5:
+            		Doctor.displayDoctorDetails();
+            		break;
+            		
+            	case 6:
+            		Doctor.removeDoctor();
+            		break;
+            		
+            	case 7:
+            		System.out.println("\nReturning to Employee Section...");
+            		break;
+            		
+            	default:
+                    System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
+                    break;
+            }
+        }
 	}
 	
-	static void doctorSec()
+	static void doctorSec() throws SQLException
 	{
-		//TODO
-
+		int opt = 0;
+        while (opt != 7) {
+    		System.out.println("\n-------------- Doctor Section --------------");   
+    		System.out.println("1. Add a Doctor ");
+    		System.out.println("2. Display Doctor List Slotwise");
+    		System.out.println("3. Display Active Doctor's List");
+    		System.out.println("4. Change Working slot of a Doctor");
+    		System.out.println("5. Find a Doctor details");
+    		System.out.println("6. Remove a Doctor");
+    		System.out.println("7. Back to Employee Section ");
+            System.out.print("\nEnter opt: ");
+            opt = sc.nextInt();
+            switch (opt) {
+            	case 1:
+            		Doctor.addDoctor();
+            		break;
+            		
+            	case 2:
+            		Doctor.detailDoctorSlotWise();
+            		break;
+            		
+            	case 3:
+            		Doctor.displayAllActivedoctors();
+            		break;
+            		
+            	case 4:
+            		Doctor.changeDoctorSlot();
+            		break;
+            		
+            	case 5:
+            		Doctor.displayDoctorDetails();
+            		break;
+            		
+            	case 6:
+            		Doctor.removeDoctor();
+            		break;
+            		
+            	case 7:
+            		System.out.println("\nReturning to Employee Section...");
+            		break;
+            		
+            	default:
+                    System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
+                    break;
+            }
+        }
 	}
 	
 	static void nurseSec() throws SQLException
@@ -190,9 +260,54 @@ class helper{
         }
 	}
 	
-	static void wardBoySec()
+	static void wardBoySec() throws SQLException
 	{
-		
+		int opt = 0;
+        while (opt != 7) {
+    		System.out.println("\n-------------- Wardboy Section --------------");   
+    		System.out.println("1. Add a Wardboy ");
+    		System.out.println("2. Display Wardboy List Slotwise");
+    		System.out.println("3. Display Active Wardboy's List");
+    		System.out.println("4. Change Working slot of a Wardboy");
+    		System.out.println("5. Find a Wardboy details");
+    		System.out.println("6. Remove a Wardboy");
+    		System.out.println("7. Back to Employee Section ");
+            System.out.print("\nEnter opt: ");
+            opt = sc.nextInt();
+            switch (opt) {
+            	case 1:
+            		Wardboy.addWardboy();
+            		break;
+            		
+            	case 2:
+            		Wardboy.detailWardboySlotWise();
+            		break;
+            		
+            	case 3:
+            		Wardboy.displayAllActiveWardboy();
+            		break;
+            		
+            	case 4:
+            		Wardboy.changeWardboySlot();
+            		break;
+            		
+            	case 5:
+            		Wardboy.displayWardboyDetails();
+            		break;
+            		
+            	case 6:
+            		Wardboy.removeWardboy();
+            		break;
+            		
+            	case 7:
+            		System.out.println("\nReturning to Employee Section...");
+            		break;
+            		
+            	default:
+                    System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
+                    break;
+            }
+        }
 	}
 	
 	static void employeeSec() throws SQLException
@@ -266,7 +381,7 @@ class helper{
                     break;
 
                 case 4:
-                	ward.displayNurseDetails();
+                	ward.displayWardDetails();
                     break;
                     
                 case 5:
