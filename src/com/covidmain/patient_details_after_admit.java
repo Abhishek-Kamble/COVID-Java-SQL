@@ -3,93 +3,87 @@ package com.covidmain;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-class patient {
+class Record{
 
 	static Dbhelper db = new Dbhelper();
-
-    long patient_id;
-
-    long patientIDgenerator() {
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver"); 
-            System.out.print("Driver Loaded Successfully.. ");
-
-            
-            Connection connect = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "system",
-                    "muskan786");
-            System.out.println("Database connected Successfully!\n");
-
-            
-            Statement stmt = connect.createStatement();
-
-            
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(P_ID) FROM patient_Entry_details");
-
-           
-            while (rs.next()) {
-                patient_id = rs.getInt(1);
-            }
-            connect.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        return patient_id;
-
+	static ResultSet rs = null;
+	
+	static long getRecCount() throws SQLException
+    {
+    	long rec_no = 0;
+    	String statement = "SELECT COUNT(rec_no) as Count FROM patient_phy";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		rec_no=rs.getInt("Count");
+		return rec_no;
     }
+
 }
 
-public class patient_details_after_admit extends patient {
+public class patient_details_after_admit extends Record {
+    String rec_no;
+    String p_id;
     String p_bg;
     double p_temp;
-    String p_O2level;
-    String p_covlevel;
+    int p_O2level;
+    int p_covlevel;
     char p_status;
-    patient_details_after_admit() {
+    
+    patient_details_after_admit() 
+    {
+    	this.p_id = "";
         this.p_bg = "";
         this.p_temp = 0.0;
-        this.p_O2level = "";
-        this.p_covlevel = "";
-        this.p_status='U';
+        this.p_O2level = 0;
+        this.p_covlevel = 0;
+        this.p_status = 'U';
     }
 
-    Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
 
-
-    void setpatientbloodgroup() {
-        sc.nextLine();
+    void setRecordNo() throws SQLException
+    {
+    	this.rec_no = String.valueOf(getRecCount()+1);
+    }
+    
+    void setpatientbloodgroup()
+    {
         System.out.print("\nEnter patients Blood group.    : ");
         String patientbg = sc.nextLine();
         this.p_bg = patientbg;
     }
 
-    void setpatient_temp() {
-        sc.nextLine();
+    void setpatient_temp() 
+    {
         System.out.print("\nEnter Temperature in degree_celsius..   : ");
         double patienttemp = sc.nextDouble();
         this.p_temp = patienttemp;
     }
 
 
-    void setpatietO2level() {
-        sc.nextLine();
+    void setpatietO2level() 
+    {
         System.out.print("\nEnter O2 level of patient..   : ");
-        String O2lev = sc.nextLine();
+        int O2lev = sc.nextInt();
         this.p_O2level = O2lev;
 
     }
 
-    void setpatientcovidlevel() {
-        sc.nextLine();
+    void setpatientcovidlevel() 
+    {
         System.out.print("\nEnter percent covid level of patient..   : ");
-        String covlev = sc.nextLine();
+        int covlev = sc.nextInt();
         this.p_covlevel = covlev;
 
     }
-    void setPatientStatus() {
+    void setPatientStatus() 
+    {
         System.out.print("\nEnter Patient status (C/U)   : ");
         char Patientstatus = sc.next().charAt(0);
         if (Patientstatus == 'C' || Patientstatus == 'U') {
@@ -99,12 +93,30 @@ public class patient_details_after_admit extends patient {
             setPatientStatus();
         }
     }
-//    void displayreport() {
-//    	system.out.print("Patient blood group:",patientbg);
-//    	system.out.print("Patient temperature:",patienttemp);
-//    	system.out.print("Patient O2 level:",O2lev);
-//    	system.out.print("Patient covid level:",covlev);
-//    }
+    
+    static void addRecord() throws SQLException
+    {
+    	System.out.println("\nAdd New Record");
+    	System.out.println("\nEnter Patient ID : ");
+    	String tempID = sc.nextLine();
+//    	if(!patient_at_entry.isPatientExists(tempID))
+//    	{
+//    		System.out.println("Invalid Patient ID!!");
+//    	}
+    	patient_details_after_admit P = new patient_details_after_admit();
+    	P.setRecordNo();
+    	P.p_id = tempID ;
+    	P.setpatientbloodgroup();
+    	P.setpatient_temp();
+    	P.setpatietO2level();
+    	P.setpatientcovidlevel();
+    	P.setPatientStatus();
+    	String statement = "INSERT INTO patient_phy(rec_no, p_id, p_bg , p_temp , p_O2level , p_covlevel , p_status , p_add_date) VALUES('" + P.rec_no + "','" + P.p_id + "','" + P.p_bg  + "'," + P.p_temp + ","  + P.p_O2level + "," + P.p_covlevel+ ",'" + P.p_status + "'," + " sysdate)";
+    	db.startstatement();
+    	db.update(statement);
+    	db.endstatement();
+    	System.out.println("\nNew Record Added Successfully !!");
+    }
     
     static void displaycovlist()
     {
@@ -121,7 +133,9 @@ public class patient_details_after_admit extends patient {
         System.out.println("-----------------------------------------------");
     }
     
-    public static void main(String[] args) {
-    	displaycovlist();
+    public static void main(String[] args) throws SQLException {
+//    	displaycovlist();
+    	addRecord();
+    	
 	}
 }
