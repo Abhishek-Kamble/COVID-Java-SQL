@@ -114,44 +114,44 @@ class helper{
 		int opt = 0;
         while (opt != 7) {
     		System.out.println("\n-------------- Patient Section --------------");   
-    		System.out.println("1. Add a Doctor ");
-    		System.out.println("2. Display Doctor List Slotwise");
-    		System.out.println("3. Display Active Doctor's List");
-    		System.out.println("4. Change Working slot of a Doctor");
-    		System.out.println("5. Find a Doctor details");
-    		System.out.println("6. Remove a Doctor");
-    		System.out.println("7. Back to Employee Section ");
+    		System.out.println("1. Add a Patient ");
+    		System.out.println("2. Discharge Patient");
+    		//System.out.println("3. Display Active Patient's List");
+    		//System.out.println("4. Change Working slot of a Patient");
+    		System.out.println("3. Find a Patient details");
+    		//System.out.println("6. Remove a Patient");
+    		System.out.println("4. Back to Employee Section ");
             System.out.print("\nEnter opt: ");
             opt = sc.nextInt();
             switch (opt) {
             	case 1:
-            		Doctor.addDoctor();
+            		patient_at_entry.addPatient();
             		break;
             		
             	case 2:
-            		Doctor.detailDoctorSlotWise();
+            		patient_at_entry.dischargePatient();
             		break;
             		
             	case 3:
-            		Doctor.displayAllActivedoctors();
+            		patient_at_entry.displayPatientDetails();
             		break;
             		
-            	case 4:
-            		Doctor.changeDoctorSlot();
-            		break;
+//            	case 4:
+//            		
+//            		break;
             		
-            	case 5:
-            		Doctor.displayDoctorDetails();
-            		break;
-            		
-            	case 6:
-            		Doctor.removeDoctor();
-            		break;
-            		
-            	case 7:
-            		System.out.println("\nReturning to Employee Section...");
-            		break;
-            		
+//            	case 5:
+//            		patient_at_entry.displayPatientDetails();
+//            		break;
+//            		
+//            	case 6:
+//            		patient_at_entry.dischargePatient();
+//            		break;
+//            		
+//            	case 7:
+//            		System.out.println("\nReturning to Employee Section...");
+//            		break;
+//            		
             	default:
                     System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
                     break;
@@ -503,6 +503,5 @@ public class CovidMain extends helper
 		}
 	
 	}   
-        
-    
+           
 }
