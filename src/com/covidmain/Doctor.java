@@ -111,7 +111,6 @@ public class Doctor extends Doctorhelper
 
 	    void setDoctorName()
 	    {
-	        sc.nextLine();
 	        System.out.print("\nEnter Doctor Name        : ");
 	        String Dname = sc.nextLine();
 	        this.D_name = Dname;
@@ -163,38 +162,38 @@ public class Doctor extends Doctorhelper
 	    	}
 	    }
 	    
-		    void setDoctorStatus() {
-		        System.out.print("\nEnter Doctor status (A/N)   : ");
-		        char doctorstatus = sc.next().charAt(0);
-		        if(doctorstatus == 'A' || doctorstatus == 'N')
-		        {
-		            this.D_status = doctorstatus;
-		        }
-		        else
-		        {
-		            System.out.print("\n!Re-");
-		            setDoctorStatus();
-		        }
-		    }
+	    void setDoctorStatus() {
+	        System.out.print("\nEnter Doctor status (A/N)   : ");
+	        char doctorstatus = sc.next().charAt(0);
+	        if(doctorstatus == 'A' || doctorstatus == 'N')
+	        {
+	            this.D_status = doctorstatus;
+	        }
+	        else
+	        {
+	            System.out.print("\n!Re-");
+	            setDoctorStatus();
+	        }
+	    }
 
-		    static void addDoctor() throws SQLException 
-		    {
-		        Doctor D = new Doctor();
-		        D.setDoctorID();
-		        D.setDoctorName();
-		        D.setDoctorSlot() ;
-		        D.setDoctorPhone();
-		        D.setDoctorAdd();
-		        D.setDoctorMail();
-		        D.setDoctorStatus();
-		        
-		        String statement = "INSERT INTO Doctor(d_id, d_name, d_slot ,d_phone, d_add, d_mail, d_status, isRemoved, d_add_date) VALUES('" + D.D_id + "','" + D.D_name +  "','" + D.D_slot + "','" + D.D_phone + "','" + D.D_add + "','" + D.D_mail + "','" + D.isRemoved + "','"+ D.D_status + "'," + "sysdate)";
-		        db.startstatement();
-		        db.update(statement);
+	    static void addDoctor() throws SQLException 
+	    {
+	        Doctor D = new Doctor();
+	        D.setDoctorID();
+	        D.setDoctorName();
+	        D.setDoctorSlot() ;
+	        D.setDoctorPhone();
+	        D.setDoctorAdd();
+	        D.setDoctorMail();
+	        D.setDoctorStatus();
+	        
+	        String statement = "INSERT INTO Doctor(d_id, d_name, d_slot ,d_phone, d_add, d_mail, d_status, isRemoved, d_add_date) VALUES('" + D.D_id + "','" + D.D_name +  "','" + D.D_slot + "','" + D.D_phone + "','" + D.D_add + "','" + D.D_mail + "','" + D.D_status + "','"+ D.isRemoved + "'," + "sysdate)";
+	        db.startstatement();
+	        db.update(statement);
 
-		        System.out.println("New Doctor added successfully!! ID: " + D.D_id);
+	        System.out.println("New Doctor added successfully!! ID: " + D.D_id);
 
-		    }
+	    }
 	    
 	    static void removeDoctor() throws SQLException 
 	    {
@@ -219,6 +218,7 @@ public class Doctor extends Doctorhelper
 	    
 	    static void displayDoctorDetails() throws SQLException 
 	    {
+            sc.nextLine();
 			System.out.println("\n----------- Display Doctor Details -----------");
 	        System.out.print("\nEnter Doctor ID    : ");
 	        String tempDoctorID = sc.nextLine();
@@ -254,14 +254,16 @@ public class Doctor extends Doctorhelper
 	    	System.out.println("\n---------------------Change Doctor Slot---------------------");
 	    	System.out.print("Enter Doctor ID: ");
 	        String tempDoctorID = sc.nextLine();
-	        System.out.print("\nEnter new Slot No. for"+ tempDoctorID + " : ");
-	        int tempSlot = sc.nextInt();
 	        
 	        if(!isDoctorExists(tempDoctorID))
 	        {
 	        	System.out.println("Invalid Doctor ID!!!");
 	        	return;
 	        }
+	        
+	        
+	        System.out.print("\nEnter new Slot No. for "+ tempDoctorID + " : ");
+	        int tempSlot = sc.nextInt();
 	        
 	        String statement = "UPDATE Doctor SET D_slot = " + tempSlot + "WHERE D_ID = '" + tempDoctorID +"'";
 	        
@@ -276,7 +278,7 @@ public class Doctor extends Doctorhelper
 	    	 System.out.println("\n***Slot wise Doctor list***");
 	         System.out.print("\nEnter Slot No.    : ");
 	         int tempSlot = sc.nextInt();
-	         String statement = "SELECT D_id, D_name FROM Doctor WHERE D_slot = '" + tempSlot + "'";
+	         String statement = "SELECT D_id AS Doctor_ID , D_name AS Doctor_Name FROM Doctor WHERE D_slot = '" + tempSlot + "'";
 	         
 	         if(tempSlot>3 || tempSlot<0)
 	         {
@@ -290,15 +292,15 @@ public class Doctor extends Doctorhelper
 	         
 	         System.out.println("-----------------------------------------------");
 	     }  
-	    
-	     public static void main(String[] args) throws SQLException
-	     {
-	         System.out.println("\nRunning ");
-//	       System.out.println(DoctorIDgenerator());
-	       // displayDoctorDetails();
-            //Doctor.removeDoctor();
-	    	addDoctor();
-	       // Doctor.detailDoctorSlotWise();
-	       // Doctor.changeDoctorSlot();
+	  
+	    static void displayAllActivedoctors()
+	    {
+	    	String statement = "SELECT d_id AS Doctor_ID, d_slot AS SLOT, d_name AS Doctor_Name FROM Doctor WHERE isremoved = 'N' AND d_status = 'A'";  
+	    	db.startstatement();
+	    	db.printDataList(statement);
+	        db.endstatement();
+	        
+	        System.out.println("-----------------------------------------------");
+
 	    }
 }
