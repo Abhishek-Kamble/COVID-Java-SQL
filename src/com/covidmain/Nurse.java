@@ -229,7 +229,7 @@ public class Nurse extends nurseHelper {
     
     static void detailNurseSlotWise()
     {
-        System.out.println("\n***Slot wise nurse list***");
+        System.out.println("\n-------------- Slot wise nurse list --------------");
         System.out.print("\nEnter Slot No.    : ");
         int tempSlot = sc.nextInt();
 

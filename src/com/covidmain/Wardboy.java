@@ -2,7 +2,6 @@ package com.covidmain;
 
 import java.sql.*;
 import java.util.*;
-
 //function to generate wardboy id
 class wardboyHelper {
     static Dbhelper db = new Dbhelper();
@@ -42,6 +41,23 @@ class wardboyHelper {
         }
 
         return wardboyID;
+    }
+    
+    
+    static boolean isWardboyExists(String tempWardboyId) throws SQLException
+    {
+    	long cnt = 0;
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM wardboy WHERE w_id = '" + tempWardboyId + "')";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		cnt=rs.getInt("Count");
+		
+		if(cnt>0)
+			return true;
+		else
+			return false;
     }
 
 }
@@ -135,6 +151,11 @@ public class Wardboy extends wardboyHelper {
         }
     }
 
+   
+    
+    
+    
+    
     static void addWardboy() throws SQLException {
         Wardboy W = new Wardboy();
         W.setWardboyID();
@@ -145,8 +166,8 @@ public class Wardboy extends wardboyHelper {
 //        W.setWardboyMail();
         W.setWardboyStatus();
 
-        String statement = "INSERT INTO wardboy(W_id, W_name, W_slot, W_phone, W_add, isremoved, W_status) VALUES('"
-                + W.W_id + "','" + W.W_name + "'," + W.W_slot + ",'" + W.W_phone + "','" + W.W_add + "','" + W.isRemoved + "','" + W.W_status + "')";
+        String statement = "INSERT INTO wardboy(W_id, W_name, W_slot, W_phone, W_add, isremoved, W_status,W_add_date) VALUES('"
+                + W.W_id + "','" + W.W_name + "'," + W.W_slot + ",'" + W.W_phone + "','" + W.W_add + "','" + W.isRemoved + "','" + W.W_status + "'," + " sysdate)";
         db.startstatement();
         db.update(statement);
 
@@ -158,18 +179,34 @@ public class Wardboy extends wardboyHelper {
         System.out.println("**** Remove Wardboy ****");
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
+        
+        if(!isWardboyExists(tempWardboyID))
+        {
+        	System.out.println("Invalid Wardboy ID!!!");
+        	return;
+        }
+        
         String statement = "UPDATE wardboy SET isremoved = 'Y' WHERE W_ID = '" + tempWardboyID + "'";
         db.startstatement();
         db.update(statement);
+        db.endupdate();
+        System.out.println("\n---------------------Wardboy Removed--------------------");
 
     }
 
+    
     public static void displayWardboyDetails() throws SQLException {
         System.out.println("** Display Wardboy Details **");
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
-
-        String statement = "SELECT w_id, w_name, w_slot, w_phone, w_add, isremoved, w_status FROM wardboy WHERE W_ID = '" + tempWardboyID + "'";
+        
+        if(!isWardboyExists(tempWardboyID))
+        {
+        	System.out.println("Invalid Wardboy ID!!!");
+        	return;
+        }
+        
+        String statement = "SELECT w_id, w_name, w_slot, w_phone, w_add, isremoved, w_status, W_add_date FROM wardboy WHERE W_ID = '" + tempWardboyID + "'";
         db.startstatement();
     	rs = db.execstatement(statement);
         while (rs.next()) {
@@ -181,6 +218,7 @@ public class Wardboy extends wardboyHelper {
 //            System.out.println("Wardboy E-mail		: " + rs.getString("W_mail"));
             System.out.println("Wardboy Removed?	: " + rs.getString("isremoved"));
             System.out.println("Wardboy Status    	: " + rs.getString("W_status"));
+            System.out.println("Wardboy Added Date    : " + rs.getString("W_add_date"));
         }
         db.endstatement();
         System.out.println("-----------------------------------------------");
@@ -190,6 +228,12 @@ public class Wardboy extends wardboyHelper {
     	System.out.println("\n***Slot wise wardboy list***");
         System.out.print("\nEnter Slot No.    : ");
         int tempSlot = sc.nextInt();
+        
+        if(tempSlot>3 || tempSlot<0)
+        {
+        	System.out.println("\nInvalid slot no.\n");
+        	return;
+        }
 
         String statement = "SELECT W_id, W_name FROM wardboy WHERE W_slot = '" + tempSlot + "'";
         
@@ -198,14 +242,22 @@ public class Wardboy extends wardboyHelper {
         db.endstatement();
         
         System.out.println("-----------------------------------------------");
-
     }
+    
+    
     
     static void changeWardboySlot()
     {
     	System.out.println("***Change Wardboy Slot***");
     	System.out.print("Enter Wardboy ID: ");
         String tempWardboyID = sc.nextLine();
+        
+        if(!isWardboyExists(tempWardboyID))
+        {
+        	System.out.println("Invalid Wardboy ID!!!");
+        	return;
+        }
+        
         System.out.print("\nEnter new Slot No. for "+ tempWardboyID + " : ");
         int tempSlot = sc.nextInt();
         
@@ -215,20 +267,48 @@ public class Wardboy extends wardboyHelper {
         db.startstatement();
         db.update(statement);
         db.endstatement();
-
+        
         System.out.println("Slot No. changed successfully for Wardboy ID: " + tempWardboyID);
     }
-
-    public static void main(String[] args) throws SQLException {
-        System.out.println("\nRunning ");
-//        System.out.println(wardboyWWIDgenerator());
-//        displayWardboyDetails();
-//        wardboy.removeWardboy();
-//        addWardboy();
-//        detailWardboySlotWise();
-//        changeWardboySlot();
-        
-    }
     
+    static void displayAllActiveWardboy()
+    {
+    	String statement = "SELECT w_id, w_slot, w_name FROM wardboy WHERE isremoved = 'N' AND n_status = 'A' ";  
+    	db.startstatement();
+    	db.printDataList(statement);
+        db.endstatement();
+        
+        System.out.println("-----------------------------------------------");
 
+    }
+
+    static void changeWardboyStat() throws SQLException
+    {
+    	System.out.println("\n---------------------Change Wardboy Status---------------------");
+    	System.out.print("Enter wardboy ID: ");
+        String tempNurseID = sc.nextLine();
+        
+        if(!isWardboyExists(tempWardboyID))
+        {
+        	System.out.println("Invalid Wardboy ID!!!");
+        	return;
+        }
+        
+        System.out.print("\nEnter new status for ID: "+ tempWardboyID + " : ");
+        char tempStat = sc.nextLine().charAt(0);
+        
+        if(tempStat!='A' || tempStat!='N')
+        {
+        	System.out.println("\nInvalid status entered!!\n");
+        	return;
+        }
+        
+        String statement = "UPDATE wardboy SET w_status = " + tempStat + "WHERE w_ID = '" + tempWardboyID +"'";        
+        db.startstatement();
+        db.update(statement);
+        db.endstatement();
+
+        System.out.println("Slot No. changed successfully for wardboy ID: " + tempWardboyID);
+    }
 }
+    

@@ -1,5 +1,4 @@
 package com.covidmain;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.*;
@@ -51,28 +50,28 @@ class helper{
 //		}
 //    }
     
-    static boolean recLogin()
-    {
-    	String sysUser = "reception", sysPass = "reception";
-    	
-    	
-    	System.out.print("Enter USERNAME: ");
-		String user = sc.nextLine();
-    	
-    	System.out.print("Enter PASSWORD: ");
-		String pass = sc.nextLine();
-		
-		if(sysUser == user)
-		{
-			System.out.println("\nLogin Successful!!");
-			return true;
-		}
-		else
-		{
-			System.out.println("Invalid Credentials");
-			return false;
-		}
-    }
+//    static boolean recLogin()
+//    {
+//    	String sysUser = "reception", sysPass = "reception";
+//    	
+//    	
+//    	System.out.print("Enter USERNAME: ");
+//		String user = sc.nextLine();
+//    	
+//    	System.out.print("Enter PASSWORD: ");
+//		String pass = sc.nextLine();
+//		
+//		if(sysUser == user)
+//		{
+//			System.out.println("\nLogin Successful!!");
+//			return true;
+//		}
+//		else
+//		{
+//			System.out.println("Invalid Credentials");
+//			return false;
+//		}
+//    }
     
 	static int login() throws FileNotFoundException
     {
@@ -98,9 +97,9 @@ class helper{
 //            	    	break;
             	
             	case 2:
-            		if(recLogin())
+//            		if(recLogin())
 	            		return 2;
-            		break;
+//            		break;
             		
             	case 3:
             		return 3;
@@ -234,9 +233,51 @@ class helper{
 		
 	}
 	
-	static void wardSec()
+	static void wardSec() throws SQLException
 	{
-		
+		int opt = 0;
+        while (opt != 4) 
+        {
+            System.out.println("\n------------ Welcome to Ward Section ------------\n");
+            System.out.println("1. Create New Ward");
+            System.out.println("2. Display all ward status");
+            System.out.println("3. Find an available ward");
+            System.out.println("4. Display a Ward Details");
+            System.out.println("5. Exit");
+            System.out.print("\nEnter opt: ");
+            Scanner sc = new Scanner(System.in);
+            opt = sc.nextInt();
+            switch (opt) {
+                case 1:
+                    ward.create_ward();
+                    break;
+
+                case 2:
+                	ward.displayAllWardStatus();
+                    break;
+
+                case 3:
+                    int temp = ward.checkWardAvailibility();
+                    if(temp != -1) {
+                    	System.out.println("\nBed is available Ward No. " + temp + " !!!\n");
+                    }else {
+                    	System.out.println("\nNo beds are available currently!\n");
+                    }                	
+                    break;
+
+                case 4:
+                	ward.displayNurseDetails();
+                    break;
+                    
+                case 5:
+                	System.out.println("\nReturning back...\n");
+                	break;
+
+                default:
+                    System.out.println("\nCaution: Invalid option! \nHandle with care!\n");
+                    break;
+            }
+        }
 	}
 	
 	static void adminMenu() throws SQLException
