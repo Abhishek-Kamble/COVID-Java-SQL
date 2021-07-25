@@ -195,7 +195,8 @@ public class Nurse extends nurseHelper {
         
     }
 
-    static void displayNurseDetails() throws SQLException {
+    static void displayNurseDetails() throws SQLException 
+    {
 		System.out.println("\n----------- Display Nurse Details -----------");
         System.out.print("\nEnter Nurse ID    : ");
         String tempNurseID = sc.nextLine();

@@ -1,4 +1,5 @@
 package com.covidmain;
+
 import java.sql.*;
 
 public class Dbhelper {
@@ -7,7 +8,7 @@ public class Dbhelper {
 	static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:XE";
 		
 	static final String USER = "system";
-	static final String PASS = "oracle123";
+	static final String PASS = "shital2901";
 	
 	// SQL Environment Setup
 	static Connection conn = null;

@@ -1,6 +1,6 @@
 package com.covidmain;
-
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 class patientHelper {
@@ -45,10 +45,27 @@ class patientHelper {
 
         return patientID;
     }
+    
+    static boolean isPatientExists(String tempPatientId) throws SQLException
+    {
+    	long cnt = 0;
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM patient_at_entry WHERE p_id = '" + tempPatientId + "')";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		cnt=rs.getInt("Count");
+		
+		if(cnt>0)
+			return true;
+		else
+			return false;
+    }   
 
 }
 
-public class patient_at_entry extends patientHelper {
+public class patient_at_entry extends patientHelper 
+{
     String p_id;
     String p_name;
     int p_age;
@@ -57,6 +74,7 @@ public class patient_at_entry extends patientHelper {
     String p_mail;
     String p_adhar;
     char p_Status;
+    //char isRemoved;
 
 
     patient_at_entry() {
@@ -67,12 +85,14 @@ public class patient_at_entry extends patientHelper {
         this.p_add = "";
         this.p_adhar = "";
         this.p_Status = 'N';
+        //this.isRemoved = 'N';
 
     }
 
     static Scanner sc = new Scanner(System.in);
 
-    void setPatientID() throws SQLException {
+    void setPatientID() throws SQLException 
+    {
         String tempP_ID = patientIDgenerator();
         if (tempP_ID == "") {
             System.out.println("Error!! Can't set Patient ID.");
@@ -81,21 +101,24 @@ public class patient_at_entry extends patientHelper {
         }
     }
 
-    void setPatientName() {
+    void setPatientName()
+    {
         System.out.print("\nEnter Name        : ");
         String patientname = sc.nextLine();
         this.p_name = patientname;
     }
 
-    void setPatientAge() {
+    void setPatientAge() 
+    {
         System.out.print("\nEnter Age of patient     : ");
         int PAge = sc.nextInt();
         this.p_age = PAge;
     }
-    void setPatientStatus() {
-    	System.out.print("\nEnter Patient status (Y/N)   : ");
+    void setPatientStatus() 
+    {
+    	System.out.print("\nEnter Patient status (A/N)   : ");
         char patientstatus = sc.next().charAt(0);
-        if(patientstatus == 'Y' || patientstatus == 'N')
+        if(patientstatus == 'A' || patientstatus == 'N')
         {
             this.p_Status = patientstatus;
         }
@@ -106,7 +129,8 @@ public class patient_at_entry extends patientHelper {
         }
     }
 
-    void setPatientPhone() {
+    void setPatientPhone() 
+    {
         sc.nextLine();
         System.out.print("\nEnter Mobile No    : ");
         String patientMob = sc.nextLine();
@@ -119,19 +143,22 @@ public class patient_at_entry extends patientHelper {
         }
     }
 
-    void setPatientAdd() {
+    void setPatientAdd() 
+    {
         System.out.print("\nEnter Address     : ");
         String patientadd = sc.nextLine();
         this.p_add = patientadd;
     }
 
-    void setPatientAdhar() {
+    void setPatientAdhar() 
+    {
         System.out.print("\nEnter Adhar No.     : ");
         String patientadhar = sc.nextLine();
         this.p_adhar = patientadhar;
     }
 
-    static void addPatient() throws SQLException {
+    static void addPatient() throws SQLException 
+    {
         patient_at_entry P = new patient_at_entry();
         P.setPatientID();
         P.setPatientName();
@@ -139,10 +166,8 @@ public class patient_at_entry extends patientHelper {
         P.setPatientPhone();
         P.setPatientAdd();
         P.setPatientAdhar();
-        P.setPatientStatus();
-        // P.setAdmitDate();
-        // P.setDischargeDate();
-        String statement = "INSERT INTO patient_at_entry(p_id, p_name, p_age, p_phone, p_add, p_status,p_adhar) VALUES('" + P.p_id + "','" + P.p_name + "','" + P.p_age + "','" + P.p_phone + "','" + P.p_add + "','" + P.p_Status + "','"+ P.p_adhar  +"')";
+        
+        String statement = "INSERT INTO patient_at_entry(p_id, p_name, p_age, p_phone, p_add, p_status,p_adhar,p_add_date) VALUES('" + P.p_id + "','" + P.p_name + "','" + P.p_age + "','" + P.p_phone + "','" + P.p_add + "','" + 'A' + "','"+ P.p_adhar + "'," + "sysdate)";
         db.startstatement();
         db.update(statement);
 
@@ -150,36 +175,69 @@ public class patient_at_entry extends patientHelper {
 
     }
 
-    public static void displayPatientDetails() throws SQLException {
-        System.out.println("** Display Patient Details **");
+    public static void displayPatientDetails() throws SQLException
+    {
+    	System.out.println("\n----------- Display Patient Details -----------");
         System.out.print("\nEnter Patient ID    : ");
         String tempPatientID = sc.nextLine();
 
-        String statement = "SELECT p_id, p_name, p_age ,p_phone, p_add , p_Status ,p_adhar FROM patient_at_entry WHERE P_ID = '"
+        if(!isPatientExists(tempPatientID))
+        {
+        	System.out.println("Invalid Patient ID!!!");
+        	return;
+        }
+
+        String statement = "SELECT p_id, p_name, p_age ,p_phone, p_add , p_Status ,p_adhar , p_add_date  FROM patient_at_entry WHERE P_ID = '"
                 + tempPatientID + "'";
 
         db.startstatement();
         rs = db.execstatement(statement);
-        while (rs.next()) {
-            System.out.println("Patient ID		: " + rs.getString("p_ID"));
-            System.out.println("Patient Name		: " + rs.getString("p_name"));
-            System.out.println("Patient Age.     : " + rs.getString("p_age"));
-            System.out.println("Patient Phone No. : " + rs.getString("p_phone"));
-            System.out.println("Patient Add. 		: " + rs.getString("p_add"));
-             System.out.println("Patient Status : " + rs.getString("p_Status"));
-             System.out.println("Patient Adhar	: " + rs.getString("p_adhar"));
+        while (rs.next())
+        {
+            System.out.println("Patient ID   : " + rs.getString("p_ID"));
+            System.out.println("Patient Name   : " + rs.getString("p_name"));
+            System.out.println("Patient Age.   : " + rs.getString("p_age"));
+            System.out.println("Patient Phone No.   : " + rs.getString("p_phone"));
+            System.out.println("Patient Add.   : " + rs.getString("p_add"));
+             System.out.println("Patient Status   : " + rs.getString("p_Status"));
+             System.out.println("Patient Adhar   : " + rs.getString("p_adhar"));
+           //  System.out.println("Nurse Removed?	: " + rs.getString("isRemoved"));
+             System.out.println("Patient Admit Date   : " + rs.getString("P_add_date"));
         }
         db.endstatement();
 
-        System.out.println("-----------------------------------------------");
+        System.out.println("-------------------------------------------------");
     }
 
-    public static void main(String[] args) throws SQLException {
+    static void dischargePatient() throws SQLException  
+    {
+        System.out.println("\n--------------- Discharge Patient---------------");
+        System.out.print("\nEnter Patient ID    : ");
+        String tempPatientID = sc.nextLine();
+        
+        if(!isPatientExists(tempPatientID))
+        {
+        	System.out.println("Invalid Patient ID!!!");
+        	return;
+        }
+        
+        String statement = "UPDATE patient_at_entry SET P_status='N' WHERE P_ID = '" + tempPatientID +"'";
+        db.startstatement();
+        db.update(statement);
+		db.endupdate();
+		
+		System.out.println("\n--------------------------------------------");
+        
+    }
+
+    
+    public static void main(String[] args) throws SQLException
+    {
         System.out.println("\nRunning ");
         // System.out.println(patientIDgenerator());
         //addPatient();
         displayPatientDetails();
-
+        //dischargePatient();
     }
 
 }
