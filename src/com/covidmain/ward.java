@@ -132,7 +132,7 @@ public class ward extends wardHelper{
         System.out.println("-------------------------------------------------------");
     }
     
-    static void displayNurseDetails() throws SQLException {
+    static void displayWardDetails() throws SQLException {
 		System.out.println("\n----------- Display Ward Details -----------");
         System.out.print("\nEnter Ward No.    : ");
         int tempNurseID = sc.nextInt();
