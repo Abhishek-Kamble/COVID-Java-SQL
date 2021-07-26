@@ -118,20 +118,35 @@ public class patient_details_after_admit extends Record {
     	System.out.println("\nNew Record Added Successfully !!");
     }
     
-    static void displaycovlist()
+    static void displaypatientphy()
     {
-        System.out.println("\n***Covid List***");
+    	System.out.println("\nDisplay physical details of Patient");
+    	System.out.println("\nEnter Patient ID : ");
+    	String tempID = sc.nextLine();
+    	
+    	if(!isPatientExists(tempPatientID))
+        {
+        	System.out.println("Invalid Patient ID!!!");
+        	return;
+        }
+    	
+    	
+    }
+    
+//    static void displaycovlist()
+//    {
+//        System.out.println("\n***Covid List***");
 //        System.out.print("\nEnter Slot No.    : ");
 //        int tempSlot = sc.nextInt();
 
-        String statement = "SELECT P_id, P_temp, P_O2level, P_covlevel FROM patient_phy WHERE p_covlevel > 50";
-        
-    	db.startstatement();
-    	db.printDataList(statement);
-        db.endstatement();
-        
-        System.out.println("-----------------------------------------------");
-    }
+//        String statement = "SELECT P_id, P_temp, P_O2level, P_covlevel FROM patient_phy WHERE p_covlevel > 50";
+//        
+//    	db.startstatement();
+//    	db.printDataList(statement);
+//        db.endstatement();
+//        
+//        System.out.println("-----------------------------------------------");
+//    }
     
     public static void main(String[] args) throws SQLException {
 //    	displaycovlist();
