@@ -15,10 +15,17 @@ class helper{
 		String user = sc.nextLine();
     	
     	System.out.print("Enter PASSWORD: ");
-		String pass = sc.nextLine();
+		String passwordString = sc.nextLine();
+		
+//		Console console = System.console();
+//        console.printf("Please enter your password: ");
+//        char[] passwordChars = console.readPassword();
+//        String passwordString = new String(passwordChars);
+//
+//        console.printf(passwordString + "\n");
 		
 		//TODO string comparator
-		if(sysUser.equals(user) && pass.equals(sysPass))
+		if(sysUser.equals(user) && passwordString.equals(sysPass))
 		{
 			System.out.println("\nLogin Successful!!\n");
 			return true;
@@ -95,6 +102,9 @@ class helper{
 	static void enterToContinue()
 	{
 		//TODO
+		System.out.println("Press Enter to continue!!!");
+		try{System.in.read();}
+        catch(Exception e){}
 	}
 	
 	static void addNewPatient()
@@ -136,9 +146,9 @@ class helper{
             		patient_at_entry.displayPatientDetails();
             		break;
             		
-//            	case 4:
-//            		
-//            		break;
+            	case 4:
+                	patient_details_after_admit.displaypatientreport();
+                	break;
             		
 //            	case 5:
 //            		patient_at_entry.displayPatientDetails();
@@ -441,7 +451,7 @@ class helper{
         }
 	}
 	
-	static void recMenu()
+	static void recMenu() throws SQLException
 	{
 		int opt = 0;
         while (opt != 4) 
@@ -449,7 +459,8 @@ class helper{
             System.out.println("\n------------ Welcome to Receptionist Panel ------------\n");
             System.out.println("1. Add new patient.");
             System.out.println("2. Discharge patient.");
-            System.out.println("3. Go to Patient Section");            
+            System.out.println("3. Go to Patient Section");
+            System.out.println("4. Show patient physical report");
             System.out.println("4. Exit");
             System.out.print("\nEnter opt: ");
             Scanner sc = new Scanner(System.in);
@@ -466,8 +477,12 @@ class helper{
                 case 3:
                     patientSec();
                     break;
-
+                    
                 case 4:
+                	patient_details_after_admit.displaypatientreport();
+                	break;
+
+                case 5:
                 	System.out.println("\nThank You for using COVID management system.");
                 	break;
 
@@ -478,6 +493,10 @@ class helper{
         }
 	}
 	
+	static void guestMenu() {
+		// TODO Auto-generated method stub
+		
+	}  
 }
 
 public class CovidMain extends helper
@@ -498,10 +517,13 @@ public class CovidMain extends helper
 		else
 		{
 			//TODO
-			System.out.println("Work in progress for guests");
-//			guestMenu();
+			System.out.println("You are logged in as Guest!");
+			guestMenu();
 		}
+		
 	
-	}   
+	}
+
+	 
            
 }
