@@ -20,6 +20,20 @@ class wardHelper{
 		return wardcount;
     }
     
+    static void incrNoOfFullBeds(int wardname)
+    {
+    	String statement = "UPDATE ward SET No_Of_Beds_Full = No_Of_Beds_Full + 1 where wardname = " + wardname;
+        db.startstatement();
+    	db.update(statement);
+    }
+    
+    static void decrNoOfFullBeds(String tempPatientID)
+    {
+    	String statement = "UPDATE ward SET No_Of_Beds_Full = No_Of_Beds_Full - 1 WHERE wardname = (SELECT p_ward FROM Patient_at_entry WHERE p_id = '" + tempPatientID + "')";
+        db.startstatement();
+    	db.update(statement);
+    	db.endupdate();
+    }
 }
 
 public class ward extends wardHelper{
