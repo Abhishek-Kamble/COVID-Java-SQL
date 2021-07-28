@@ -107,7 +107,6 @@ public class patient_details_after_admit extends Record {
     	P.setpatient_temp();
     	P.setpatietO2level();
     	P.setpatientcovidlevel();
-//    	P.setPatientStatus();
     	String statement = "INSERT INTO patient_phy(rec_no, p_id, p_bg , p_temp , p_O2level , p_covlevel , p_status , p_add_date) VALUES('" + P.rec_no + "','" + P.p_id + "','" + P.p_bg  + "'," + P.p_temp + ","  + P.p_O2level + "," + P.p_covlevel+ ",'" + P.p_status + "'," + " sysdate)";
     	db.startstatement();
     	db.update(statement);
@@ -140,11 +139,11 @@ public class patient_details_after_admit extends Record {
 //    	}
     	
     	db.startstatement();
-    	String statement = "SELECT p_add_date, p_id, p_name, p_age FROM Patient_at_Entry WHERE p_id = '"+ tempID + "'";
+    	String statement = "SELECT p_adm_date, p_id, p_name, p_age FROM Patient_at_Entry WHERE p_id = '"+ tempID + "'";
     	rs = db.execstatement(statement);
     	while(rs.next())
     	{
-    		System.out.println("Patient Adm. Date: " + rs.getString("p_add_date"));
+    		System.out.println("Patient Adm. Date: " + rs.getString("p_adm_date"));
     		System.out.println("Patient ID: " + rs.getString("p_id"));
     		System.out.println("Patient Name: " + rs.getString("p_name"));
     		System.out.println("Patient Age: " + rs.getString("p_age"));
@@ -164,9 +163,9 @@ public class patient_details_after_admit extends Record {
     }
     
     public static void main(String[] args) throws SQLException {
-  	//displaycovlist();
-    	//addRecord();
 //    	displaycovlist();
-    //	displaypatientreport();
+//    	addRecord();
+//    	displaycovlist();
+    	displaypatientreport();
 	}
 }
