@@ -107,36 +107,16 @@ class helper{
         catch(Exception e){}
 	}
 	
-	static void addNewPatient() throws SQLException
+	static void addNewPatient()
 	{
-		int wardEnquiry = ward.checkWardAvailibility();
-		if(wardEnquiry == -1)
-		{
-			System.out.println("Sorry! No bed is available at current situation.");
-			return;
-		}
+		//TODO
 		
-		patient_at_entry.addPatient(wardEnquiry);
-		ward.incrNoOfFullBeds(wardEnquiry);
-		System.out.println("\n--------------------------------------------------");
+		
 	}
 	
-	static void dischargePatient() throws SQLException
+	static void dischargePatient()
 	{
-		System.out.println("\n--------------- Discharge Patient---------------");
-        System.out.print("\nEnter Patient ID    : ");
-        String tempPatientID = sc.nextLine();
-        
-        if(!patient_at_entry.isPatientExistsandRemoved(tempPatientID))
-        {
-        	System.out.println("\nInvalid Patient ID or Patient may already discharged!!!");
-        	return;
-        }
-        
-        patient_at_entry.dischargePatient(tempPatientID);
-        ward.decrNoOfFullBeds(tempPatientID);
-        
-		System.out.println("\nPatient discharged successfully!! ID: " + tempPatientID);
+		//TODO
 	}
 	
 	static void patientSec() throws SQLException
@@ -144,44 +124,44 @@ class helper{
 		int opt = 0;
         while (opt != 7) {
     		System.out.println("\n-------------- Patient Section --------------");   
-    		System.out.println("1. Add a new Patient ");
+    		System.out.println("1. Add a Patient ");
     		System.out.println("2. Discharge Patient");
-    		System.out.println("3. Add a physical test");
-    		System.out.println("4. Search an active patient");
-    		System.out.println("5. Find a Patient details");
-    		System.out.println("6. Get patient report");
-    		System.out.println("7. Back to Employee Sec");
+    		//System.out.println("3. Display Active Patient's List");
+    		//System.out.println("4. Change Working slot of a Patient");
+    		System.out.println("3. Find a Patient details");
+    		//System.out.println("6. Remove a Patient");
+    		System.out.println("4. Back to Employee Section ");
             System.out.print("\nEnter opt: ");
             opt = sc.nextInt();
             switch (opt) {
             	case 1:
-            		addNewPatient();
+            		patient_at_entry.addPatient();
             		break;
             		
             	case 2:
-            		dischargePatient();
+            		patient_at_entry.dischargePatient();
             		break;
             		
             	case 3:
-            		patient_details_after_admit.addRecord();
-            		break;
-            		
-            	case 4:
-            		patient_at_entry.searchActivePatient();
-            		break;
-            		
-            	case 5:
             		patient_at_entry.displayPatientDetails();
             		break;
             		
-            	case 6:
+            	case 4:
                 	patient_details_after_admit.displaypatientreport();
                 	break;
-            	
-            	case 7:
-            		System.out.println("\nReturning to Employee Section...");
-            		break;
-
+            		
+//            	case 5:
+//            		patient_at_entry.displayPatientDetails();
+//            		break;
+//            		
+//            	case 6:
+//            		patient_at_entry.dischargePatient();
+//            		break;
+//            		
+//            	case 7:
+//            		System.out.println("\nReturning to Employee Section...");
+//            		break;
+//            		
             	default:
                     System.out.println("\n!Caution: Invalid option! \nHandle with care!\n");
                     break;
@@ -194,7 +174,7 @@ class helper{
 		int opt = 0;
         while (opt != 7) {
     		System.out.println("\n-------------- Doctor Section --------------");   
-    		System.out.println("1. Add a new Doctor ");
+    		System.out.println("1. Add a Doctor ");
     		System.out.println("2. Display Doctor List Slotwise");
     		System.out.println("3. Display Active Doctor's List");
     		System.out.println("4. Change Working slot of a Doctor");
@@ -295,7 +275,7 @@ class helper{
 		int opt = 0;
         while (opt != 7) {
     		System.out.println("\n-------------- Wardboy Section --------------");   
-    		System.out.println("1. Add a new Wardboy ");
+    		System.out.println("1. Add a Wardboy ");
     		System.out.println("2. Display Wardboy List Slotwise");
     		System.out.println("3. Display Active Wardboy's List");
     		System.out.println("4. Change Working slot of a Wardboy");
@@ -381,7 +361,7 @@ class helper{
 	static void wardSec() throws SQLException
 	{
 		int opt = 0;
-        while (opt != 5) 
+        while (opt != 4) 
         {
             System.out.println("\n------------ Welcome to Ward Section ------------\n");
             System.out.println("1. Create New Ward");
@@ -480,8 +460,8 @@ class helper{
             System.out.println("1. Add new patient.");
             System.out.println("2. Discharge patient.");
             System.out.println("3. Go to Patient Section");
-            System.out.println("4. Show patient report");
-            System.out.println("5. Exit");
+            System.out.println("4. Show patient physical report");
+            System.out.println("4. Exit");
             System.out.print("\nEnter opt: ");
             Scanner sc = new Scanner(System.in);
             opt = sc.nextInt();

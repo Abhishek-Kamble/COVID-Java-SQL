@@ -20,20 +20,6 @@ class wardHelper{
 		return wardcount;
     }
     
-    static void incrNoOfFullBeds(int wardname)
-    {
-    	String statement = "UPDATE ward SET No_Of_Beds_Full = No_Of_Beds_Full + 1 where wardname = " + wardname;
-        db.startstatement();
-    	db.update(statement);
-    }
-    
-    static void decrNoOfFullBeds(String tempPatientID)
-    {
-    	String statement = "UPDATE ward SET No_Of_Beds_Full = No_Of_Beds_Full - 1 WHERE wardname = (SELECT p_ward FROM Patient_at_entry WHERE p_id = '" + tempPatientID + "')";
-        db.startstatement();
-    	db.update(statement);
-    	db.endupdate();
-    }
 }
 
 public class ward extends wardHelper{
@@ -113,18 +99,25 @@ public class ward extends wardHelper{
 
     static int checkWardAvailibility() throws SQLException
     {
-
-		int res = -1;
-		String statement = "SELECT wardname FROM ward WHERE w_capacity > no_of_beds_full";
-		db.startstatement();
-		rs = db.execstatement(statement);
-		while(rs.next())
-		{
-			res = rs.getInt("wardname");
-		}
-		
-		if(res > 0)
-			return res;
+    	int wardcount = getWardCount();
+    	int W_cap=-1, beds_full=0;
+    	for(int i = 1; i<=wardcount; i++)
+    	{
+    		String statement = "SELECT w_capacity, no_of_beds_full FROM ward";
+    		db.startstatement();
+    		rs = db.execstatement(statement);
+    		while(rs.next())
+    		{
+    			W_cap = rs.getInt("w_capacity");
+    			beds_full = rs.getInt("no_of_beds_full");
+    		}
+    		
+    		if(beds_full < W_cap)
+    		{    			
+    			return i;
+    		}
+    	}
+    	
     	return -1;
     }
     
