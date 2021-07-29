@@ -28,8 +28,7 @@ class Doctorhelper{
 	
     static String DoctorIDgenerator() 
     {
-        long doctorCount = DoctorSQL.getDoctorCount() + 1;
-//        System.out.println("doctorCount: " + doctorCount);
+        long doctorCount = getDoctorCount() + 1;
         
         String doctorCountStr = "";
         
