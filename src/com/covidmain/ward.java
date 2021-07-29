@@ -20,6 +20,20 @@ class wardHelper{
 		return wardcount;
     }
     
+    static void incrNoOfFullBeds(int wardname)
+    {
+    	String statement = "UPDATE ward SET No_Of_Beds_Full = No_Of_Beds_Full + 1 where wardname = " + wardname;
+        db.startstatement();
+    	db.update(statement);
+    }
+    
+    static void decrNoOfFullBeds(String tempPatientID)
+    {
+    	String statement = "UPDATE ward SET No_Of_Beds_Full = No_Of_Beds_Full - 1 WHERE wardname = (SELECT p_ward FROM Patient_at_entry WHERE p_id = '" + tempPatientID + "')";
+        db.startstatement();
+    	db.update(statement);
+    	db.endupdate();
+    }
 }
 
 public class ward extends wardHelper{
@@ -29,9 +43,7 @@ public class ward extends wardHelper{
     int No_Of_Beds_Full; // engage
     String Doctor1;//
     String nurse1;
-    String nurse2;
     String wardboy1;
-    String wardboy2;
 
     // constructor
     ward() {
@@ -41,10 +53,7 @@ public class ward extends wardHelper{
         this.No_Of_Beds_Full = 0;
         this.Doctor1 = "";
         this.nurse1 = "";
-        this.nurse2 = "";
         this.wardboy1 = "";
-        this.wardboy2 = "";
-
     }
 
     static Scanner sc = new Scanner(System.in);
@@ -79,45 +88,26 @@ public class ward extends wardHelper{
         this.nurse1 = nid;
     }
 
-    void setNurse2() {
-        System.out.print("\nEnter nurse 2 ID: ");
-        String nid = sc.nextLine();
-        this.nurse2 = nid;
-    }
-
     void setWardboy1() {
         System.out.print("\nEnter wardboy 1 ID: ");
         String nid = sc.nextLine();
         this.wardboy1 = nid;
     }
 
-    void setWardboy2() {
-        System.out.print("\nEnter wardboy 2 ID: ");
-        String nid = sc.nextLine();
-        this.wardboy2 = nid;
-    }
-
     static int checkWardAvailibility() throws SQLException
     {
-    	int wardcount = getWardCount();
-    	int W_cap=-1, beds_full=0;
-    	for(int i = 1; i<=wardcount; i++)
-    	{
-    		String statement = "SELECT w_capacity, no_of_beds_full FROM ward";
-    		db.startstatement();
-    		rs = db.execstatement(statement);
-    		while(rs.next())
-    		{
-    			W_cap = rs.getInt("w_capacity");
-    			beds_full = rs.getInt("no_of_beds_full");
-    		}
-    		
-    		if(beds_full < W_cap)
-    		{    			
-    			return i;
-    		}
-    	}
-    	
+
+		int res = -1;
+		String statement = "SELECT wardname FROM ward WHERE w_capacity > no_of_beds_full";
+		db.startstatement();
+		rs = db.execstatement(statement);
+		while(rs.next())
+		{
+			res = rs.getInt("wardname");
+		}
+		
+		if(res > 0)
+			return res;
     	return -1;
     }
     
@@ -144,7 +134,7 @@ public class ward extends wardHelper{
 //        	return;
 //        }
         
-        String statement = "SELECT wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, Nurse1, Nurse2, Wardboy1, Wardboy2 FROM ward WHERE wardname =" + tempNurseID;
+        String statement = "SELECT wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, Nurse1, Wardboy1 FROM ward WHERE wardname =" + tempNurseID;
 
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -155,9 +145,7 @@ public class ward extends wardHelper{
             System.out.println("No Of Beds Full	: " + rs.getString("No_Of_Beds_Full"));
             System.out.println("Ward Doctor     : " + rs.getString("Doctor1"));
             System.out.println("Ward Nurse 1	: " + rs.getString("Nurse1"));
-            System.out.println("Ward Nurse 2    : " + rs.getString("Nurse2"));
             System.out.println("Wardboy 1       : " + rs.getString("Wardboy1"));
-            System.out.println("Wardboy 2       : " + rs.getString("Wardboy2"));
          }
         db.endstatement(); 
 		
@@ -172,12 +160,10 @@ public class ward extends wardHelper{
         W.set_ward_capacity();
         W.setDoctor();
         W.setNurse1();
-        W.setNurse2();
         W.setWardboy1();
-        W.setWardboy2();
-        String statement = "INSERT INTO ward(wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, nurse1, nurse2, wardboy1, wardboy2) VALUES("
+        String statement = "INSERT INTO ward(wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, nurse1, wardboy1) VALUES("
                 + W.wardname + ",'" + W.W_type + "'," + W.W_Capacity + "," + W.No_Of_Beds_Full + ",'" + W.Doctor1 + "','" + W.nurse1
-                + "','" + W.nurse2 + "','" + W.wardboy1 + "','" + W.wardboy2 + "')";
+                + "','" + W.wardboy1 + "',)";
         db.startstatement();
         db.update(statement);
 
