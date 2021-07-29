@@ -129,7 +129,7 @@ public class patient_details_after_admit extends Record {
     {
         System.out.println("\n-------------------------- Covid List --------------------------");
 
-        String statement = "SELECT P_id, P_temp, P_O2level, P_covlevel FROM patient_phy WHERE p_covlevel > 50";
+        String statement = "SELECT P_id, P_temp, P_O2level, P_covlevel FROM patient_phy";
         
     	db.startstatement();
     	db.printDataList(statement);
