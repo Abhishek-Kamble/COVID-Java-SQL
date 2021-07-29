@@ -62,6 +62,21 @@ class patientHelper {
 			return false;
     }   
 
+    static boolean isPatientExistsandRemoved(String tempPatientId) throws SQLException
+    {
+    	long cnt = 0;
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM patient_at_entry WHERE p_id = '" + tempPatientId + "' AND isremoved = 'N')";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		cnt=rs.getInt("Count");
+		
+		if(cnt>0)
+			return true;
+		else
+			return false;
+    }
 }
 
 public class patient_at_entry extends patientHelper 
@@ -69,13 +84,11 @@ public class patient_at_entry extends patientHelper
     String p_id;
     String p_name;
     int p_age;
-    String p_add;
     String p_phone;
-    String p_mail;
+    String p_add;
     String p_adhar;
-    char p_Status;
-    //char isRemoved;
-
+    char isremoved;
+    char p_status; //C/U
 
     patient_at_entry() {
         this.p_id = "";
@@ -84,9 +97,8 @@ public class patient_at_entry extends patientHelper
         this.p_phone = "";
         this.p_add = "";
         this.p_adhar = "";
-        this.p_Status = 'N';
-        //this.isRemoved = 'N';
-
+        this.p_status = 'U';
+        this.isremoved = 'N';
     }
 
     static Scanner sc = new Scanner(System.in);
@@ -114,13 +126,14 @@ public class patient_at_entry extends patientHelper
         int PAge = sc.nextInt();
         this.p_age = PAge;
     }
+    
     void setPatientStatus() 
     {
     	System.out.print("\nEnter Patient status (A/N)   : ");
         char patientstatus = sc.next().charAt(0);
         if(patientstatus == 'A' || patientstatus == 'N')
         {
-            this.p_Status = patientstatus;
+            this.p_status = patientstatus;
         }
         else
         {
@@ -153,11 +166,12 @@ public class patient_at_entry extends patientHelper
     void setPatientAdhar() 
     {
         System.out.print("\nEnter Adhar No.     : ");
+        
         String patientadhar = sc.nextLine();
         this.p_adhar = patientadhar;
     }
-
-    static void addPatient() throws SQLException 
+    
+    static void addPatient(int wardname) throws SQLException 
     {
         patient_at_entry P = new patient_at_entry();
         P.setPatientID();
@@ -167,15 +181,14 @@ public class patient_at_entry extends patientHelper
         P.setPatientAdd();
         P.setPatientAdhar();
         
-        String statement = "INSERT INTO patient_at_entry(p_id, p_name, p_age, p_phone, p_add, p_status,p_adhar,p_add_date) VALUES('" + P.p_id + "','" + P.p_name + "','" + P.p_age + "','" + P.p_phone + "','" + P.p_add + "','" + 'A' + "','"+ P.p_adhar + "'," + "sysdate)";
+        String statement = "INSERT INTO patient_at_entry(p_id, p_name, p_age, p_phone, p_add, p_status, p_adhar, isremoved, P_ward, p_adm_date) VALUES('" + P.p_id + "','" + P.p_name + "','" + P.p_age + "','" + P.p_phone + "','" + P.p_add + "', 'U', '"+ P.p_adhar + "', 'N'," + wardname + ", sysdate)";
         db.startstatement();
         db.update(statement);
-
-        System.out.println("New Patient added successfully!! ID: " + P.p_id);
-
+        System.out.println("New Patient added successfully!! \nWard No.: " + wardname + "\nID: " + P.p_id);
+        
     }
 
-    public static void displayPatientDetails() throws SQLException
+    static void displayPatientDetails() throws SQLException
     {
     	System.out.println("\n----------- Display Patient Details -----------");
         System.out.print("\nEnter Patient ID    : ");
@@ -187,7 +200,7 @@ public class patient_at_entry extends patientHelper
         	return;
         }
 
-        String statement = "SELECT p_id, p_name, p_age ,p_phone, p_add , p_Status ,p_adhar , p_add_date  FROM patient_at_entry WHERE P_ID = '"
+        String statement = "SELECT p_id, p_name, p_age ,p_phone, p_add , p_Status ,p_adhar , p_adm_date  FROM patient_at_entry WHERE P_ID = '"
                 + tempPatientID + "'";
 
         db.startstatement();
@@ -201,43 +214,54 @@ public class patient_at_entry extends patientHelper
             System.out.println("Patient Add.   : " + rs.getString("p_add"));
              System.out.println("Patient Status   : " + rs.getString("p_Status"));
              System.out.println("Patient Adhar   : " + rs.getString("p_adhar"));
-           //  System.out.println("Nurse Removed?	: " + rs.getString("isRemoved"));
-             System.out.println("Patient Admit Date   : " + rs.getString("P_add_date"));
+             System.out.println("Patient Admit Date   : " + rs.getString("P_adm_date"));
         }
         db.endstatement();
 
         System.out.println("-------------------------------------------------");
     }
 
-    static void dischargePatient() throws SQLException  
+    static void dischargePatient(String tempPatientID) throws SQLException  
     {
-        System.out.println("\n--------------- Discharge Patient---------------");
-        System.out.print("\nEnter Patient ID    : ");
-        String tempPatientID = sc.nextLine();
-        
-        if(!isPatientExists(tempPatientID))
-        {
-        	System.out.println("Invalid Patient ID!!!");
-        	return;
-        }
-        
-        String statement = "UPDATE patient_at_entry SET P_status='N' WHERE P_ID = '" + tempPatientID +"'";
         db.startstatement();
+        String statement = "UPDATE patient_at_entry SET isremoved = 'Y', p_dis_date = SYSDATE WHERE P_ID = '" + tempPatientID +"'";
         db.update(statement);
 		db.endupdate();
+    }
+
+	static void searchPatient() {
+		// TODO 
+		System.out.println("\n-------------------- Search an active patient --------------------");
+		System.out.print("Enter first name of patient: ");
+		String firstName = sc.nextLine();
 		
-		System.out.println("\n--------------------------------------------");
+		String statement = "SELECT p_id AS Patient_ID, p_ward AS WARD, isremoved AS REM, p_name AS Patient_Name FROM patient_at_entry WHERE p_name LIKE '%" + firstName + "%' ORDER BY isremoved, P_ID, p_adm_date";
+		try
+		{
+			db.startstatement();
+	    	db.printDataList(statement);
+	        db.endstatement();
+		}catch(Exception E)
+		{
+			System.out.println("\nNo Matching Records Found!!");
+			return;
+		}
         
-    }
+        System.out.println("-------------------------------------------------------");
+	}
 
-    
-    public static void main(String[] args) throws SQLException
-    {
-        System.out.println("\nRunning ");
-        // System.out.println(patientIDgenerator());
-        //addPatient();
-        displayPatientDetails();
-        //dischargePatient();
-    }
-
+	static void wardWisePatientList()
+	{
+		System.out.println("\n-------------- Wardwise Patient list --------------");
+		System.out.print("Enter Ward No.:");
+		int wardNo = sc.nextInt();
+		
+		//TODO add input check
+		String statement = "SELECT p_id AS PATIENT_ID, p_age AS AGE, p_name AS PATIENT_NAME FROM patient_at_entry WHERE wardname = " + wardNo + " AND isremoved = 'N'";  
+    	db.startstatement();
+    	db.printDataList(statement);
+        db.endstatement();
+        
+        System.out.println("----------------------------------------------------------");
+	}
 }
