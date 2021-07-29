@@ -92,14 +92,16 @@ public class patient_details_after_admit extends Record {
     
     static void addRecord() throws SQLException
     {
-    	System.out.println("\nAdd New Record");
+    	System.out.println("\n-------------- Add a physical test --------------");
     	System.out.print("\nEnter Patient ID : ");
     	String tempID = sc.nextLine();
-//    	if(!patient_at_entry.isPatientExists(tempID))
-//    	{
-//    		System.out.println("Invalid Patient ID!!");
-//    		return;
-//    	}
+    	
+    	if(!patient_at_entry.isPatientExists(tempID))
+    	{
+    		System.out.println("Invalid Patient ID!!");
+    		return;
+    	}
+    	
     	patient_details_after_admit P = new patient_details_after_admit();
     	P.setRecordNo();
     	P.p_id = tempID ;
@@ -107,17 +109,25 @@ public class patient_details_after_admit extends Record {
     	P.setpatient_temp();
     	P.setpatietO2level();
     	P.setpatientcovidlevel();
-//    	P.setPatientStatus();
+    	P.setPatientStatus();
     	String statement = "INSERT INTO patient_phy(rec_no, p_id, p_bg , p_temp , p_O2level , p_covlevel , p_status , p_add_date) VALUES('" + P.rec_no + "','" + P.p_id + "','" + P.p_bg  + "'," + P.p_temp + ","  + P.p_O2level + "," + P.p_covlevel+ ",'" + P.p_status + "'," + " sysdate)";
     	db.startstatement();
     	db.update(statement);
+    	
+    	if(P.p_status == 'C')
+    	{
+    		statement = "UPDATE patient_at_entry SET P_status = 'C' WHERE P_ID = '" + tempID + "'";
+        	db.startstatement();
+    		db.update(statement);
+    	}
     	db.endstatement();
-    	System.out.println("\nNew Record Added Successfully !!");
+    	System.out.println("\nNew Record Added Successfully!!");
     }
     
+    //TODO    
     static void displaycovlist()
     {
-        System.out.println("\n---------------- Covid List ----------------");
+        System.out.println("\n-------------------------- Covid List --------------------------");
 
         String statement = "SELECT P_id, P_temp, P_O2level, P_covlevel FROM patient_phy WHERE p_covlevel > 50";
         
@@ -133,21 +143,22 @@ public class patient_details_after_admit extends Record {
     	System.out.println("-------------------------- Patient Report --------------------------");
     	System.out.print("Enter patient ID: ");
     	String tempID = sc.nextLine();
-//    	if(!patient_at_entry.isPatientExists(tempID))
-//    	{
-//    		System.out.println("Invalid Patient ID!!");
-//    		return;
-//    	}
+    	if(!patient_at_entry.isPatientExists(tempID))
+    	{
+    		System.out.println("Invalid Patient ID!!");
+    		return;
+    	}
     	
     	db.startstatement();
-    	String statement = "SELECT p_add_date, p_id, p_name, p_age FROM Patient_at_Entry WHERE p_id = '"+ tempID + "'";
+    	String statement = "SELECT p_adm_date, p_id, p_name, p_age, p_status FROM Patient_at_Entry WHERE p_id = '"+ tempID + "'";
     	rs = db.execstatement(statement);
     	while(rs.next())
     	{
-    		System.out.println("Patient Adm. Date: " + rs.getString("p_add_date"));
+    		System.out.println("Patient Adm. Date: " + rs.getString("p_adm_date"));
     		System.out.println("Patient ID: " + rs.getString("p_id"));
     		System.out.println("Patient Name: " + rs.getString("p_name"));
     		System.out.println("Patient Age: " + rs.getString("p_age"));
+    		System.out.println("Patient status: " + rs.getString("p_status"));
     	}
         System.out.println("----------------------------------------------------------------------------");
     	statement = "SELECT rec_no AS REC_No, p_add_date AS RECORD_Date_and_Time, p_temp AS TEMP, p_o2level AS O2_lvl, p_covlevel AS Cov_Level FROM patient_phy WHERE p_id = '"+ tempID + "'";
@@ -157,16 +168,5 @@ public class patient_details_after_admit extends Record {
         System.out.println("----------------------------------------------------------------------------");    	
     }
     
-    //TODO
-    static void changePatientStatus()
-    {
-    	
-    }
-    
-    public static void main(String[] args) throws SQLException {
-  	//displaycovlist();
-    	//addRecord();
-//    	displaycovlist();
-    //	displaypatientreport();
-	}
+
 }
