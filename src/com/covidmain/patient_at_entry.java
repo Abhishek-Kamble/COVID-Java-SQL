@@ -170,6 +170,7 @@ public class patient_at_entry extends patientHelper
         String patientadhar = sc.nextLine();
         this.p_adhar = patientadhar;
     }
+
     
     static void addPatient(int wardname) throws SQLException 
     {
