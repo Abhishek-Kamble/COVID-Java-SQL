@@ -474,14 +474,17 @@ class helper{
 	static void recMenu() throws SQLException
 	{
 		int opt = 0;
-        while (opt != 4) 
+        while (opt != 6) 
         {
             System.out.println("\n------------ Welcome to Receptionist Panel ------------\n");
             System.out.println("1. Add new patient.");
             System.out.println("2. Discharge patient.");
             System.out.println("3. Go to Patient Section");
             System.out.println("4. Show patient report");
-            System.out.println("5. Exit");
+            System.out.println("5. Check bed availibility");
+            System.out.println("6. Display all ward status");
+            System.out.println("7. Search a patient");
+            System.out.println("8. Back to dashboard");
             System.out.print("\nEnter opt: ");
             Scanner sc = new Scanner(System.in);
             opt = sc.nextInt();
@@ -503,6 +506,32 @@ class helper{
                 	break;
 
                 case 5:
+                	int temp = ward.checkWardAvailibility();
+                	if(temp == -1)
+                	{
+                		System.out.println("\nSorry! No bed is available at this moment.");
+                	}
+                	else
+                	{
+                		System.out.println("\nBed is available in ward No. " + temp);
+                		System.out.print("Do you want to add new patient(Y/N)?: ");
+                		char res = sc.nextLine().charAt(0); 
+                		if(res == 'Y')
+                			addNewPatient();
+                		else
+                			break;
+                	}
+                	break;
+                	
+                case 6:
+                	ward.displayAllWardStatus();
+                	break;
+                	
+                case 7:
+                	patient_at_entry.searchPatient();
+                	break;
+                
+                case 8:
                 	System.out.println("\nThank You for using COVID management system.");
                 	break;
 
@@ -516,7 +545,12 @@ class helper{
 	static void guestMenu() {
 		// TODO Auto-generated method stub
 		
-	}  
+	}
+	
+	static void nurseMenu()
+	{
+		//TODO
+	}
 }
 
 public class CovidMain extends helper
