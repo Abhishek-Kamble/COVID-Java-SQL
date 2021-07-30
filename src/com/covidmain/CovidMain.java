@@ -459,7 +459,7 @@ class helper{
                     
                 case 5:
                 	wardSec();
-                	
+                	break;
                 case 6:
                 	System.out.println("\nThank You for using COVID management system.");
                 	break;
@@ -510,6 +510,7 @@ class helper{
                 	if(temp == -1)
                 	{
                 		System.out.println("\nSorry! No bed is available at this moment.");
+                		break;
                 	}
                 	else
                 	{
@@ -542,10 +543,47 @@ class helper{
         }
 	}
 	
-	static void guestMenu() {
-		// TODO Auto-generated method stub
+	static void guestMenu() throws SQLException {
+		int opt=0;
+        System.out.println("\n------------- Welcome to Guest Panel -------------\n");
+        System.out.println("1. Display beds availability.");
+        System.out.println("2. Show active Doctors list");
+        System.out.println("3. Wards details in centre");
+        System.out.println("4. Exit");
+        System.out.print("\nEnter opt: ");
+        Scanner sc = new Scanner(System.in);
+        opt = sc.nextInt();
+        switch (opt) {
+            case 1:
+            	int temp = ward.checkWardAvailibility();
+            	if(temp == -1)
+            	{
+            		System.out.println("\nSorry! No bed is available at this moment.");
+            	}
+            	else
+            	{
+            		System.out.println("\nBed is available in ward No. " + temp);
+            	}
+            	break;
+            case 2:
+            	Doctor.displayAllActivedoctors();
+        		break;
+
+            case 3:
+               ward.displayWardDetails();
+               break;
+            	
+            case 4:
+            	System.out.println("\nThank You for using COVID management system.");
+            	break;
+
+            default:
+                System.out.println("\nCaution: Invalid option! \nHandle with care!\n");
+                break;
+        }
+    }
 		
-	}
+	
 	
 	static void nurseMenu()
 	{
