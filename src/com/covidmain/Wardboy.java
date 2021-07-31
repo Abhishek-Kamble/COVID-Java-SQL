@@ -2,7 +2,6 @@ package com.covidmain;
 
 import java.sql.*;
 import java.util.*;
-//function to generate wardboy id
 class wardboyHelper {
     static Dbhelper db = new Dbhelper();
     static ResultSet rs = null;
@@ -23,7 +22,6 @@ class wardboyHelper {
 
     static String wardboyIDgenerator() throws SQLException {
         long wardboyCount = getWardboyCount() + 1;
-//        System.out.println("Wardboy Count: " + wardboyCount);
         String wardboyCountStr = "";
         if (wardboyCount >= 0 && wardboyCount < 10) {
             wardboyCountStr = "00" + String.valueOf(wardboyCount);
@@ -47,7 +45,7 @@ class wardboyHelper {
     static boolean isWardboyExists(String tempWardboyId) throws SQLException
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM wardboy WHERE w_id = '" + tempWardboyId + "')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM wardboy WHERE w_id = '" + tempWardboyId + "' AND isremoved = 'N')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -175,8 +173,8 @@ public class Wardboy extends wardboyHelper {
 
     }
 
-    static void removeWardboy() {
-        System.out.println("**** Remove Wardboy ****");
+    static void removeWardboy() throws SQLException {
+        System.out.println("***			Remove Wardboy		 ***");
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
         
@@ -246,7 +244,7 @@ public class Wardboy extends wardboyHelper {
     
     
     
-    static void changeWardboySlot()
+    static void changeWardboySlot() throws SQLException
     {
     	System.out.println("***Change Wardboy Slot***");
     	System.out.print("Enter Wardboy ID: ");
@@ -286,7 +284,7 @@ public class Wardboy extends wardboyHelper {
     {
     	System.out.println("\n---------------------Change Wardboy Status---------------------");
     	System.out.print("Enter wardboy ID: ");
-        String tempNurseID = sc.nextLine();
+        String tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
