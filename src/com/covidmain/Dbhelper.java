@@ -8,7 +8,7 @@ public class Dbhelper {
 	static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:XE";
 		
 	static final String USER = "system";
-	static final String PASS = "shital2901";
+	static final String PASS = "oracle123";
 	
 	// SQL Environment Setup
 	static Connection conn = null;
@@ -20,10 +20,10 @@ public class Dbhelper {
 		try {
 			Class.forName(JDBC_DRIVER);
 
-			System.out.print("Connecting to database...");
-	        Thread.sleep(1000); // Just to give the user a chance to see "hello".
+			System.out.print("Connecting to DB...");
+	        Thread.sleep(1000); 
 	        System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-	        System.out.println("                                                 \n");
+	        System.out.println("                                                 ");
 		    this.conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			}catch(SQLException se){
 		      //Handle errors for JDBC
