@@ -56,7 +56,7 @@ class Doctorhelper{
     static boolean isDoctorExists(String tempDoctorId) throws SQLException
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM Doctor WHERE D_id = '" + tempDoctorId + "')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM Doctor WHERE D_id = '" + tempDoctorId + "' AND isremoved = 'N')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
