@@ -143,7 +143,7 @@ public class patient_details_after_admit extends Record {
     	System.out.println("-------------------------- Patient Report --------------------------");
     	System.out.print("Enter patient ID: ");
     	String tempID = sc.nextLine();
-    	if(!patient_at_entry.isPatientExists(tempID))
+    	if(!patient_at_entry.isPatientExistsandRemoved(tempID))
     	{
     		System.out.println("Invalid Patient ID!!");
     		return;
