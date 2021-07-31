@@ -62,41 +62,59 @@ public class ward extends wardHelper{
         this.wardname = getWardCount() + 1;
     }
 
-    void set_ward_type() {
-        System.out.print("\nEnter the (E/N) type of ward: ");
-        String wardEN = sc.nextLine();
-        this.W_type = wardEN;
-    }
-
     void set_ward_capacity() {
-        System.out.print("\nEnter capacity of ward: ");
+        System.out.print("\n		Enter capacity of ward: ");
         int capacity = sc.nextInt();
         this.W_Capacity = capacity;
     }
 
-  //TODO Adding isExist Checkers
-    void setDoctor() {
+    void setDoctor() throws SQLException {
     	sc.nextLine();
-        System.out.print("\nEnter doctor ID for ward: ");
+        System.out.print("\n		Enter doctor ID for ward: ");
         String wardABCD = sc.nextLine();
         this.Doctor1 = wardABCD;
+        if(Nurse.isNurseExists(wardABCD))
+        {
+            this.nurse1 = wardABCD;
+        }
+        else
+        {
+        	System.out.println("\n		Invalid Doctor ID or Nurse doesn't exitst! Please Renter Doctor Id");
+        	setDoctor();
+        }        
     }
 
-    void setNurse1() {
-        System.out.print("\nEnter nurse 1 ID: ");
+    void setNurse1() throws SQLException {
+        System.out.print("\nEnter Nurse 1 ID: ");
         String nid = sc.nextLine();
-        this.nurse1 = nid;
+        if(Nurse.isNurseExists(nid))
+        {
+            this.nurse1 = nid;
+        }
+        else
+        {
+        	System.out.println("\n		Invalid Nurse ID or Nurse doesn't exitst! Please Renter Nurse Id");
+        	setNurse1();
+        }
     }
 
-    void setWardboy1() {
+    void setWardboy1() throws SQLException {
         System.out.print("\nEnter wardboy 1 ID: ");
         String nid = sc.nextLine();
-        this.wardboy1 = nid;
+        
+        if(Wardboy.isWardboyExists(nid))
+        {
+        	this.wardboy1 = nid;
+        }
+        else
+        {
+        	System.out.println("\n		Invalid Wardboy ID or Wardboy doesn't exitst! Please Renter Doctor Id");
+        	setWardboy1();
+        }
     }
 
     static int checkWardAvailibility() throws SQLException
     {
-
 		int res = -1;
 		String statement = "SELECT wardname FROM ward WHERE w_capacity > no_of_beds_full";
 		db.startstatement();
@@ -127,7 +145,6 @@ public class ward extends wardHelper{
         System.out.print("\nEnter Ward No.    : ");
         int tempNurseID = sc.nextInt();
 
-        //TODO checker
 //        if()
 //        {
 //        	System.out.println("Invalid Ward No.!!!");
@@ -140,7 +157,6 @@ public class ward extends wardHelper{
     	rs = db.execstatement(statement);
     	while(rs.next()){
             System.out.println("Ward No.		: " + rs.getInt("wardname"));
-            System.out.println("Ward Type		: " + rs.getString("W_type"));
             System.out.println("Ward Capacity	: " + rs.getString("W_Capacity"));
             System.out.println("No Of Beds Full	: " + rs.getString("No_Of_Beds_Full"));
             System.out.println("Ward Doctor     : " + rs.getString("Doctor1"));
@@ -156,13 +172,12 @@ public class ward extends wardHelper{
     	System.out.println("\n------------ Create a New Ward ------------");
         ward W = new ward();
         W.set_ward_name();
-        W.set_ward_type();
         W.set_ward_capacity();
         W.setDoctor();
         W.setNurse1();
         W.setWardboy1();
-        String statement = "INSERT INTO ward(wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, nurse1, wardboy1) VALUES("
-                + W.wardname + ",'" + W.W_type + "'," + W.W_Capacity + "," + W.No_Of_Beds_Full + ",'" + W.Doctor1 + "','" + W.nurse1
+        String statement = "INSERT INTO ward(wardname, W_Capacity, No_Of_Beds_Full, Doctor1, nurse1, wardboy1) VALUES("
+                + W.wardname + "," + W.W_Capacity + "," + W.No_Of_Beds_Full + ",'" + W.Doctor1 + "','" + W.nurse1
                 + "','" + W.wardboy1 + "',)";
         db.startstatement();
         db.update(statement);
@@ -170,5 +185,8 @@ public class ward extends wardHelper{
         System.out.println("\n---------New ward No."+ W.wardname + " created successfully!---------");
     }
 
-    
+    void editWard()
+    {
+    	
+    }
 }
