@@ -71,9 +71,8 @@ class helper{
             System.out.println("		4. Exit");
 
             System.out.print("\nSelect opt to LOG IN: ");
-            opt = sc.nextInt();
-            sc.nextLine();
-
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);
             switch(opt)
             {
             	case 1:
@@ -169,7 +168,8 @@ class helper{
     		System.out.println("		6. Get patient report");
     		System.out.println("		7. Back to Employee Sec");
             System.out.print("\n		Enter opt: ");
-            opt = sc.nextInt();
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);;
             switch (opt) {
             	case 1:
             		clearScreen();
@@ -235,7 +235,8 @@ class helper{
     		System.out.println("		6. Remove a Doctor");
     		System.out.println("		7. Back to Employee Section ");
             System.out.print("\n		Enter opt: ");
-            opt = sc.nextInt();
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);
             switch (opt) {
             	case 1:
             		clearScreen();
@@ -301,7 +302,8 @@ class helper{
     		System.out.println("		6. Remove a Nurse");
     		System.out.println("		7. Back to Employee Section ");
             System.out.print("\n		Enter opt: ");
-            opt = sc.nextInt();
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);;
             switch (opt) {
             	case 1:
             		clearScreen();
@@ -368,7 +370,8 @@ class helper{
     		System.out.println("		6. Remove a Wardboy");
     		System.out.println("		7. Back to Employee Section ");
             System.out.print("\n		Enter opt: ");
-            opt = sc.nextInt();
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);;
             switch (opt) {
             	case 1:
             		clearScreen();
@@ -431,8 +434,8 @@ class helper{
     		System.out.println("		3. WardBoy Sec.");
     		System.out.println("		4. Back to Main Menu ");
             System.out.print("\nEnter opt: ");
-            Scanner sc = new Scanner(System.in);
-            opt = sc.nextInt();
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);;
             switch (opt) {
             	case 1:
             		clearScreen();
@@ -481,8 +484,9 @@ class helper{
             System.out.println("		4. Display a Ward Details");
             System.out.println("		5. Back to Main menu");
             System.out.print("\nEnter opt: ");
-            Scanner sc = new Scanner(System.in);
-            opt = sc.nextInt();
+            
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);;
             switch (opt) {
                 case 1:
                 	clearScreen();
@@ -541,8 +545,8 @@ class helper{
             System.out.println("		5. Go to Wards Section");
             System.out.println("		6. Exit");
             System.out.print("\n		Enter opt: ");
-            Scanner sc = new Scanner(System.in);
-            opt = sc.nextInt();
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);
             switch (opt) {
                 case 1:
                 	clearScreen();
@@ -603,7 +607,8 @@ class helper{
             System.out.println("		7. Search a patient");
             System.out.println("		8. Exit");
             System.out.print("\n		Enter opt: ");
-            Scanner sc = new Scanner(System.in);
+            char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);
             opt = sc.nextInt();
             switch (opt) {
                 case 1:
@@ -686,8 +691,9 @@ class helper{
 	        System.out.println("		3. Wards details in centre");
 	        System.out.println("		4. Exit");
 	        System.out.print("\n		Enter opt: ");
-	        Scanner sc = new Scanner(System.in);
-	        opt = sc.nextInt();
+	        char tmp = sc.next().charAt(0);
+            opt = Character.getNumericValue(tmp);
+
 	        switch (opt) {
 	            case 1:
 	            	clearScreen();
