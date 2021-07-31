@@ -49,7 +49,7 @@ class nurseHelper
     static boolean isNurseExists(String tempNurseId) throws SQLException
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM nurse WHERE n_id = '" + tempNurseId + "')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM nurse WHERE n_id = '" + tempNurseId + "' AND isremoved = 'N')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -118,7 +118,7 @@ public class Nurse extends nurseHelper {
             this.N_phone = nurseMob;
         } else {
             System.out.println("Invalid Mobile No.!!!");
-            System.out.print("Press ENTER!!");
+            System.out.print("Press ENTER to input mobile number again!!");
             setNursePhone();
         }
     }
@@ -239,7 +239,7 @@ public class Nurse extends nurseHelper {
         	return;
         }
         
-        String statement = "SELECT n_id, n_name FROM nurse WHERE isremoved = 'N' AND N_slot = '" + tempSlot + "'";  
+        String statement = "SELECT n_id AS Nurse_ID, n_name AS NURSE_NAME FROM nurse WHERE isremoved = 'N' AND N_slot = '" + tempSlot + "'";  
     	db.startstatement();
     	db.printDataList(statement);
         db.endstatement();
@@ -272,7 +272,7 @@ public class Nurse extends nurseHelper {
 
     static void displayAllActiveNurse()
     {
-    	String statement = "SELECT n_id, n_slot, n_name FROM nurse WHERE isremoved = 'N' AND n_status = 'A' ";  
+    	String statement = "SELECT n_id AS Nurse_ID, n_slot AS Slot, n_name AS NURSE_NAME FROM nurse WHERE isremoved = 'N' AND n_status = 'A' ";  
     	db.startstatement();
     	db.printDataList(statement);
         db.endstatement();
