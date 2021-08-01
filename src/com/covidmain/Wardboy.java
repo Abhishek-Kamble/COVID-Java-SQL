@@ -6,21 +6,25 @@ class wardboyHelper {
     static Dbhelper db = new Dbhelper();
     static ResultSet rs = null;
 
-    static long getWardboyCount() throws SQLException
+    static long getWardboyCount()
     {
     	long wardboy_id = 0;
     	String statement = "SELECT COUNT(W_ID) as Count FROM wardboy";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-        wardboy_id = rs.getInt("Count");
+        try {
+			rs.next();
+	        wardboy_id = rs.getInt("Count");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return wardboy_id;
     }
 
     static String wardboyID = "";
 
-    static String wardboyIDgenerator() throws SQLException {
+    static String wardboyIDgenerator(){
         long wardboyCount = getWardboyCount() + 1;
         String wardboyCountStr = "";
         if (wardboyCount >= 0 && wardboyCount < 10) {
@@ -42,15 +46,19 @@ class wardboyHelper {
     }
     
     
-    static boolean isWardboyExists(String tempWardboyId) throws SQLException
+    static boolean isWardboyExists(String tempWardboyId)
     {
     	long cnt = 0;
     	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM wardboy WHERE w_id = '" + tempWardboyId + "' AND w_status = 'A')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-		cnt=rs.getInt("Count");
+        try {
+			rs.next();
+			cnt=rs.getInt("Count");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		if(cnt>0)
 			return true;
@@ -83,7 +91,7 @@ public class Wardboy extends wardboyHelper {
 
     static Scanner sc = new Scanner(System.in);
 
-    void setWardboyID() throws SQLException {
+    void setWardboyID(){
         String tempW_ID = wardboyIDgenerator();
         if (tempW_ID == "") {
             System.out.println( CovidMain.RED + "		Error!! Can't set Wardboy ID" + CovidMain.RESET);
@@ -147,7 +155,7 @@ public class Wardboy extends wardboyHelper {
         }
     } 
     
-    static void addWardboy() throws SQLException {
+    static void addWardboy(){
         Wardboy W = new Wardboy();
         W.setWardboyID();
         W.setWardboyName();
@@ -166,7 +174,7 @@ public class Wardboy extends wardboyHelper {
 
     }
 
-    static void removeWardboy() throws SQLException {
+    static void removeWardboy(){
         System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Remove Wardboy -----------------------" + CovidMain.RESET);
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
@@ -185,7 +193,7 @@ public class Wardboy extends wardboyHelper {
 
     }
 
-    public static void displayWardboyDetails() throws SQLException {
+    public static void displayWardboyDetails(){
         System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Display Wardboy Details -----------------------" + CovidMain.RESET);
         System.out.print(CovidMain.YELLOW + "\n		Enter Wardboy ID    : " + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
@@ -199,16 +207,20 @@ public class Wardboy extends wardboyHelper {
         String statement = "SELECT w_id, w_name, w_slot, w_phone, w_add, isremoved, w_status, W_add_date FROM wardboy WHERE W_ID = '" + tempWardboyID + "'";
         db.startstatement();
     	rs = db.execstatement(statement);
-        while (rs.next()) {
-            System.out.println("Wardboy ID			: " + CovidMain.BLUE_BOLD + rs.getString("W_ID") + CovidMain.RESET);
-            System.out.println("Wardboy Name		: " + rs.getString("W_name"));
-            System.out.println("Wardboy Slot 		: " + rs.getInt("W_slot"));
-            System.out.println("Wardboy Phone No. 	: " + rs.getString("W_phone"));
-            System.out.println("Wardboy Add. 		: " + rs.getString("W_add"));
-            System.out.println("Wardboy Removed?	: " + rs.getString("isremoved"));
-            System.out.println("Wardboy Status    	: " + rs.getString("W_status"));
-            System.out.println("Wardboy Added Date    : " + rs.getString("W_add_date"));
-        }
+        try {
+			while (rs.next()) {
+			    System.out.println("Wardboy ID			: " + CovidMain.BLUE_BOLD + rs.getString("W_ID") + CovidMain.RESET);
+			    System.out.println("Wardboy Name		: " + rs.getString("W_name"));
+			    System.out.println("Wardboy Slot 		: " + rs.getInt("W_slot"));
+			    System.out.println("Wardboy Phone No. 	: " + rs.getString("W_phone"));
+			    System.out.println("Wardboy Add. 		: " + rs.getString("W_add"));
+			    System.out.println("Wardboy Removed?	: " + rs.getString("isremoved"));
+			    System.out.println("Wardboy Status    	: " + rs.getString("W_status"));
+			    System.out.println("Wardboy Added Date    : " + rs.getString("W_add_date"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         db.endstatement();
         System.out.println("----------------------------------------------------");
     }
@@ -233,7 +245,7 @@ public class Wardboy extends wardboyHelper {
         System.out.println("-----------------------------------------------------------");
     }
    
-    static void changeWardboySlot() throws SQLException
+    static void changeWardboySlot()
     {
     	System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Change Wardboy Slot -----------------------" + CovidMain.RESET);
     	System.out.print(CovidMain.YELLOW + "		Enter Wardboy ID: "  + CovidMain.RESET);

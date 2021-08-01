@@ -8,15 +8,21 @@ class Record{
 	static Dbhelper db = new Dbhelper();
 	static ResultSet rs = null;
 	
-	static long getRecCount() throws SQLException
+	static long getRecCount()
     {
     	long rec_no = 0;
     	String statement = "SELECT COUNT(rec_no) as Count FROM patient_phy";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-		rec_no=rs.getInt("Count");
+        
+		try {
+			rs.next();
+			rec_no=rs.getInt("Count");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return rec_no;
     }
 
@@ -43,7 +49,7 @@ public class patient_details_after_admit extends Record {
 
     static Scanner sc = new Scanner(System.in);
 
-    void setRecordNo() throws SQLException
+    void setRecordNo()
     {
     	this.rec_no = String.valueOf(getRecCount()+1);
     }
@@ -90,7 +96,7 @@ public class patient_details_after_admit extends Record {
         }
     }
     
-    static void addRecord() throws SQLException
+    static void addRecord() 
     {
     	System.out.println("\n-------------- Add a physical test --------------");
     	System.out.print("\nEnter Patient ID : ");
@@ -138,7 +144,7 @@ public class patient_details_after_admit extends Record {
         System.out.println("-----------------------------------------------");
     }
     
-    static void displaypatientreport() throws SQLException
+    static void displaypatientreport()
     {
     	System.out.println("-------------------------- Patient Report --------------------------");
     	System.out.print("Enter patient ID: ");
@@ -152,14 +158,19 @@ public class patient_details_after_admit extends Record {
     	db.startstatement();
     	String statement = "SELECT p_adm_date, p_id, p_name, p_age, p_status FROM Patient_at_Entry WHERE p_id = '"+ tempID + "'";
     	rs = db.execstatement(statement);
-    	while(rs.next())
-    	{
-    		System.out.println("Patient Adm. Date: " + rs.getString("p_adm_date"));
-    		System.out.println("Patient ID: " + rs.getString("p_id"));
-    		System.out.println("Patient Name: " + rs.getString("p_name"));
-    		System.out.println("Patient Age: " + rs.getString("p_age"));
-    		System.out.println("Patient status: " + rs.getString("p_status"));
-    	}
+    	try {
+			while(rs.next())
+			{
+				System.out.println("Patient Adm. Date: " + rs.getString("p_adm_date"));
+				System.out.println("Patient ID: " + rs.getString("p_id"));
+				System.out.println("Patient Name: " + rs.getString("p_name"));
+				System.out.println("Patient Age: " + rs.getString("p_age"));
+				System.out.println("Patient status: " + rs.getString("p_status"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         System.out.println("----------------------------------------------------------------------------");
     	statement = "SELECT rec_no AS REC_No, p_add_date AS RECORD_Date_and_Time, p_temp AS TEMP, p_o2level AS O2_lvl, p_covlevel AS Cov_Level FROM patient_phy WHERE p_id = '"+ tempID + "'";
     	db.printDataList(statement);

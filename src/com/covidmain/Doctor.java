@@ -53,15 +53,20 @@ class Doctorhelper{
         return doctorID;
     }
     
-    static boolean isDoctorExists(String tempDoctorId) throws SQLException
+    static boolean isDoctorExists(String tempDoctorId)
     {
     	long cnt = 0;
     	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM doctor WHERE D_id = '" + tempDoctorId + "' AND d_status = 'A')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-		cnt=rs.getInt("Count");
+        try {
+			rs.next();
+			cnt=rs.getInt("Count");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if(cnt>0)
 			return true;
@@ -173,7 +178,7 @@ public class Doctor extends Doctorhelper
 	        }
 	    }
 
-	    static void addDoctor() throws SQLException 
+	    static void addDoctor()
 	    {
 	        Doctor D = new Doctor();
 	        D.setDoctorID();
@@ -192,7 +197,7 @@ public class Doctor extends Doctorhelper
 
 	    }
 	    
-	    static void removeDoctor() throws SQLException 
+	    static void removeDoctor()
 	    {
 	    	System.out.println(CovidMain.YELLOW_BOLD + "\n--------------------- Remove Doctor ---------------------" + CovidMain.RESET);
 	        System.out.print(CovidMain.YELLOW + "\n		Enter Doctor ID    : " + CovidMain.RESET);
@@ -213,7 +218,7 @@ public class Doctor extends Doctorhelper
 			System.out.println("-------------------------------------------------------");
 	    }
 	    
-	    static void displayDoctorDetails() throws SQLException 
+	    static void displayDoctorDetails()
 	    {
             sc.nextLine();
 			System.out.println(CovidMain.PURPLE_BOLD + "\n------------------- Display Doctor Details ------------------" + CovidMain.RESET);
@@ -230,23 +235,28 @@ public class Doctor extends Doctorhelper
 
 	    	db.startstatement();
 	    	rs = db.execstatement(statement);
-	    	while(rs.next()){
-	            System.out.println("Doctor ID		: " + CovidMain.BLUE_BOLD + rs.getString("D_ID") + CovidMain.RESET);
-	            System.out.println("Doctor Name		: " + rs.getString("D_name"));
-	            System.out.println("Doctor Slot 		: " + rs.getInt("D_slot"));
-	            System.out.println("Doctor Phone No. : " + rs.getString("D_phone"));
-	            System.out.println("Doctor Add. 		: " + rs.getString("D_add"));
-	            System.out.println("Doctor E-mail	: " + rs.getString("D_mail"));
-	            System.out.println("Doctor Removed?	: " + rs.getString("isremoved"));
-	            System.out.println("Doctor Status    : " + rs.getString("D_status"));
-	            System.out.println("Doctor Added Date    : " + rs.getString("D_add_date"));
-	         }
+	    	try {
+				while(rs.next()){
+				    System.out.println("Doctor ID		: " + CovidMain.BLUE_BOLD + rs.getString("D_ID") + CovidMain.RESET);
+				    System.out.println("Doctor Name		: " + rs.getString("D_name"));
+				    System.out.println("Doctor Slot 		: " + rs.getInt("D_slot"));
+				    System.out.println("Doctor Phone No. : " + rs.getString("D_phone"));
+				    System.out.println("Doctor Add. 		: " + rs.getString("D_add"));
+				    System.out.println("Doctor E-mail	: " + rs.getString("D_mail"));
+				    System.out.println("Doctor Removed?	: " + rs.getString("isremoved"));
+				    System.out.println("Doctor Status    : " + rs.getString("D_status"));
+				    System.out.println("Doctor Added Date    : " + rs.getString("D_add_date"));
+				 }
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        db.endstatement(); 
 			
 	        System.out.println("-----------------------------------------------");
 		}
 	    
-	    static void changeDoctorSlot() throws SQLException
+	    static void changeDoctorSlot()
 	    {
 	    	System.out.println(CovidMain.PURPLE_BOLD + "\n---------------------Change Doctor Slot---------------------" + CovidMain.RESET);
 	    	System.out.print(CovidMain.YELLOW + "\n 		Enter Doctor ID: " + CovidMain.RESET);

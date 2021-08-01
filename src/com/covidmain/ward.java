@@ -8,15 +8,19 @@ class wardHelper{
 	static Dbhelper db = new Dbhelper();
     static ResultSet rs = null;
     
-    static int getWardCount() throws SQLException
+    static int getWardCount()
     {
     	int wardcount = 0;
     	String statement = "SELECT COUNT(wardname) as Count FROM ward";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-        wardcount = rs.getInt("Count");
+        try {
+			rs.next();
+	        wardcount = rs.getInt("Count");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return wardcount;
     }
     
@@ -35,15 +39,19 @@ class wardHelper{
     	db.endupdate();
     }
     
-    static boolean isWardExists(int wardname) throws SQLException
+    static boolean isWardExists(int wardname)
     {
     	long cnt = 0;
     	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM ward WHERE wardname = " + wardname + ")";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-		cnt=rs.getInt("Count");
+        try {
+			rs.next();
+			cnt=rs.getInt("Count");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		if(cnt>0)
 			return true;
@@ -74,7 +82,7 @@ public class ward extends wardHelper{
 
     static Scanner sc = new Scanner(System.in);
 
-    void set_ward_name() throws SQLException {
+    void set_ward_name(){
         this.wardname = getWardCount() + 1;
     }
 
@@ -84,7 +92,7 @@ public class ward extends wardHelper{
         this.W_Capacity = capacity;
     }
 
-    void setDoctor() throws SQLException {
+    void setDoctor(){
     	sc.nextLine();
         System.out.print(CovidMain.YELLOW + "\n		Enter doctor ID for ward: " + CovidMain.RESET);
         String wardABCD = sc.nextLine();
@@ -100,7 +108,7 @@ public class ward extends wardHelper{
         }        
     }
 
-    void setNurse1() throws SQLException {
+    void setNurse1(){
         System.out.print(CovidMain.YELLOW + "\n		Enter Nurse 1 ID: " + CovidMain.RESET);
         String nid = sc.nextLine();
         if(Nurse.isNurseExists(nid))
@@ -114,7 +122,7 @@ public class ward extends wardHelper{
         }
     }
 
-    void setWardboy1() throws SQLException {
+    void setWardboy1(){
         System.out.print("\n		Enter wardboy 1 ID: ");
         String nid = sc.nextLine();
         
@@ -129,15 +137,20 @@ public class ward extends wardHelper{
         }
     }
 
-    static int checkWardAvailibility() throws SQLException
+    static int checkWardAvailibility() 
     {
 		int res = -1;
 		String statement = "SELECT wardname FROM ward WHERE w_capacity > no_of_beds_full";
 		db.startstatement();
 		rs = db.execstatement(statement);
-		while(rs.next())
-		{
-			res = rs.getInt("wardname");
+		try {
+			while(rs.next())
+			{
+				res = rs.getInt("wardname");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		if(res > 0)
@@ -156,7 +169,7 @@ public class ward extends wardHelper{
         System.out.println("---------------------------------------------------------------------");
     }
     
-    static void displayWardDetails() throws SQLException {
+    static void displayWardDetails(){
 		System.out.println(CovidMain.PURPLE_BOLD + "\n-------------------- Display Ward Details --------------------" + CovidMain.RESET);
         System.out.print("\nEnter Ward No.    : ");
         int tempNurseID = sc.nextInt();
@@ -171,20 +184,24 @@ public class ward extends wardHelper{
 
     	db.startstatement();
     	rs = db.execstatement(statement);
-    	while(rs.next()){
-            System.out.println("Ward No.		: " + rs.getInt("wardname"));
-            System.out.println("Ward Capacity	: " + rs.getString("W_Capacity"));
-            System.out.println("No Of Beds Full	: " + rs.getString("No_Of_Beds_Full"));
-            System.out.println("Ward Doctor     : " + rs.getString("Doctor1"));
-            System.out.println("Ward Nurse 1	: " + rs.getString("Nurse1"));
-            System.out.println("Wardboy 1       : " + rs.getString("Wardboy1"));
-         }
+    	try {
+			while(rs.next()){
+			    System.out.println("Ward No.		: " + rs.getInt("wardname"));
+			    System.out.println("Ward Capacity	: " + rs.getString("W_Capacity"));
+			    System.out.println("No Of Beds Full	: " + rs.getString("No_Of_Beds_Full"));
+			    System.out.println("Ward Doctor     : " + rs.getString("Doctor1"));
+			    System.out.println("Ward Nurse 1	: " + rs.getString("Nurse1"));
+			    System.out.println("Wardboy 1       : " + rs.getString("Wardboy1"));
+			 }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         db.endstatement(); 
 		
         System.out.println("------------------------------------------------------------------");
 	}
 
-    static void create_ward() throws SQLException {
+    static void create_ward(){
     	System.out.println(CovidMain.PURPLE_BOLD + "\n-------------------- Create a New Ward --------------------" + CovidMain.RESET);
         ward W = new ward();
         W.set_ward_name();

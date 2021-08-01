@@ -73,10 +73,10 @@ class helper {
 		}
 	}
 
-	static boolean adminLogin() throws InterruptedException, IOException {
+	static boolean adminLogin(){
 		clearScreen();
 		System.out.println(BLUE_BOLD + "***			Admin Login Prompt		 ***" + RESET);
-		String sysUser = "admin", sysPass = "adminPass";
+		String sysUser = "admin", sysPass = "admin";
 		System.out.print("\n			Enter USERNAME: ");
 		String user = sc.nextLine();
 
@@ -97,12 +97,10 @@ class helper {
 	}
 
 	static boolean recLogin() {
-		
-			clearScreen();
-		
-		String sysUser = "reception", sysPass = "receptionPass";
+		clearScreen();
+		String sysUser = "reception", sysPass = "reception";
 		System.out.println(BLUE_BOLD + "***			Reception Login Prompt		 ***" + RESET);
-		System.out.print("			Enter USERNAME: ");
+		System.out.println("			Enter USERNAME: ");
 		String user = sc.nextLine();
 
 		Console console = System.console();
@@ -121,7 +119,7 @@ class helper {
 		}
 	}
 
-	static int login() throws InterruptedException, IOException {
+	static int login(){
 		Scanner sc = new Scanner(System.in);
 		int opt = 0;
 		while (opt != 4) {
@@ -184,7 +182,7 @@ class helper {
 		}
 	}
 
-	static void addNewPatient() throws SQLException {
+	static void addNewPatient() {
 		int wardEnquiry = ward.checkWardAvailibility();
 		if (wardEnquiry == -1) {
 			System.out.println(RED + "Sorry! No bed is available at current situation." + RESET);
@@ -196,7 +194,7 @@ class helper {
 		System.out.println("\n-------------------------------------------------------");
 	}
 
-	static void dischargePatient() throws SQLException {
+	static void dischargePatient() {
 		System.out.println(CYAN_BOLD + "\n-----------------  Discharge Patient  -----------------" + RESET);
 		System.out.print("\nEnter Patient ID    : ");
 		String tempPatientID = sc.nextLine();
@@ -214,7 +212,7 @@ class helper {
 		System.out.println(GREEN + "\nPatient discharged successfully!! ID: " + tempPatientID + RESET);
 	}
 
-	static void patientSec() throws SQLException, InterruptedException, IOException {
+	static void patientSec(){
 		int opt = 0;
 		while (opt != 7) {
 			System.out.println(CYAN_BOLD + "\n  -------------- Patient Section --------------" + RESET);
@@ -281,7 +279,7 @@ class helper {
 		}
 	}
 
-	static void doctorSec() throws SQLException, InterruptedException, IOException {
+	static void doctorSec(){
 		int opt = 0;
 		while (opt != 7) {
 			System.out.println(CYAN_BOLD + "\n  -------------- Doctor Section --------------" + RESET);
@@ -347,10 +345,10 @@ class helper {
 		}
 	}
 
-	static void nurseSec() throws SQLException, InterruptedException, IOException {
+	static void nurseSec(){
 		int opt = 0;
 		while (opt != 8) {
-			System.out.println("CYAN_BOLD + \n-------------- Nurse Section --------------" + RESET);
+			System.out.println(CYAN_BOLD + "\n----------------- Nurse Section -----------------" + RESET);
 			System.out.println("		1. Add a new Nurse");
 			System.out.println("		2. Display Nurse List Slotwise");
 			System.out.println("		3. Display Active Nurse's List");
@@ -362,7 +360,6 @@ class helper {
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
 			opt = Character.getNumericValue(tmp);
-			;
 			switch (opt) {
 			case 1:
 				clearScreen();
@@ -422,7 +419,7 @@ class helper {
 		}
 	}
 
-	static void wardBoySec() throws SQLException, InterruptedException, IOException {
+	static void wardBoySec(){
 		int opt = 0;
 		while (opt != 7) {
 			System.out.println(CYAN_BOLD + "\n  -------------- Wardboy Section --------------" + RESET);
@@ -489,7 +486,7 @@ class helper {
 		}
 	}
 
-	static void employeeSec() throws SQLException, InterruptedException, IOException {
+	static void employeeSec(){
 		int opt = 0;
 		while (opt != 4) {
 			System.out.println(CYAN_BOLD + "\n  -------------- Employee Section --------------" + RESET);
@@ -537,7 +534,7 @@ class helper {
 
 	}
 
-	static void wardSec() throws SQLException, InterruptedException, IOException {
+	static void wardSec(){
 		int opt = 0;
 		while (opt != 5) {
 			System.out.println(CYAN_BOLD + "\n  ------------ Welcome to Ward Section ------------\n" + RESET);
@@ -596,7 +593,7 @@ class helper {
 		}
 	}
 
-	static void adminMenu() throws SQLException, InterruptedException, IOException {
+	static void adminMenu(){
 		int opt = 0;
 		while (opt != 6) {
 			System.out.println(CYAN + "\n-------------- Welcome to Admin Panel --------------\n" + RESET);
@@ -654,7 +651,7 @@ class helper {
 		}
 	}
 
-	static void recMenu() throws SQLException, InterruptedException, IOException {
+	static void recMenu(){
 		int opt = 0;
 		while (opt != 9) {
 			System.out.println(CYAN_BOLD + "\n------------ Welcome to Receptionist Panel ------------\n" + RESET);
@@ -665,7 +662,7 @@ class helper {
 			System.out.println("		5. Check bed availibility");
 			System.out.println("		6. Display all ward status");
 			System.out.println("		7. Search a patient");
-			System.out.println("        8. Change Nurse Status");
+			System.out.println("		8. Change Nurse Status");
 			System.out.println("		9. Exit");
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
@@ -741,7 +738,7 @@ class helper {
 		}
 	}
 
-	static void guestMenu() throws SQLException, InterruptedException, IOException {
+	static void guestMenu(){
 		int opt = 0;
 		while (opt != 4) {
 			System.out.println(CYAN_BOLD + "\n  ------------- Welcome to Guest Panel -------------\n" + RESET);

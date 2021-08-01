@@ -51,31 +51,42 @@ class patientHelper {
         return patientID;
     }
     
-    static boolean isPatientExists(String tempPatientId) throws SQLException
+    static boolean isPatientExists(String tempPatientId) 
     {
     	long cnt = 0;
     	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM patient_at_entry WHERE p_id = '" + tempPatientId + "')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-		cnt=rs.getInt("Count");
-		
+        try {
+			rs.next();
+			cnt=rs.getInt("Count");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		if(cnt>0)
 			return true;
 		else
 			return false;
     }   
 
-    static boolean isPatientExistsandRemoved(String tempPatientId) throws SQLException
+    static boolean isPatientExistsandRemoved(String tempPatientId)
     {
     	long cnt = 0;
     	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM patient_at_entry WHERE p_id = '" + tempPatientId + "' AND isremoved = 'N')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
-        rs.next();
-		cnt=rs.getInt("Count");
+        try {
+			rs.next();
+			cnt=rs.getInt("Count");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		if(cnt>0)
 			return true;
@@ -194,7 +205,7 @@ public class patient_at_entry extends patientHelper
         
     }
 
-    static void displayPatientDetails() throws SQLException
+    static void displayPatientDetails()
     {
     	System.out.println("\n----------- Display Patient Details -----------");
         System.out.print("\nEnter Patient ID    : ");
@@ -211,23 +222,28 @@ public class patient_at_entry extends patientHelper
 
         db.startstatement();
         rs = db.execstatement(statement);
-        while (rs.next())
-        {
-            System.out.println("Patient ID   : " + rs.getString("p_ID"));
-            System.out.println("Patient Name   : " + rs.getString("p_name"));
-            System.out.println("Patient Age.   : " + rs.getString("p_age"));
-            System.out.println("Patient Phone No.   : " + rs.getString("p_phone"));
-            System.out.println("Patient Add.   : " + rs.getString("p_add"));
-             System.out.println("Patient Status   : " + rs.getString("p_Status"));
-             System.out.println("Patient Adhar   : " + rs.getString("p_adhar"));
-             System.out.println("Patient Admit Date   : " + rs.getString("P_adm_date"));
-        }
+        try {
+			while (rs.next())
+			{
+			    System.out.println("Patient ID   : " + rs.getString("p_ID"));
+			    System.out.println("Patient Name   : " + rs.getString("p_name"));
+			    System.out.println("Patient Age.   : " + rs.getString("p_age"));
+			    System.out.println("Patient Phone No.   : " + rs.getString("p_phone"));
+			    System.out.println("Patient Add.   : " + rs.getString("p_add"));
+			     System.out.println("Patient Status   : " + rs.getString("p_Status"));
+			     System.out.println("Patient Adhar   : " + rs.getString("p_adhar"));
+			     System.out.println("Patient Admit Date   : " + rs.getString("P_adm_date"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         db.endstatement();
 
         System.out.println("-------------------------------------------------");
     }
 
-    static void dischargePatient(String tempPatientID) throws SQLException  
+    static void dischargePatient(String tempPatientID) 
     {
         db.startstatement();
         String statement = "UPDATE patient_at_entry SET isremoved = 'Y', p_dis_date = SYSDATE WHERE P_ID = '" + tempPatientID +"'";
