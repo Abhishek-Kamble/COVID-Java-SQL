@@ -38,7 +38,7 @@ class helper {
 			try {
 				Thread.sleep(500);
 			} catch (Exception E) {
-				System.out.println("Error!");
+				System.out.println(RED + "Error!" + RESET);
 			}
 			System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 			System.out.print("                         ");
@@ -100,7 +100,7 @@ class helper {
 		clearScreen();
 		String sysUser = "reception", sysPass = "reception";
 		System.out.println(BLUE_BOLD + "***			Reception Login Prompt		 ***" + RESET);
-		System.out.println("			Enter USERNAME: ");
+		System.out.print("			Enter USERNAME: ");
 		String user = sc.nextLine();
 
 		Console console = System.console();
@@ -792,7 +792,7 @@ class helper {
 
 public class CovidMain extends helper {
 
-	public static void main(String[] args) throws SQLException, InterruptedException, IOException {
+	public static void main(String[] args){
 		clearScreen();
 		System.out.println(CYAN_BOLD + "------------ Welcome to COVID Center management system ------------\n" + RESET);
 		int user = login();
@@ -802,7 +802,6 @@ public class CovidMain extends helper {
 		} else if (user == 2) {
 			recMenu();
 		} else {
-			// TODO
 			System.out.println(YELLOW + "      You are logged in as Guest!" + RESET);
 			guestMenu();
 		}

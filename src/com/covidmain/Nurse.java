@@ -252,7 +252,6 @@ public class Nurse extends nurseHelper {
 			    System.out.println("Nurse Added Date    : " + rs.getString("N_add_date"));
 			 }
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         db.endstatement(); 
