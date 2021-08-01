@@ -32,7 +32,7 @@ class wardboyHelper {
         }
 
         if (wardboyCount == -1) {
-            System.out.println("Error in fetching database!");
+            System.out.println(CovidMain.RED + "		Error in fetching database!" + CovidMain.RESET);
         } else {
             int year = Calendar.getInstance().get(Calendar.YEAR);
             wardboyID = 'W' + String.valueOf(year) + wardboyCountStr;
@@ -45,7 +45,7 @@ class wardboyHelper {
     static boolean isWardboyExists(String tempWardboyId) throws SQLException
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM wardboy WHERE w_id = '" + tempWardboyId + "' AND isremoved = 'N')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM wardboy WHERE w_id = '" + tempWardboyId + "' AND w_status = 'A')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -86,7 +86,7 @@ public class Wardboy extends wardboyHelper {
     void setWardboyID() throws SQLException {
         String tempW_ID = wardboyIDgenerator();
         if (tempW_ID == "") {
-            System.out.println("Error!! Can't set Wardboy ID");
+            System.out.println( CovidMain.RED + "		Error!! Can't set Wardboy ID" + CovidMain.RESET);
         } else {
             this.W_id = tempW_ID;
         }
@@ -111,8 +111,7 @@ public class Wardboy extends wardboyHelper {
         if (checkers.mobileChecker(wardboyMob)) {
             this.W_phone = wardboyMob;
         } else {
-        	System.out.println("Invalid Mobile No.!!!");
-            System.out.print("Press ENTER!!");
+        	System.out.println( CovidMain.RED + "		Invalid Mobile No.!!! Press ENTER!!" +  CovidMain.RESET);
             setWardboyPhone();
         }
     }
@@ -130,8 +129,7 @@ public class Wardboy extends wardboyHelper {
         if (checkers.emailChecker(wardboyemail)) {
             this.W_mail = wardboyemail;
         } else {
-            System.out.println("Invalid mail!!");
-            System.out.print("Please Re-");
+            System.out.println(CovidMain.RED + "Invalid mail!! PRESS ENTER.." + CovidMain.RESET);
             setWardboyMail();
         }
     }
@@ -144,15 +142,10 @@ public class Wardboy extends wardboyHelper {
         if (wardboystatus == 'A' || wardboystatus == 'N') {
             this.W_status = wardboystatus;
         } else {
-            System.out.print("\n ! Re-");
+            System.out.print(CovidMain.RED + "\n		Invalid Input! Please RENTER" + CovidMain.RESET);
             setWardboyStatus();
         }
-    }
-
-   
-    
-    
-    
+    } 
     
     static void addWardboy() throws SQLException {
         Wardboy W = new Wardboy();
@@ -169,18 +162,18 @@ public class Wardboy extends wardboyHelper {
         db.startstatement();
         db.update(statement);
 
-        System.out.println("New wardboy added successfully!! ID: " + W.W_id);
+        System.out.println(CovidMain.GREEN + "\n		New wardboy added successfully!! ID: " + W.W_id + CovidMain.RESET);
 
     }
 
     static void removeWardboy() throws SQLException {
-        System.out.println("***			Remove Wardboy		 ***");
+        System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Remove Wardboy -----------------------" + CovidMain.RESET);
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
-        	System.out.println("Invalid Wardboy ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Wardboy ID!!!" + CovidMain.RESET);
         	return;
         }
         
@@ -188,19 +181,18 @@ public class Wardboy extends wardboyHelper {
         db.startstatement();
         db.update(statement);
         db.endupdate();
-        System.out.println("\n---------------------Wardboy Removed--------------------");
+        System.out.println(CovidMain.RED + "\n--------------------- Wardboy Removed --------------------" + CovidMain.RESET);
 
     }
 
-    
     public static void displayWardboyDetails() throws SQLException {
-        System.out.println("** Display Wardboy Details **");
-        System.out.print("\nEnter Wardboy ID    : ");
+        System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Display Wardboy Details -----------------------" + CovidMain.RESET);
+        System.out.print(CovidMain.YELLOW + "\n		Enter Wardboy ID    : " + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
-        	System.out.println("Invalid Wardboy ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Wardboy ID!!!" + CovidMain.RESET);
         	return;
         }
         
@@ -208,28 +200,27 @@ public class Wardboy extends wardboyHelper {
         db.startstatement();
     	rs = db.execstatement(statement);
         while (rs.next()) {
-            System.out.println("Wardboy ID			: " + rs.getString("W_ID"));
+            System.out.println("Wardboy ID			: " + CovidMain.BLUE_BOLD + rs.getString("W_ID") + CovidMain.RESET);
             System.out.println("Wardboy Name		: " + rs.getString("W_name"));
             System.out.println("Wardboy Slot 		: " + rs.getInt("W_slot"));
             System.out.println("Wardboy Phone No. 	: " + rs.getString("W_phone"));
             System.out.println("Wardboy Add. 		: " + rs.getString("W_add"));
-//            System.out.println("Wardboy E-mail		: " + rs.getString("W_mail"));
             System.out.println("Wardboy Removed?	: " + rs.getString("isremoved"));
             System.out.println("Wardboy Status    	: " + rs.getString("W_status"));
             System.out.println("Wardboy Added Date    : " + rs.getString("W_add_date"));
         }
         db.endstatement();
-        System.out.println("-----------------------------------------------");
+        System.out.println("----------------------------------------------------");
     }
 
     static void detailWardboySlotWise() {
-    	System.out.println("\n***Slot wise wardboy list***");
-        System.out.print("\nEnter Slot No.    : ");
+    	System.out.println(CovidMain.PURPLE_BOLD + "\n----------------------- Slot wise wardboy list -----------------------" + CovidMain.RESET);
+        System.out.print(CovidMain.YELLOW + "\n		Enter Slot No.    : " + CovidMain.RESET);
         int tempSlot = sc.nextInt();
         
         if(tempSlot>3 || tempSlot<0)
         {
-        	System.out.println("\nInvalid slot no.\n");
+        	System.out.println(CovidMain.RED + "\nInvalid slot no.\n" + CovidMain.RESET);
         	return;
         }
 
@@ -239,24 +230,22 @@ public class Wardboy extends wardboyHelper {
     	db.printDataList(statement);
         db.endstatement();
         
-        System.out.println("-----------------------------------------------");
+        System.out.println("-----------------------------------------------------------");
     }
-    
-    
-    
+   
     static void changeWardboySlot() throws SQLException
     {
-    	System.out.println("***Change Wardboy Slot***");
-    	System.out.print("Enter Wardboy ID: ");
+    	System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Change Wardboy Slot -----------------------" + CovidMain.RESET);
+    	System.out.print(CovidMain.YELLOW + "		Enter Wardboy ID: "  + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
-        	System.out.println("Invalid Wardboy ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Wardboy ID!!!" + CovidMain.RESET);
         	return;
         }
         
-        System.out.print("\nEnter new Slot No. for "+ tempWardboyID + " : ");
+        System.out.print(CovidMain.YELLOW + "\n		Enter new Slot No. for "+ CovidMain.BLUE_BOLD + tempWardboyID + CovidMain.RESET + " : ");
         int tempSlot = sc.nextInt();
         
         //TODO fixing exceptions
@@ -266,7 +255,7 @@ public class Wardboy extends wardboyHelper {
         db.update(statement);
         db.endstatement();
         
-        System.out.println("Slot No. changed successfully for Wardboy ID: " + tempWardboyID);
+        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for Wardboy ID: " + CovidMain.BLUE_BOLD + tempWardboyID + CovidMain.RESET);
     }
     
     static void displayAllActiveWardboy()
@@ -276,28 +265,28 @@ public class Wardboy extends wardboyHelper {
     	db.printDataList(statement);
         db.endstatement();
         
-        System.out.println("-----------------------------------------------");
+        System.out.println("---------------------------------------------------------");
 
     }
 
     static void changeWardboyStat() throws SQLException
     {
-    	System.out.println("\n---------------------Change Wardboy Status---------------------");
-    	System.out.print("Enter wardboy ID: ");
+    	System.out.println(CovidMain.PURPLE_BOLD + "\n--------------------- Change Wardboy Status ---------------------" + CovidMain.RESET);
+    	System.out.print(CovidMain.YELLOW + "		Enter wardboy ID: " + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
-        	System.out.println("Invalid Wardboy ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Wardboy ID!!!" + CovidMain.RESET);
         	return;
         }
         
-        System.out.print("\nEnter new status for ID: "+ tempWardboyID + " : ");
+        System.out.print(CovidMain.YELLOW + "\nEnter new status for ID: "+ CovidMain.BLUE_BOLD + tempWardboyID + " : " + CovidMain.RESET);
         char tempStat = sc.nextLine().charAt(0);
         
         if(tempStat!='A' || tempStat!='N')
         {
-        	System.out.println("\nInvalid status entered!!\n");
+        	System.out.println(CovidMain.RED + "\n		Invalid status entered!!" + CovidMain.RESET);
         	return;
         }
         
@@ -306,7 +295,7 @@ public class Wardboy extends wardboyHelper {
         db.update(statement);
         db.endstatement();
 
-        System.out.println("Slot No. changed successfully for wardboy ID: " + tempWardboyID);
+        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for wardboy ID: " + CovidMain.BLUE_BOLD + tempWardboyID + CovidMain.RESET);
     }
 }
     

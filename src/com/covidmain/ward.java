@@ -34,6 +34,22 @@ class wardHelper{
     	db.update(statement);
     	db.endupdate();
     }
+    
+    static boolean isWardExists(int wardname) throws SQLException
+    {
+    	long cnt = 0;
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM ward WHERE wardname = " + wardname + ")";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        rs.next();
+		cnt=rs.getInt("Count");
+		
+		if(cnt>0)
+			return true;
+		else
+			return false;
+    }
 }
 
 public class ward extends wardHelper{
@@ -63,14 +79,14 @@ public class ward extends wardHelper{
     }
 
     void set_ward_capacity() {
-        System.out.print("\n		Enter capacity of ward: ");
+        System.out.print(CovidMain.YELLOW + "\n		Enter capacity of ward: " + CovidMain.RESET);
         int capacity = sc.nextInt();
         this.W_Capacity = capacity;
     }
 
     void setDoctor() throws SQLException {
     	sc.nextLine();
-        System.out.print("\n		Enter doctor ID for ward: ");
+        System.out.print(CovidMain.YELLOW + "\n		Enter doctor ID for ward: " + CovidMain.RESET);
         String wardABCD = sc.nextLine();
         this.Doctor1 = wardABCD;
         if(Nurse.isNurseExists(wardABCD))
@@ -79,13 +95,13 @@ public class ward extends wardHelper{
         }
         else
         {
-        	System.out.println("\n		Invalid Doctor ID or Nurse doesn't exitst! Please Renter Doctor Id");
+        	System.out.println(CovidMain.RED + "\n		Invalid Doctor ID! Please Renter Doctor Id" + CovidMain.RESET);
         	setDoctor();
         }        
     }
 
     void setNurse1() throws SQLException {
-        System.out.print("\nEnter Nurse 1 ID: ");
+        System.out.print(CovidMain.YELLOW + "\n		Enter Nurse 1 ID: " + CovidMain.RESET);
         String nid = sc.nextLine();
         if(Nurse.isNurseExists(nid))
         {
@@ -93,13 +109,13 @@ public class ward extends wardHelper{
         }
         else
         {
-        	System.out.println("\n		Invalid Nurse ID or Nurse doesn't exitst! Please Renter Nurse Id");
+        	System.out.println(CovidMain.RED + "\n		Invalid Nurse ID Please Renter Nurse Id" + CovidMain.RESET);
         	setNurse1();
         }
     }
 
     void setWardboy1() throws SQLException {
-        System.out.print("\nEnter wardboy 1 ID: ");
+        System.out.print("\n		Enter wardboy 1 ID: ");
         String nid = sc.nextLine();
         
         if(Wardboy.isWardboyExists(nid))
@@ -108,7 +124,7 @@ public class ward extends wardHelper{
         }
         else
         {
-        	System.out.println("\n		Invalid Wardboy ID or Wardboy doesn't exitst! Please Renter Doctor Id");
+        	System.out.println(CovidMain.RED + "\n		Invalid Wardboy ID! Please Renter Doctor Id!" + CovidMain.RESET);
         	setWardboy1();
         }
     }
@@ -131,27 +147,27 @@ public class ward extends wardHelper{
     
     static void displayAllWardStatus()
     {
-    	System.out.println("\n-------------- Display All Ward Status --------------");
+    	System.out.println(CovidMain.PURPLE_BOLD + "\n-------------------- Display All Ward Status --------------------" + CovidMain.RESET);
         String statement = "SELECT wardname AS W_No, W_type AS Type, W_Capacity AS Cap, No_Of_Beds_Full AS Full_Beds FROM ward";  
     	db.startstatement();
     	db.printDataList(statement);
         db.endstatement();
         
-        System.out.println("-------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------");
     }
     
     static void displayWardDetails() throws SQLException {
-		System.out.println("\n----------- Display Ward Details -----------");
+		System.out.println(CovidMain.PURPLE_BOLD + "\n-------------------- Display Ward Details --------------------" + CovidMain.RESET);
         System.out.print("\nEnter Ward No.    : ");
         int tempNurseID = sc.nextInt();
 
-//        if()
-//        {
-//        	System.out.println("Invalid Ward No.!!!");
-//        	return;
-//        }
+        if(!isWardExists(tempNurseID))
+        {
+        	System.out.println(CovidMain.RED + "		Invalid Ward No.!!!" + CovidMain.RESET);
+        	return;
+        }
         
-        String statement = "SELECT wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, Nurse1, Wardboy1 FROM ward WHERE wardname =" + tempNurseID;
+        String statement = "SELECT wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, Nurse1, Wardboy1 FROM ward WHERE wardname = " + tempNurseID;
 
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -165,11 +181,11 @@ public class ward extends wardHelper{
          }
         db.endstatement(); 
 		
-        System.out.println("-------------------------------------------------");
+        System.out.println("------------------------------------------------------------------");
 	}
 
     static void create_ward() throws SQLException {
-    	System.out.println("\n------------ Create a New Ward ------------");
+    	System.out.println(CovidMain.PURPLE_BOLD + "\n-------------------- Create a New Ward --------------------" + CovidMain.RESET);
         ward W = new ward();
         W.set_ward_name();
         W.set_ward_capacity();
@@ -182,11 +198,6 @@ public class ward extends wardHelper{
         db.startstatement();
         db.update(statement);
 
-        System.out.println("\n---------New ward No."+ W.wardname + " created successfully!---------");
-    }
-
-    void editWard()
-    {
-    	
+        System.out.println(CovidMain.GREEN + "\n--------- New ward No."+ CovidMain.BLUE_BOLD + W.wardname + CovidMain.PURPLE_BOLD + CovidMain.RESET + " created successfully! ---------");
     }
 }

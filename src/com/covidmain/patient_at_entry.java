@@ -7,20 +7,25 @@ class patientHelper {
     static Dbhelper db = new Dbhelper();
     static ResultSet rs = null;
 
-    static long getPatientCount() throws SQLException {
+    static long getPatientCount(){
         long patient_id = 0;
         String statement = "SELECT COUNT(P_ID) as Count FROM patient_at_entry";
 
         db.startstatement();
         rs = db.execstatement(statement);
+        try {
         rs.next();
         patient_id = rs.getInt("Count");
+        }
+        catch(SQLException ex) {
+        	System.out.println(ex.getMessage());
+        }
         return patient_id;
     }
 
     static String patientID = "";
 
-    static String patientIDgenerator() throws SQLException {
+    static String patientIDgenerator(){
         long patientCount = getPatientCount() + 1;
 
         String patientCountStr = "";
@@ -103,7 +108,7 @@ public class patient_at_entry extends patientHelper
 
     static Scanner sc = new Scanner(System.in);
 
-    void setPatientID() throws SQLException 
+    void setPatientID()
     {
         String tempP_ID = patientIDgenerator();
         if (tempP_ID == "") {
@@ -172,7 +177,7 @@ public class patient_at_entry extends patientHelper
     }
 
     
-    static void addPatient(int wardname) throws SQLException 
+    static void addPatient(int wardname)
     {
         patient_at_entry P = new patient_at_entry();
         P.setPatientID();

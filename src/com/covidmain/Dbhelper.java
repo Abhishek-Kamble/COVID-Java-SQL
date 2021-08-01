@@ -20,7 +20,7 @@ public class Dbhelper {
 		try {
 			Class.forName(JDBC_DRIVER);
 
-			System.out.print("Connecting to DB...");
+			System.out.print(CovidMain.PURPLE_BOLD + "Connecting to DB..." + CovidMain.RESET);
 	        Thread.sleep(1000); 
 	        System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 	        System.out.println("                                                 ");

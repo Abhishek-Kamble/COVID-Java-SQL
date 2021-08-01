@@ -36,7 +36,7 @@ class nurseHelper
         }
         
         if (nurseCount == -1) {
-            System.out.println("Error in fetching database!");
+            System.out.println(CovidMain.RED + "		Error in fetching database!" + CovidMain.RESET);
         } 
         else {
             int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -49,7 +49,7 @@ class nurseHelper
     static boolean isNurseExists(String tempNurseId) throws SQLException
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM nurse WHERE n_id = '" + tempNurseId + "' AND isremoved = 'N')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM nurse WHERE n_id = '" + tempNurseId + "' AND n_status = 'A')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -92,7 +92,7 @@ public class Nurse extends nurseHelper {
     void setNurseID() throws SQLException {
         String tempN_ID = nurseIDgenerator();
         if (tempN_ID == "") {
-            System.out.println("Error!! Can't set Nurse ID.");
+            System.out.println(CovidMain.RED + "		Error!! Can't set Nurse ID." + CovidMain.RESET);
         } else {
             this.N_id = tempN_ID;
         }
@@ -142,7 +142,7 @@ public class Nurse extends nurseHelper {
     }
 
     void setNurseStatus() {
-        System.out.print("\nEnter Nurse status (A/N)   : ");
+        System.out.print(CovidMain.YELLOW + "\nEnter Nurse status (A/N)   : " + CovidMain.RESET);
         char nursestatus = sc.next().charAt(0);
         if(nursestatus == 'A' || nursestatus == 'N')
         {
@@ -155,6 +155,26 @@ public class Nurse extends nurseHelper {
         }
     }
 
+    static void changeNurseStatus() throws SQLException
+    {
+    	System.out.println(CovidMain.PURPLE_BOLD + "---------------------- Change Nurse Status ----------------------" + CovidMain.RESET);
+    	System.out.print(CovidMain.YELLOW + "\nEnter Nurse ID    : " + CovidMain.RESET);
+        String tempNurseID = sc.nextLine();
+        
+        if(!isNurseExists(tempNurseID))
+        {
+        	System.out.println(CovidMain.RED + "		Invalid Nurse ID!!!" + CovidMain.RESET);
+        	return;
+        }
+        
+        String statement = "UPDATE nurse SET n_status = 'Y' WHERE N_ID = '" + tempNurseID +"'";
+        db.startstatement();
+        db.update(statement);
+		db.endupdate();
+		
+		System.out.println(CovidMain.RED + "\n--------------------- Nurse Status changed --------------------" + CovidMain.RESET);
+    }
+    
     //FUNCTIONS
     static void addNurse() throws SQLException {
         Nurse N = new Nurse();
@@ -170,19 +190,19 @@ public class Nurse extends nurseHelper {
         db.startstatement();
         db.update(statement);
         
-        System.out.println("New nurse added successfully!! ID: " + N.N_id);
+        System.out.println(CovidMain.GREEN + "New nurse added successfully!! ID: " + CovidMain.BLUE_BOLD + N.N_id + CovidMain.RESET);
         
     }
 
     static void removeNurse() throws SQLException  {
         // here we don't have to remove nurse details from database only change status to N
-        System.out.println("\n--------------- Remove Nurse ---------------");
-        System.out.print("\nEnter Nurse ID    : ");
+        System.out.println(CovidMain.PURPLE_BOLD + "\n---------------------- Remove Nurse ----------------------" + CovidMain.RESET);
+        System.out.print(CovidMain.YELLOW + "\n		Enter Nurse ID    : " + CovidMain.RESET);
         String tempNurseID = sc.nextLine();
         
         if(!isNurseExists(tempNurseID))
         {
-        	System.out.println("Invalid Nurse ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Nurse ID!!!" + CovidMain.RESET);
         	return;
         }
         
@@ -191,19 +211,19 @@ public class Nurse extends nurseHelper {
         db.update(statement);
 		db.endupdate();
 		
-		System.out.println("\n---------------------Nurse Removed--------------------");
+		System.out.println(CovidMain.GREEN + "\n--------------------- Nurse Removed --------------------" + CovidMain.RESET);
         
     }
 
     static void displayNurseDetails() throws SQLException 
     {
-		System.out.println("\n----------- Display Nurse Details -----------");
-        System.out.print("\nEnter Nurse ID    : ");
+		System.out.println(CovidMain.PURPLE_BOLD + "\n----------------- Display Nurse Details -----------------" + CovidMain.RESET);
+        System.out.print(CovidMain.YELLOW + "\nEnter Nurse ID    : " + CovidMain.RESET);
         String tempNurseID = sc.nextLine();
 
         if(!isNurseExists(tempNurseID))
         {
-        	System.out.println("Invalid Nurse ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Nurse ID!!!" + CovidMain.RESET);
         	return;
         }
         
@@ -212,7 +232,7 @@ public class Nurse extends nurseHelper {
     	db.startstatement();
     	rs = db.execstatement(statement);
     	while(rs.next()){
-            System.out.println("Nurse ID		: " + rs.getString("N_ID"));
+            System.out.println("Nurse ID		: " + CovidMain.BLUE_BOLD + rs.getString("N_ID") + CovidMain.RESET);
             System.out.println("Nurse Name		: " + rs.getString("N_name"));
             System.out.println("Nurse Slot 		: " + rs.getInt("N_slot"));
             System.out.println("Nurse Phone No. : " + rs.getString("N_phone"));
@@ -224,18 +244,18 @@ public class Nurse extends nurseHelper {
          }
         db.endstatement(); 
 		
-        System.out.println("-----------------------------------------------");
+        System.out.println("------------------------------------------------------");
 	}
     
     static void detailNurseSlotWise()
     {
-        System.out.println("\n-------------- Slot wise nurse list --------------");
+        System.out.println(CovidMain.PURPLE_BOLD + "\n------------------ Slot wise nurse list ------------------" + CovidMain.RESET);
         System.out.print("\nEnter Slot No.    : ");
         int tempSlot = sc.nextInt();
 
         if(tempSlot>3 || tempSlot<0)
         {
-        	System.out.println("\nInvalid slot no.\n");
+        	System.out.println(CovidMain.RED + "\n		Invalid slot no.!" + CovidMain.RESET);
         	return;
         }
         
@@ -244,22 +264,22 @@ public class Nurse extends nurseHelper {
     	db.printDataList(statement);
         db.endstatement();
         
-        System.out.println("-----------------------------------------------");
+        System.out.println("--------------------------------------------------------");
     }
     
     static void changeNurseSlot() throws SQLException
     {
-    	System.out.println("\n---------------------Change Nurse Slot---------------------");
-    	System.out.print("Enter Nurse ID: ");
+    	System.out.println(CovidMain.PURPLE_BOLD + "\n--------------------- Change Nurse Slot ---------------------" + CovidMain.RESET);
+    	System.out.print(CovidMain.YELLOW + "Enter Nurse ID: ");
         String tempNurseID = sc.nextLine();
         
         if(!isNurseExists(tempNurseID))
         {
-        	System.out.println("Invalid Nurse ID!!!");
+        	System.out.println(CovidMain.RED + "		Invalid Nurse ID!!!" + CovidMain.RESET);
         	return;
         }
         
-        System.out.print("\nEnter new Slot No. for ID: "+ tempNurseID + " : ");
+        System.out.print(CovidMain.YELLOW + "\nEnter new Slot No. for ID: " + CovidMain.BLUE_BOLD + tempNurseID + CovidMain.RESET + " : ");
         int tempSlot = sc.nextInt();
         
         String statement = "UPDATE nurse SET n_slot = " + tempSlot + "WHERE N_ID = '" + tempNurseID +"'";        
@@ -267,7 +287,7 @@ public class Nurse extends nurseHelper {
         db.update(statement);
         db.endstatement();
 
-        System.out.println("Slot No. changed successfully for nurse ID: " + tempNurseID);
+        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for nurse ID: " + CovidMain.BLUE_BOLD + tempNurseID + CovidMain.RESET);
     }
 
     static void displayAllActiveNurse()
@@ -277,28 +297,28 @@ public class Nurse extends nurseHelper {
     	db.printDataList(statement);
         db.endstatement();
         
-        System.out.println("-----------------------------------------------");
+        System.out.println("--------------------------------------------------------------");
 
     }
     
     static void changeNurseStat() throws SQLException
     {
-    	System.out.println("\n---------------------Change Nurse Status---------------------");
-    	System.out.print("Enter Nurse ID: ");
+    	System.out.println("\n--------------------- Change Nurse Status ---------------------");
+    	System.out.print(CovidMain.YELLOW + "		Enter Nurse ID: " + CovidMain.RESET);
         String tempNurseID = sc.nextLine();
         
         if(!isNurseExists(tempNurseID))
         {
-        	System.out.println("Invalid Nurse ID!!!");
+        	System.out.println("		Invalid Nurse ID!!!");
         	return;
         }
         
-        System.out.print("\nEnter new status for ID: "+ tempNurseID + " : ");
+        System.out.print(CovidMain.YELLOW + "\n	Enter new status for ID: "+ CovidMain.BLUE_BOLD + tempNurseID+ CovidMain.RESET + " : ");
         char tempStat = sc.nextLine().charAt(0);
         
         if(tempStat!='A' || tempStat!='N')
         {
-        	System.out.println("\nInvalid status entered!!\n");
+        	System.out.println(CovidMain.RED + "\n		Invalid status entered!!\n" + CovidMain.RESET);
         	return;
         }
         
@@ -307,6 +327,6 @@ public class Nurse extends nurseHelper {
         db.update(statement);
         db.endstatement();
 
-        System.out.println("Slot No. changed successfully for nurse ID: " + tempNurseID);
+        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for nurse ID: " + CovidMain.BLUE_BOLD + tempNurseID + CovidMain.RESET);
     }
 }

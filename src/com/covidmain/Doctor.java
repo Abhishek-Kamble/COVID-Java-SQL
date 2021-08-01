@@ -43,7 +43,7 @@ class Doctorhelper{
         }
         
         if (doctorCount == -1) {
-            System.out.println("Error in fetching database!");
+            System.out.println(CovidMain.RED + "		Error in fetching database!" + CovidMain.RESET);
         } 
         else {
             int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -56,7 +56,7 @@ class Doctorhelper{
     static boolean isDoctorExists(String tempDoctorId) throws SQLException
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM Doctor WHERE D_id = '" + tempDoctorId + "' AND isremoved = 'N')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM doctor WHERE D_id = '" + tempDoctorId + "' AND d_status = 'A')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -100,7 +100,7 @@ public class Doctor extends Doctorhelper
 		    String tempD_ID = DoctorIDgenerator();
 		    if (tempD_ID == "") 
 		    {
-		        System.out.println("Error!! Can't set Doctor ID");
+		        System.out.println(CovidMain.RED + "		Error!! Can't set Doctor ID" + CovidMain.RESET);
 		    } 
 		    else 
 		    {
@@ -110,14 +110,14 @@ public class Doctor extends Doctorhelper
 
 	    void setDoctorName()
 	    {
-	        System.out.print("\nEnter Doctor Name        : ");
+	        System.out.print("\n		Enter Doctor Name        : " + CovidMain.RESET);
 	        String Dname = sc.nextLine();
 	        this.D_name = Dname;
 	    }
 
 	    void setDoctorSlot() 
 	    {
-	        System.out.print("\nEnter slot no.    : ");
+	        System.out.print("\n		Enter slot no.    : " );
 	        int slot_no = sc.nextInt();
 	        this.D_slot = slot_no;
 	    }
@@ -125,7 +125,7 @@ public class Doctor extends Doctorhelper
 	    void setDoctorPhone() 
 	    {
 	    	sc.nextLine();
-	        System.out.print("\nEnter Mobile No      : ");
+	        System.out.print("\n		Enter Mobile No      : ");
 	        String doctorMob = sc.nextLine();
 	        if (checkers.mobileChecker(doctorMob))
 	        {
@@ -133,36 +133,34 @@ public class Doctor extends Doctorhelper
 	        } 
 	        else 
 	        {
-	            System.out.println("Invalid Mobile No.!!!");
-	            System.out.print("Press Re-");
+	            System.out.println("	Invalid Mobile No.!!! Press Re-Enter");
 	            setDoctorPhone();
 	        }
 	    }
 
 	    void setDoctorAdd() 
 	    {
-	        System.out.print("\nEnter Address     : ");
+	        System.out.print("\n		Enter Address     : ");
 	        String doctoradd = sc.nextLine();
 	        this.D_add = doctoradd;
 	    }
 
 	    void setDoctorMail() 
 	    {
-	    	System.out.print("\nEnter E-mail     : ");
+	    	System.out.print("\n		Enter E-mail     : ");
 	    	String doctormail = sc.nextLine();
 	    	if (checkers.emailChecker(doctormail)) {
 	    		this.D_mail = doctormail;
 	    	} 
 	    	else 
 	    	{
-	    		System.out.println("Invalid mail!!");
-	    		System.out.print("Please Re-");
+	    		System.out.println("		Invalid mail!! Please Re-Enter");
 	    		setDoctorMail();
 	    	}
 	    }
 	    
 	    void setDoctorStatus() {
-	        System.out.print("\nEnter Doctor status (A/N)   : ");
+	        System.out.print("\n		Enter Doctor status (A/N)   : ");
 	        char doctorstatus = sc.next().charAt(0);
 	        if(doctorstatus == 'A' || doctorstatus == 'N')
 	        {
@@ -170,7 +168,7 @@ public class Doctor extends Doctorhelper
 	        }
 	        else
 	        {
-	            System.out.print("\n!Re-");
+	            System.out.print(CovidMain.RED + "\n	Invalid Input! Please re-enter!!" + CovidMain.RESET);
 	            setDoctorStatus();
 	        }
 	    }
@@ -190,19 +188,19 @@ public class Doctor extends Doctorhelper
 	        db.startstatement();
 	        db.update(statement);
 
-	        System.out.println("New Doctor added successfully!! ID: " + D.D_id);
+	        System.out.println(CovidMain.GREEN + "New Doctor added successfully!!" + CovidMain.RESET + " ID: " + CovidMain.YELLOW + D.D_id + CovidMain.RESET);
 
 	    }
 	    
 	    static void removeDoctor() throws SQLException 
 	    {
-	    	System.out.println("\n--------------- Remove Doctor ---------------");
-	        System.out.print("\nEnter Doctor ID    : ");
+	    	System.out.println(CovidMain.YELLOW_BOLD + "\n--------------------- Remove Doctor ---------------------" + CovidMain.RESET);
+	        System.out.print(CovidMain.YELLOW + "\n		Enter Doctor ID    : " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
 	        
 	        if(!isDoctorExists(tempDoctorID))
 	        {
-	        	System.out.println("Invalid Doctor ID!!!");
+	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
 	        	return;
 	        }
 	        
@@ -212,19 +210,19 @@ public class Doctor extends Doctorhelper
 	        db.update(statement);
 			db.endupdate();
 			
-			System.out.println("-------------------------------------------------");
+			System.out.println("-------------------------------------------------------");
 	    }
 	    
 	    static void displayDoctorDetails() throws SQLException 
 	    {
             sc.nextLine();
-			System.out.println("\n----------- Display Doctor Details -----------");
-	        System.out.print("\nEnter Doctor ID    : ");
+			System.out.println(CovidMain.PURPLE_BOLD + "\n------------------- Display Doctor Details ------------------" + CovidMain.RESET);
+	        System.out.print(CovidMain.YELLOW + "\n		Enter Doctor ID    : " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
 
 	        if(!isDoctorExists(tempDoctorID))
 	        {
-	        	System.out.println("Invalid Doctor ID!!!");
+	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
 	        	return;
 	        }
 	        
@@ -233,7 +231,7 @@ public class Doctor extends Doctorhelper
 	    	db.startstatement();
 	    	rs = db.execstatement(statement);
 	    	while(rs.next()){
-	            System.out.println("Doctor ID		: " + rs.getString("D_ID"));
+	            System.out.println("Doctor ID		: " + CovidMain.BLUE_BOLD + rs.getString("D_ID") + CovidMain.RESET);
 	            System.out.println("Doctor Name		: " + rs.getString("D_name"));
 	            System.out.println("Doctor Slot 		: " + rs.getInt("D_slot"));
 	            System.out.println("Doctor Phone No. : " + rs.getString("D_phone"));
@@ -250,18 +248,18 @@ public class Doctor extends Doctorhelper
 	    
 	    static void changeDoctorSlot() throws SQLException
 	    {
-	    	System.out.println("\n---------------------Change Doctor Slot---------------------");
-	    	System.out.print("Enter Doctor ID: ");
+	    	System.out.println(CovidMain.PURPLE_BOLD + "\n---------------------Change Doctor Slot---------------------" + CovidMain.RESET);
+	    	System.out.print(CovidMain.YELLOW + "\n 		Enter Doctor ID: " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
 	        
 	        if(!isDoctorExists(tempDoctorID))
 	        {
-	        	System.out.println("Invalid Doctor ID!!!");
+	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
 	        	return;
 	        }
 	        
 	        
-	        System.out.print("\nEnter new Slot No. for "+ tempDoctorID + " : ");
+	        System.out.print("\n		Enter new Slot No. for "+ CovidMain.BLUE_BOLD + tempDoctorID + CovidMain.RESET + " : ");
 	        int tempSlot = sc.nextInt();
 	        
 	        String statement = "UPDATE Doctor SET D_slot = " + tempSlot + "WHERE D_ID = '" + tempDoctorID +"'";
@@ -269,27 +267,27 @@ public class Doctor extends Doctorhelper
 	        db.startstatement();
 	        db.update(statement);
 	        db.endstatement();
-	        System.out.println("Slot No. changed successfully for Doctor ID: " + tempDoctorID);
+	        System.out.println(CovidMain.GREEN + "		Slot No. changed successfully for Doctor ID: " + CovidMain.BLUE_BOLD + tempDoctorID + CovidMain.RESET);
 	    }
 	    
 	    static void detailDoctorSlotWise()
 	    {
-	    	 System.out.println("\n***Slot wise Doctor list***");
-	         System.out.print("\nEnter Slot No.    : ");
+	    	 System.out.println(CovidMain.PURPLE_BOLD + "\n------------------- Slot wise Doctor list -------------------" + CovidMain.RESET);
+	         System.out.print(CovidMain.YELLOW + "\n		Enter Slot No.    : " + CovidMain.RESET);
 	         int tempSlot = sc.nextInt();
 	         String statement = "SELECT D_id AS Doctor_ID , D_name AS Doctor_Name FROM Doctor WHERE D_slot = '" + tempSlot + "'";
 	         
 	         if(tempSlot>3 || tempSlot<0)
 	         {
-	         	System.out.println("\nInvalid slot no.\n");
+	         	System.out.println(CovidMain.RED + "\n		Invalid slot no.!\n" + CovidMain.RESET);
 	         	return;
 	         }
 		        
 	     	db.startstatement();
 	     	db.printDataList(statement);
-	         db.endstatement();
+	        db.endstatement();
 	         
-	         System.out.println("-----------------------------------------------");
+	        System.out.println("----------------------------------------------------------------");
 	     }  
 	  
 	    static void displayAllActivedoctors()
@@ -299,7 +297,7 @@ public class Doctor extends Doctorhelper
 	    	db.printDataList(statement);
 	        db.endstatement();
 	        
-	        System.out.println("-----------------------------------------------");
+	        System.out.println("----------------------------------------------------------------");
 
 	    }
 }
