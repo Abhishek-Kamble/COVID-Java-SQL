@@ -130,7 +130,7 @@ public class patient_details_after_admit extends Record {
     	System.out.println("\nNew Record Added Successfully!!");
     }
     
-    //TODO    
+    //TODO
     static void displaycovlist()
     {
         System.out.println("\n-------------------------- Covid List --------------------------");

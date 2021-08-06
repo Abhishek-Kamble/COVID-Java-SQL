@@ -180,6 +180,7 @@ public class Doctor extends Doctorhelper
 
 	    static void addDoctor()
 	    {
+	    	System.out.println(CovidMain.CYAN_BOLD + "------------------ Add a New Doctor ------------------" + CovidMain.RESET);
 	        Doctor D = new Doctor();
 	        D.setDoctorID();
 	        D.setDoctorName();
@@ -302,6 +303,7 @@ public class Doctor extends Doctorhelper
 	  
 	    static void displayAllActivedoctors()
 	    {
+	    	System.out.println(CovidMain.CYAN_BOLD + "----------------- Displaying Active Doctor's List -----------------" + CovidMain.RESET);
 	    	String statement = "SELECT d_id AS Doctor_ID, d_slot AS SLOT, d_name AS Doctor_Name FROM Doctor WHERE isremoved = 'N' AND d_status = 'A'";  
 	    	db.startstatement();
 	    	db.printDataList(statement);

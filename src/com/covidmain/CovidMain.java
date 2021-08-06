@@ -87,6 +87,7 @@ class helper {
 
 		if (sysUser.equals(user) && passwordString.equals(sysPass)) {
 			green_alert("Login Successful!!");
+			// Dbhelper.setDbCred();
 			enterToContinue();
 			return true;
 		} else {
@@ -293,7 +294,7 @@ class helper {
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
 			opt = Character.getNumericValue(tmp);
-			switch (opt) {
+			switch(opt){
 			case 1:
 				clearScreen();
 				Doctor.addDoctor();
@@ -595,14 +596,15 @@ class helper {
 
 	static void adminMenu(){
 		int opt = 0;
-		while (opt != 6) {
+		while (opt != 7) {
 			System.out.println(CYAN + "\n-------------- Welcome to Admin Panel --------------\n" + RESET);
 			System.out.println("		1. Add new patient.");
 			System.out.println("		2. Discharge patient.");
 			System.out.println("		3. Go to Patient Section");
 			System.out.println("		4. Go to Employee Section");
 			System.out.println("		5. Go to Wards Section");
-			System.out.println("		6. Exit");
+			System.out.println("		6. Change/view database credentials");
+			System.out.println("		7. Exit");
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
 			opt = Character.getNumericValue(tmp);
@@ -637,6 +639,11 @@ class helper {
 				enterToContinue();
 				break;
 			case 6:
+				clearScreen();
+
+				enterToContinue();
+
+			case 7:
 				clearScreen();
 				System.out.println(GREEN + "\n      You are logged out successfully!!" + RESET);
 				System.out.println(CYAN_BOLD + "\n		Thank You for using COVID management system." + RESET);

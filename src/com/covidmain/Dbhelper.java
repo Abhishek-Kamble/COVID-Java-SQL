@@ -1,19 +1,39 @@
 package com.covidmain;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.Scanner;
 
 public class Dbhelper {
     //SQL Initializations
 	static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:XE";
-		
-	static final String USER = "system";
-	static final String PASS = "oracle123";
-	
+
+	static String s1 = "system";
+	static String s2 = "oracle123";
+
+	static final String USER = s1;
+	static final String PASS = s2;
+
 	// SQL Environment Setup
 	static Connection conn = null;
 	static Statement stmt = null;
 	static ResultSet rs = null;
+
+	public static void setDbCred()
+	{
+		Scanner sc;
+		try {
+			sc = new Scanner(new File("src/dbcred.txt"));
+			while(sc.hasNext()){
+	            s1 = sc.next();
+	            s2 = sc.next();
+	        }
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void startconnect()
 	{
@@ -55,7 +75,6 @@ public class Dbhelper {
 			startconnect();
 			this.stmt = this.conn.createStatement();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
