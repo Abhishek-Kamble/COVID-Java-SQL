@@ -2,6 +2,8 @@ package com.covidmain;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -10,37 +12,80 @@ public class Dbhelper {
 	static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:XE";
 
-	static String s1 = "system";
-	static String s2 = "oracle123";
-
-	static final String USER = s1;
-	static final String PASS = s2;
-
+	static String s1 = "";
+	static String s2 = "";
+	
 	// SQL Environment Setup
 	static Connection conn = null;
 	static Statement stmt = null;
 	static ResultSet rs = null;
 
-	public static void setDbCred()
-	{
+	static void setDbCred() {
 		Scanner sc;
 		try {
-			sc = new Scanner(new File("src/dbcred.txt"));
+			sc = new Scanner(new File("dbcred.txt"));
 			while(sc.hasNext()){
-	            s1 = sc.next();
-	            s2 = sc.next();
-	        }
+				s1 = sc.next();
+				s2 = sc.next();
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
+	
+	static void view_changeDB()
+	{
+		System.out.println(CovidMain.CYAN_BOLD + "		Database Credentials Manager\n" + CovidMain.RESET);
+		Scanner sc;
+		try {
+			sc = new Scanner(new File("dbcred.txt"));
+			while(sc.hasNext()){
+				s1 = sc.next();
+				s2 = sc.next();
+			}
+			
+			System.out.println(CovidMain.BLUE + "	Current DB user ID: " + CovidMain.RESET + s1);
+			System.out.println(CovidMain.BLUE + "	Current DB Password: " + CovidMain.RESET + s2);
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.print(CovidMain.YELLOW + "\n		Do You Want To Update Cred? (Y/N): " + CovidMain.RESET);
+		char opt = scan.next().charAt(0);
+		if(opt == 'Y')
+		{
+			System.out.print(CovidMain.YELLOW + "\n		Enter New ID: " + CovidMain.RESET);
+			String userid = scan.nextLine();
+			if(userid.equals(""))
+				userid = scan.nextLine();
+			System.out.print(CovidMain.YELLOW + "\n 	Enter New Pass: " + CovidMain.RESET);
+			String pass = scan.nextLine();
+			try {
+	            FileWriter myWriter = new FileWriter("dbcred.txt");
+	            myWriter.write(userid + " " + pass);
+	            myWriter.close();
+	            setDbCred();
+	            System.out.println(CovidMain.GREEN + "\nDatabse credentials updated successfully!" + CovidMain.RESET);
+	        } catch (IOException e) {
+	            System.out.println("An error occurred.");
+	            e.printStackTrace();
+	        }
+		}
+		
+		return;
+	}
+	
+	String USER = s1;
+	String PASS = s2;
 	
 	public void startconnect()
 	{
 		try {
 			Class.forName(JDBC_DRIVER);
 
-			System.out.print(CovidMain.PURPLE_BOLD + "Connecting to DB..." + CovidMain.RESET);
+			System.out.print(CovidMain.BLUE_BOLD + "Connecting to DB..." + CovidMain.RESET);
 	        Thread.sleep(1000); 
 	        System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 	        System.out.println("                                                 ");
@@ -88,7 +133,6 @@ public class Dbhelper {
 			}
 			Dbhelper.stmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

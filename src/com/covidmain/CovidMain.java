@@ -87,7 +87,7 @@ class helper {
 
 		if (sysUser.equals(user) && passwordString.equals(sysPass)) {
 			green_alert("Login Successful!!");
-			// Dbhelper.setDbCred();
+			Dbhelper.setDbCred();
 			enterToContinue();
 			return true;
 		} else {
@@ -111,6 +111,7 @@ class helper {
 
 		if (sysUser.equals(user) && passwordString.equals(sysPass)) {
 			green_alert("Login Successful!!");
+			Dbhelper.setDbCred();
 			enterToContinue();
 			return true;
 		} else {
@@ -597,7 +598,7 @@ class helper {
 	static void adminMenu(){
 		int opt = 0;
 		while (opt != 7) {
-			System.out.println(CYAN + "\n-------------- Welcome to Admin Panel --------------\n" + RESET);
+			System.out.println(CYAN_BOLD + "\n-------------- Welcome to Admin Panel --------------\n" + RESET);
 			System.out.println("		1. Add new patient.");
 			System.out.println("		2. Discharge patient.");
 			System.out.println("		3. Go to Patient Section");
@@ -640,8 +641,9 @@ class helper {
 				break;
 			case 6:
 				clearScreen();
-
+				Dbhelper.view_changeDB();
 				enterToContinue();
+				break;
 
 			case 7:
 				clearScreen();
