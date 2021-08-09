@@ -179,7 +179,7 @@ public class Dbhelper {
 			rs = execstatement(statement);
 			ResultSetMetaData rsmd = rs.getMetaData();
         	for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                System.out.print(rsmd.getColumnName(i) + "\t");
+                System.out.print(CovidMain.YELLOW + rsmd.getColumnName(i) + "\t"  + CovidMain.RESET);
             }
         	System.out.println("\n");
         	while (rs.next()) {
