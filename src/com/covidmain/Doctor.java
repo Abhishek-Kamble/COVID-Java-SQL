@@ -200,7 +200,7 @@ public class Doctor extends Doctorhelper
 	    
 	    static void removeDoctor()
 	    {
-	    	System.out.println(CovidMain.YELLOW_BOLD + "\n--------------------- Remove Doctor ---------------------" + CovidMain.RESET);
+	    	System.out.println(CovidMain.CYAN_BOLD + "\n--------------------- Remove Doctor ---------------------" + CovidMain.RESET);
 	        System.out.print(CovidMain.YELLOW + "\n		Enter Doctor ID    : " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
 	        
@@ -222,7 +222,7 @@ public class Doctor extends Doctorhelper
 	    static void displayDoctorDetails()
 	    {
             sc.nextLine();
-			System.out.println(CovidMain.PURPLE_BOLD + "\n------------------- Display Doctor Details ------------------" + CovidMain.RESET);
+			System.out.println(CovidMain.CYAN_BOLD + "\n------------------- Display Doctor Details ------------------" + CovidMain.RESET);
 	        System.out.print(CovidMain.YELLOW + "\n		Enter Doctor ID    : " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
 
@@ -259,16 +259,17 @@ public class Doctor extends Doctorhelper
 	    
 	    static void changeDoctorSlot()
 	    {
-	    	System.out.println(CovidMain.PURPLE_BOLD + "\n---------------------Change Doctor Slot---------------------" + CovidMain.RESET);
+	    	System.out.println(CovidMain.CYAN_BOLD + "\n---------------------Change Doctor Slot---------------------" + CovidMain.RESET);
 	    	System.out.print(CovidMain.YELLOW + "\n 		Enter Doctor ID: " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
+	        if(tempDoctorID.equals(""))
+	        	tempDoctorID = sc.nextLine();
 	        
 	        if(!isDoctorExists(tempDoctorID))
 	        {
 	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
 	        	return;
 	        }
-	        
 	        
 	        System.out.print("\n		Enter new Slot No. for "+ CovidMain.BLUE_BOLD + tempDoctorID + CovidMain.RESET + " : ");
 	        int tempSlot = sc.nextInt();
@@ -283,7 +284,7 @@ public class Doctor extends Doctorhelper
 	    
 	    static void detailDoctorSlotWise()
 	    {
-	    	 System.out.println(CovidMain.PURPLE_BOLD + "\n------------------- Slot wise Doctor list -------------------" + CovidMain.RESET);
+	    	 System.out.println(CovidMain.CYAN_BOLD + "\n------------------- Slot wise Doctor list -------------------" + CovidMain.RESET);
 	         System.out.print(CovidMain.YELLOW + "\n		Enter Slot No.    : " + CovidMain.RESET);
 	         int tempSlot = sc.nextInt();
 	         String statement = "SELECT D_id AS Doctor_ID , D_name AS Doctor_Name FROM Doctor WHERE D_slot = '" + tempSlot + "'";
@@ -312,4 +313,36 @@ public class Doctor extends Doctorhelper
 	        System.out.println("----------------------------------------------------------------");
 
 	    }
+	    
+	    static void changeDoctorStat()
+	    {
+	    	System.out.println(CovidMain.CYAN_BOLD + "\n--------------------- Change Doctor Status ---------------------" + CovidMain.RESET);
+	    	System.out.print(CovidMain.YELLOW + "		Enter doctor ID: " + CovidMain.RESET);
+	        String tempDoctor = sc.nextLine();
+	        if(tempDoctor.equals(""))
+	        	tempDoctor = sc.nextLine();
+	        
+	        if(!isDoctorExists(tempDoctor))
+	        {
+	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
+	        	return;
+	        }
+	        
+	        System.out.print(CovidMain.YELLOW + "\nEnter new status for ID: "+ CovidMain.BLUE_BOLD + tempDoctor + " : " + CovidMain.RESET);
+	        char tempStat = sc.nextLine().charAt(0);
+	        
+	        if(tempStat!='A' || tempStat!='N')
+	        {
+	        	System.out.println(CovidMain.RED + "\n		Invalid status entered!!" + CovidMain.RESET);
+	        	return;
+	        }
+	        
+	        String statement = "UPDATE doctor SET d_status = " + tempStat + "WHERE d_ID = '" + tempDoctor +"'";        
+	        db.startstatement();
+	        db.update(statement);
+	        db.endstatement();
+
+	        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for Doctor ID: " + CovidMain.BLUE_BOLD + tempDoctor + CovidMain.RESET);
+	    }
+	    
 }

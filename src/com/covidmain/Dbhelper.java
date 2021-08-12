@@ -35,7 +35,7 @@ public class Dbhelper {
 	
 	static void view_changeDB()
 	{
-		System.out.println(CovidMain.CYAN_BOLD + "		Database Credentials Manager\n" + CovidMain.RESET);
+		System.out.println(CovidMain.CYAN_BOLD + "------------------------ Database Credentials Manager ------------------------\n" + CovidMain.RESET);
 		Scanner sc;
 		try {
 			sc = new Scanner(new File("dbcred.txt"));
@@ -54,7 +54,7 @@ public class Dbhelper {
 		Scanner scan = new Scanner(System.in);
 		System.out.print(CovidMain.YELLOW + "\n		Do You Want To Update Cred? (Y/N): " + CovidMain.RESET);
 		char opt = scan.next().charAt(0);
-		if(opt == 'Y')
+		if(opt == 'Y' || opt == 'y')
 		{
 			System.out.print(CovidMain.YELLOW + "\n		Enter New ID: " + CovidMain.RESET);
 			String userid = scan.nextLine();

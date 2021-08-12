@@ -62,7 +62,6 @@ class wardHelper{
 
 public class ward extends wardHelper{
     int wardname; 
-    String W_type; // E/N
     int W_Capacity; // total
     int No_Of_Beds_Full; // engage
     String Doctor1;//
@@ -72,7 +71,6 @@ public class ward extends wardHelper{
     // constructor
     ward() {
         this.wardname = 0;
-        this.W_type = "";
         this.W_Capacity = 0;
         this.No_Of_Beds_Full = 0;
         this.Doctor1 = "";
@@ -97,7 +95,7 @@ public class ward extends wardHelper{
         System.out.print(CovidMain.YELLOW + "\n		Enter doctor ID for ward: " + CovidMain.RESET);
         String wardABCD = sc.nextLine();
         this.Doctor1 = wardABCD;
-        if(Nurse.isNurseExists(wardABCD))
+        if(Doctor.isDoctorExists(wardABCD))
         {
             this.nurse1 = wardABCD;
         }
@@ -161,7 +159,7 @@ public class ward extends wardHelper{
     static void displayAllWardStatus()
     {
     	System.out.println(CovidMain.PURPLE_BOLD + "\n-------------------- Display All Ward Status --------------------" + CovidMain.RESET);
-        String statement = "SELECT wardname AS W_No, W_type AS Type, W_Capacity AS Cap, No_Of_Beds_Full AS Full_Beds FROM ward";  
+        String statement = "SELECT wardname AS W_No, W_Capacity AS Cap, No_Of_Beds_Full AS Full_Beds FROM ward";  
     	db.startstatement();
     	db.printDataList(statement);
         db.endstatement();
@@ -180,7 +178,7 @@ public class ward extends wardHelper{
         	return;
         }
         
-        String statement = "SELECT wardname, W_type, W_Capacity, No_Of_Beds_Full, Doctor1, Nurse1, Wardboy1 FROM ward WHERE wardname = " + tempNurseID;
+        String statement = "SELECT wardname, W_Capacity, No_Of_Beds_Full, Doctor1, Nurse1, Wardboy1 FROM ward WHERE wardname = " + tempNurseID;
 
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -211,10 +209,10 @@ public class ward extends wardHelper{
         W.setWardboy1();
         String statement = "INSERT INTO ward(wardname, W_Capacity, No_Of_Beds_Full, Doctor1, nurse1, wardboy1) VALUES("
                 + W.wardname + "," + W.W_Capacity + "," + W.No_Of_Beds_Full + ",'" + W.Doctor1 + "','" + W.nurse1
-                + "','" + W.wardboy1 + "',)";
+                + "','" + W.wardboy1 + "')";
         db.startstatement();
         db.update(statement);
 
-        System.out.println(CovidMain.GREEN + "\n--------- New ward No."+ CovidMain.BLUE_BOLD + W.wardname + CovidMain.PURPLE_BOLD + CovidMain.RESET + " created successfully! ---------");
+        System.out.println(CovidMain.GREEN + "\n--------- New ward No. "+ CovidMain.BLUE_BOLD + W.wardname + CovidMain.RESET + " created successfully! ---------");
     }
 }

@@ -166,8 +166,10 @@ public class Nurse extends nurseHelper {
     static void changeNurseStatus()
     {
     	System.out.println(CovidMain.PURPLE_BOLD + "---------------------- Change Nurse Status ----------------------" + CovidMain.RESET);
-    	System.out.print(CovidMain.YELLOW + "\nEnter Nurse ID    : " + CovidMain.RESET);
+    	System.out.print(CovidMain.YELLOW + "\n		Enter Nurse ID    : " + CovidMain.RESET);
         String tempNurseID = sc.nextLine();
+        if(tempNurseID.equals(""))
+        	tempNurseID = sc.nextLine();
         
         if(!isNurseExists(tempNurseID))
         {
@@ -175,12 +177,15 @@ public class Nurse extends nurseHelper {
         	return;
         }
         
-        String statement = "UPDATE nurse SET n_status = 'Y' WHERE N_ID = '" + tempNurseID +"'";
+        System.out.print(CovidMain.YELLOW + "		Enter new status: " + CovidMain.RESET);
+        char tempstat = sc.next().charAt(0);
+        
+        String statement = "UPDATE nurse SET n_status = '" + tempstat + "' WHERE N_ID = '" + tempNurseID +"'";
         db.startstatement();
         db.update(statement);
 		db.endupdate();
 		
-		System.out.println(CovidMain.RED + "\n--------------------- Nurse Status changed --------------------" + CovidMain.RESET);
+		System.out.println(CovidMain.GREEN + "\n	 Nurse Status changed for Nurse ID "+ CovidMain.BLUE_BOLD + tempNurseID + CovidMain.RESET);
     }
     
     //FUNCTIONS

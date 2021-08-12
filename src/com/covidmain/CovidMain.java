@@ -30,49 +30,6 @@ class helper {
 	public static final String CYAN_BOLD = "\033[1;36m"; // CYAN
 	public static final String WHITE_BOLD = "\033[1;37m"; // WHITE
 
-	static void red_alert(String alertString) {
-		int i = 0;
-		System.out.println();
-		while (i < 3) {
-			System.out.print(RED + alertString + RESET);
-			try {
-				Thread.sleep(500);
-			} catch (Exception E) {
-				System.out.println(RED + "Error!" + RESET);
-			}
-			System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-			System.out.print("                         ");
-			try {
-				Thread.sleep(500);
-			} catch (Exception E) {
-				System.out.println("Error!");
-			}
-			i++;
-		}
-
-	}
-
-	static void green_alert(String alertString) {
-		int i = 0;
-		System.out.println();
-		while (i < 3) {
-			System.out.print(GREEN + alertString + RESET);
-			try {
-				Thread.sleep(500);
-			} catch (Exception E) {
-				System.out.println("Error!");
-			}
-			System.out.print("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-			System.out.print("                         ");
-			try {
-				Thread.sleep(500);
-			} catch (Exception E) {
-				System.out.println("Error!");
-			}
-			i++;
-		}
-	}
-
 	static boolean adminLogin(){
 		clearScreen();
 		System.out.println(BLUE_BOLD + "***			Admin Login Prompt		 ***" + RESET);
@@ -86,12 +43,12 @@ class helper {
 		String passwordString = new String(passwordChars);
 
 		if (sysUser.equals(user) && passwordString.equals(sysPass)) {
-			green_alert("Login Successful!!");
+			System.out.println(GREEN + "\nLogin Successful!!" + RESET);
 			Dbhelper.setDbCred();
 			enterToContinue();
 			return true;
 		} else {
-			red_alert("Invalid Credentials!!");
+			System.out.println(RED + "\nInvalid Credentials!!" + RESET);
 			enterToContinue();
 			return false;
 		}
@@ -110,12 +67,12 @@ class helper {
 		String passwordString = new String(passwordChars);
 
 		if (sysUser.equals(user) && passwordString.equals(sysPass)) {
-			green_alert("Login Successful!!");
+			System.out.println(GREEN + "\nLogin Successful!!" + RESET);
 			Dbhelper.setDbCred();
 			enterToContinue();
 			return true;
 		} else {
-			red_alert("Invalid Credentials!!");
+			System.out.println(RED + "\nInvalid Credentials!!" + RESET);
 			enterToContinue();
 			return false;
 		}
@@ -185,6 +142,7 @@ class helper {
 	}
 
 	static void addNewPatient() {
+		System.out.println(CYAN_BOLD + "\n-------------- Add New Patient --------------\n" + RESET);
 		int wardEnquiry = ward.checkWardAvailibility();
 		if (wardEnquiry == -1) {
 			System.out.println(RED + "Sorry! No bed is available at current situation." + RESET);
@@ -283,7 +241,7 @@ class helper {
 
 	static void doctorSec(){
 		int opt = 0;
-		while (opt != 7) {
+		while (opt != 8) {
 			System.out.println(CYAN_BOLD + "\n  -------------- Doctor Section --------------" + RESET);
 			System.out.println("		1. Add a new Doctor ");
 			System.out.println("		2. Display Doctor List Slotwise");
@@ -291,7 +249,8 @@ class helper {
 			System.out.println("		4. Change Working slot of a Doctor");
 			System.out.println("		5. Find a Doctor details");
 			System.out.println("		6. Remove a Doctor");
-			System.out.println("		7. Back to Employee Section ");
+			System.out.println("		7. Change doctor status");
+			System.out.println("		8. Back to Employee Section ");
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
 			opt = Character.getNumericValue(tmp);
@@ -334,6 +293,12 @@ class helper {
 
 			case 7:
 				clearScreen();
+				Doctor.changeDoctorStat();
+				enterToContinue();
+				break;
+				
+			case 8:
+				clearScreen();
 				System.out.println(YELLOW + "\n		Returning to Employee Section..." + RESET);
 				enterToContinue();
 				break;
@@ -357,7 +322,7 @@ class helper {
 			System.out.println("		4. Change Working slot of a Nurse");
 			System.out.println("		5. Find a Nurse details");
 			System.out.println("		6. Remove a Nurse");
-			System.out.println("		7. Change Nurse staus");
+			System.out.println("		7. Change Nurse status");
 			System.out.println("		8. Back to Employee Section ");
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
@@ -423,7 +388,7 @@ class helper {
 
 	static void wardBoySec(){
 		int opt = 0;
-		while (opt != 7) {
+		while (opt != 8) {
 			System.out.println(CYAN_BOLD + "\n  -------------- Wardboy Section --------------" + RESET);
 			System.out.println("		1. Add a new Wardboy ");
 			System.out.println("		2. Display Wardboy List Slotwise");
@@ -431,7 +396,8 @@ class helper {
 			System.out.println("		4. Change Working slot of a Wardboy");
 			System.out.println("		5. Find a Wardboy details");
 			System.out.println("		6. Remove a Wardboy");
-			System.out.println("		7. Back to Employee Section ");
+			System.out.println("		7. Chanege Wardboy Status");
+			System.out.println("		8. Back to Employee Section ");
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
 			char tmp = sc.next().charAt(0);
 			opt = Character.getNumericValue(tmp);
@@ -474,6 +440,12 @@ class helper {
 				break;
 
 			case 7:
+				clearScreen();
+				Wardboy.changeWardboyStat();
+				enterToContinue();
+				break;
+				
+			case 8:
 				clearScreen();
 				System.out.println(YELLOW + "\n		Returning to Employee Section..." + RESET);
 				enterToContinue();

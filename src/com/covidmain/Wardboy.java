@@ -116,6 +116,10 @@ public class Wardboy extends wardboyHelper {
         sc.nextLine();
         System.out.print("\nEnter Mobile No    : ");
         String wardboyMob = sc.nextLine();
+        if(wardboyMob.equals(""))
+        {
+        	wardboyMob = sc.nextLine();
+        }
         if (checkers.mobileChecker(wardboyMob)) {
             this.W_phone = wardboyMob;
         } else {
@@ -156,13 +160,13 @@ public class Wardboy extends wardboyHelper {
     } 
     
     static void addWardboy(){
+        System.out.println(CovidMain.CYAN_BOLD + "----------------------- Add Wardboy -----------------------" + CovidMain.RESET);
         Wardboy W = new Wardboy();
         W.setWardboyID();
         W.setWardboyName();
         W.setWardboySlot();
         W.setWardboyPhone();
         W.setWardboyAdd();
-//        W.setWardboyMail();
         W.setWardboyStatus();
 
         String statement = "INSERT INTO wardboy(W_id, W_name, W_slot, W_phone, W_add, isremoved, W_status,W_add_date) VALUES('"
@@ -170,14 +174,16 @@ public class Wardboy extends wardboyHelper {
         db.startstatement();
         db.update(statement);
 
-        System.out.println(CovidMain.GREEN + "\n		New wardboy added successfully!! ID: " + W.W_id + CovidMain.RESET);
+        System.out.println(CovidMain.GREEN + "\n		New wardboy added successfully!! ID: " + CovidMain.BLUE_BOLD +  W.W_id + CovidMain.RESET);
 
     }
 
     static void removeWardboy(){
-        System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Remove Wardboy -----------------------" + CovidMain.RESET);
+        System.out.println(CovidMain.CYAN_BOLD + "----------------------- Remove Wardboy -----------------------" + CovidMain.RESET);
         System.out.print("\nEnter Wardboy ID    : ");
         String tempWardboyID = sc.nextLine();
+        if(tempWardboyID.equals(""))
+        	tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
@@ -194,7 +200,7 @@ public class Wardboy extends wardboyHelper {
     }
 
     public static void displayWardboyDetails(){
-        System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Display Wardboy Details -----------------------" + CovidMain.RESET);
+        System.out.println(CovidMain.CYAN_BOLD + "----------------------- Display Wardboy Details -----------------------" + CovidMain.RESET);
         System.out.print(CovidMain.YELLOW + "\n		Enter Wardboy ID    : " + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
         
@@ -226,7 +232,7 @@ public class Wardboy extends wardboyHelper {
     }
 
     static void detailWardboySlotWise() {
-    	System.out.println(CovidMain.PURPLE_BOLD + "\n----------------------- Slot wise wardboy list -----------------------" + CovidMain.RESET);
+    	System.out.println(CovidMain.CYAN_BOLD + "\n----------------------- Slot wise wardboy list -----------------------" + CovidMain.RESET);
         System.out.print(CovidMain.YELLOW + "\n		Enter Slot No.    : " + CovidMain.RESET);
         int tempSlot = sc.nextInt();
         
@@ -236,7 +242,7 @@ public class Wardboy extends wardboyHelper {
         	return;
         }
 
-        String statement = "SELECT W_id, W_name FROM wardboy WHERE W_slot = '" + tempSlot + "'";
+        String statement = "SELECT W_id AS W_Boy_ID, W_name FROM wardboy WHERE W_slot = '" + tempSlot + "'";
         
     	db.startstatement();
     	db.printDataList(statement);
@@ -247,9 +253,11 @@ public class Wardboy extends wardboyHelper {
    
     static void changeWardboySlot()
     {
-    	System.out.println(CovidMain.PURPLE_BOLD + "----------------------- Change Wardboy Slot -----------------------" + CovidMain.RESET);
+    	System.out.println(CovidMain.CYAN_BOLD + "----------------------- Change Wardboy Slot -----------------------" + CovidMain.RESET);
     	System.out.print(CovidMain.YELLOW + "		Enter Wardboy ID: "  + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
+        if(tempWardboyID.equals(""))
+        	tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
@@ -272,7 +280,8 @@ public class Wardboy extends wardboyHelper {
     
     static void displayAllActiveWardboy()
     {
-    	String statement = "SELECT w_id, w_slot, w_name FROM wardboy WHERE isremoved = 'N' AND n_status = 'A' ";  
+    	System.out.println(CovidMain.CYAN_BOLD + "\n--------------------- Active Wardboys List ---------------------" + CovidMain.RESET);
+    	String statement = "SELECT w_id AS W_Boy_ID, w_slot, w_name FROM wardboy WHERE isremoved = 'N' AND w_status = 'A' ";  
     	db.startstatement();
     	db.printDataList(statement);
         db.endstatement();
@@ -281,11 +290,13 @@ public class Wardboy extends wardboyHelper {
 
     }
 
-    static void changeWardboyStat() throws SQLException
+    static void changeWardboyStat()
     {
-    	System.out.println(CovidMain.PURPLE_BOLD + "\n--------------------- Change Wardboy Status ---------------------" + CovidMain.RESET);
+    	System.out.println(CovidMain.CYAN_BOLD + "\n--------------------- Change Wardboy Status ---------------------" + CovidMain.RESET);
     	System.out.print(CovidMain.YELLOW + "		Enter wardboy ID: " + CovidMain.RESET);
         String tempWardboyID = sc.nextLine();
+        if(tempWardboyID.equals(""))
+        	tempWardboyID = sc.nextLine();
         
         if(!isWardboyExists(tempWardboyID))
         {
