@@ -60,7 +60,7 @@ public class Dbhelper {
 			String userid = scan.nextLine();
 			if(userid.equals(""))
 				userid = scan.nextLine();
-			System.out.print(CovidMain.YELLOW + "\n 	Enter New Pass: " + CovidMain.RESET);
+			System.out.print(CovidMain.YELLOW + "\n		Enter New Pass: " + CovidMain.RESET);
 			String pass = scan.nextLine();
 			try {
 	            FileWriter myWriter = new FileWriter("dbcred.txt");

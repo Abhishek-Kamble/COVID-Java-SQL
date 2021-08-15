@@ -56,7 +56,7 @@ class Doctorhelper{
     static boolean isDoctorExists(String tempDoctorId)
     {
     	long cnt = 0;
-    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM doctor WHERE D_id = '" + tempDoctorId + "' AND d_status = 'A')";
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM doctor WHERE D_id = '" + tempDoctorId + "' AND d_status = 'N')";
         
     	db.startstatement();
     	rs = db.execstatement(statement);
@@ -65,6 +65,26 @@ class Doctorhelper{
 			cnt=rs.getInt("Count");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(cnt>0)
+			return true;
+		else
+			return false;
+    }
+    
+    static boolean isDoctorRem(String tempDoctorId)
+    {
+    	long cnt = 0;
+    	String statement = "SELECT COUNT(1) AS Count FROM dual WHERE EXISTS (SELECT 1 FROM doctor WHERE D_id = '" + tempDoctorId + "' AND isremoved = 'N')";
+        
+    	db.startstatement();
+    	rs = db.execstatement(statement);
+        try {
+			rs.next();
+			cnt=rs.getInt("Count");
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
@@ -203,19 +223,21 @@ public class Doctor extends Doctorhelper
 	    	System.out.println(CovidMain.CYAN_BOLD + "\n--------------------- Remove Doctor ---------------------" + CovidMain.RESET);
 	        System.out.print(CovidMain.YELLOW + "\n		Enter Doctor ID    : " + CovidMain.RESET);
 	        String tempDoctorID = sc.nextLine();
+	        if(tempDoctorID.equals(""))
+	        	tempDoctorID = sc.nextLine();
 	        
-	        if(!isDoctorExists(tempDoctorID))
+	        if(!isDoctorRem(tempDoctorID))
 	        {
 	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
 	        	return;
 	        }
 	        
-	        String statement = "UPDATE Doctor SET isremoved = 'Y' WHERE D_ID = '" + tempDoctorID +"'";
+	        String statement = "UPDATE Doctor SET isremoved = 'Y', d_status = 'N' WHERE D_ID = '" + tempDoctorID +"'";
 	        
 	        db.startstatement();
 	        db.update(statement);
 			db.endupdate();
-			
+	        System.out.println(CovidMain.GREEN + "		Doctor removed successfully! ID: " + CovidMain.BLUE_BOLD + tempDoctorID + CovidMain.RESET);
 			System.out.println("-------------------------------------------------------");
 	    }
 	    
@@ -287,7 +309,7 @@ public class Doctor extends Doctorhelper
 	    	 System.out.println(CovidMain.CYAN_BOLD + "\n------------------- Slot wise Doctor list -------------------" + CovidMain.RESET);
 	         System.out.print(CovidMain.YELLOW + "\n		Enter Slot No.    : " + CovidMain.RESET);
 	         int tempSlot = sc.nextInt();
-	         String statement = "SELECT D_id AS Doctor_ID , D_name AS Doctor_Name FROM Doctor WHERE D_slot = '" + tempSlot + "'";
+	         String statement = "SELECT D_id AS Doctor_ID , D_name AS Doctor_Name FROM Doctor WHERE D_slot = '" + tempSlot + "' AND d_status = 'A'";
 	         
 	         if(tempSlot>3 || tempSlot<0)
 	         {
@@ -322,27 +344,31 @@ public class Doctor extends Doctorhelper
 	        if(tempDoctor.equals(""))
 	        	tempDoctor = sc.nextLine();
 	        
-	        if(!isDoctorExists(tempDoctor))
+	        if(!isDoctorRem(tempDoctor))
 	        {
 	        	System.out.println(CovidMain.RED + "		Invalid Doctor ID!!!" + CovidMain.RESET);
 	        	return;
 	        }
 	        
 	        System.out.print(CovidMain.YELLOW + "\nEnter new status for ID: "+ CovidMain.BLUE_BOLD + tempDoctor + " : " + CovidMain.RESET);
-	        char tempStat = sc.nextLine().charAt(0);
+	        char tempStat = sc.next().charAt(0);
 	        
-	        if(tempStat!='A' || tempStat!='N')
+	        if(tempStat=='A' || tempStat=='N')
+	        {
+	        	String statement = "UPDATE doctor SET d_status = '" + tempStat + "' WHERE d_ID = '" + tempDoctor + "'";        
+		        db.startstatement();
+		        db.update(statement);
+		        db.endstatement();
+
+		        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for Doctor ID: " + CovidMain.BLUE_BOLD + tempDoctor + CovidMain.RESET);
+	        	
+	        }
+	        else
 	        {
 	        	System.out.println(CovidMain.RED + "\n		Invalid status entered!!" + CovidMain.RESET);
 	        	return;
 	        }
-	        
-	        String statement = "UPDATE doctor SET d_status = " + tempStat + "WHERE d_ID = '" + tempDoctor +"'";        
-	        db.startstatement();
-	        db.update(statement);
-	        db.endstatement();
-
-	        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for Doctor ID: " + CovidMain.BLUE_BOLD + tempDoctor + CovidMain.RESET);
+	       
 	    }
 	    
 }

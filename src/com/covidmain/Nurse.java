@@ -335,15 +335,19 @@ public class Nurse extends nurseHelper {
         
         if(tempStat!='A' || tempStat!='N')
         {
+        	String statement = "UPDATE nurse SET n_status = " + tempStat + "WHERE N_ID = '" + tempNurseID +"'";        
+            db.startstatement();
+            db.update(statement);
+            db.endstatement();
+
+            System.out.println(CovidMain.GREEN + "Slot No. changed successfully for nurse ID: " + CovidMain.BLUE_BOLD + tempNurseID + CovidMain.RESET);
+        	
+        }
+        else
+        {
         	System.out.println(CovidMain.RED + "\n		Invalid status entered!!\n" + CovidMain.RESET);
         	return;
         }
         
-        String statement = "UPDATE nurse SET n_status = " + tempStat + "WHERE N_ID = '" + tempNurseID +"'";        
-        db.startstatement();
-        db.update(statement);
-        db.endstatement();
-
-        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for nurse ID: " + CovidMain.BLUE_BOLD + tempNurseID + CovidMain.RESET);
     }
 }

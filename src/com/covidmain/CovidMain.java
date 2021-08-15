@@ -1,7 +1,6 @@
 package com.covidmain;
 
 import java.io.*;
-import java.sql.*;
 import java.util.*;
 
 class helper {
@@ -369,7 +368,7 @@ class helper {
 				Nurse.changeNurseStatus();
 				enterToContinue();
 				break;
-
+				
 			case 8:
 				clearScreen();
 				System.out.println(YELLOW + "\n		Returning to Employee Section..." + RESET);
@@ -646,8 +645,7 @@ class helper {
 			System.out.println("		8. Change Nurse Status");
 			System.out.println("		9. Exit");
 			System.out.print(YELLOW + "\n		Enter opt: " + RESET);
-			char tmp = sc.next().charAt(0);
-			opt = Character.getNumericValue(tmp);
+			opt = sc.nextInt();
 			switch (opt) {
 			case 1:
 				clearScreen();
@@ -700,10 +698,12 @@ class helper {
 				patient_at_entry.searchPatient();
 				enterToContinue();
 				break;
+				
 			case 8:
 				clearScreen();
 				Nurse.changeNurseStatus();
 				enterToContinue();
+				break;
 
 			case 9:
 				clearScreen();

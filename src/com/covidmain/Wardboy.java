@@ -309,16 +309,20 @@ public class Wardboy extends wardboyHelper {
         
         if(tempStat!='A' || tempStat!='N')
         {
+        	String statement = "UPDATE wardboy SET w_status = " + tempStat + "WHERE w_ID = '" + tempWardboyID +"'";        
+            db.startstatement();
+            db.update(statement);
+            db.endstatement();
+
+            System.out.println(CovidMain.GREEN + "Slot No. changed successfully for wardboy ID: " + CovidMain.BLUE_BOLD + tempWardboyID + CovidMain.RESET);
+        }
+        else
+        {
         	System.out.println(CovidMain.RED + "\n		Invalid status entered!!" + CovidMain.RESET);
         	return;
         }
         
-        String statement = "UPDATE wardboy SET w_status = " + tempStat + "WHERE w_ID = '" + tempWardboyID +"'";        
-        db.startstatement();
-        db.update(statement);
-        db.endstatement();
-
-        System.out.println(CovidMain.GREEN + "Slot No. changed successfully for wardboy ID: " + CovidMain.BLUE_BOLD + tempWardboyID + CovidMain.RESET);
+        
     }
 }
     
